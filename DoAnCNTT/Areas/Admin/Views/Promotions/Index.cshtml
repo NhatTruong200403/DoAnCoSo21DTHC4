@@ -1,0 +1,77 @@
+﻿@model IEnumerable<DoAnCNTT.Models.Promotion>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nội dung
+            </th>
+            <th>
+                Giá trị khuyến mãi
+            </th>
+            <th>
+                Ngày kết thúc
+            </th>
+            <th>
+                Mã người tạo
+            </th>
+            <th>
+                Ngày tạo
+            </th>
+            <th>
+                Mã người cập nhật 
+            </th>
+            <th>
+                Ngày cập nhật
+            </th>
+            <th>
+                Ẩn
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpiredDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedById)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedById)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedOn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> 
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
