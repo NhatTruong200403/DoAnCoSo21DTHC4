@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using DoAnCNTT.Data;
@@ -69,7 +70,7 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Images")]
             public string Images { get; set; }
             [Display(Name = "Birthday")]
-            public DateTime Birthday { get; set; }
+            public DateTime? Birthday { get; set; }
         }
         private async Task<string> SaveImage(IFormFile image)
         {
@@ -86,10 +87,18 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             }
             return "/images/ImageUser/" + image.FileName;
         }
+
+
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            DateTime? dateTime = null; 
+            if (user.Birthday != null)
+            {
+                dateTime = (DateTime)user.Birthday;
+            }
+
             var name = user.Name;
             Username = userName;
 
@@ -97,9 +106,9 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             {
                 FullName = name,
                 PhoneNumber = phoneNumber,
+                Birthday = dateTime
             };
         }
-
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -131,7 +140,7 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{user.Id}'.");
             }
-            if (currentUser.Name != null)
+            if (Input.FullName != null)
             {
                 currentUser.Name = Input.FullName;
             }
@@ -164,7 +173,16 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-
+            if (Input.Birthday != null)
+            {
+                
+                DateTime birthdayDateTime = Input.Birthday.Value;               
+                currentUser.Birthday = birthdayDateTime;
+            }
+            else
+            {
+                currentUser.Birthday = currentUser.Birthday;
+            }
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
@@ -172,4 +190,3 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
 
     }
 }
-
