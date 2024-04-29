@@ -35,13 +35,16 @@
                         @if(User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Promotion</a>
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Promotions</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="Amenities" asp-action="Index">Amenities</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">CarTypes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Companies" asp-action="Index">Companies</a>
                             </li>
                         }
                     </ul>
@@ -50,14 +53,14 @@
             </div>
         </nav>
     </header>
-    <div class="container" style="min-height:765px;">
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
     <footer class="footer" 
         <div class="container">
-            <div class="logo_Small"><img src="@Url.Content("~/images/logo/bcd_preview_rev_1.png")" alt=""></div>
+            <div class="logo_Small"><img src="@Url.Content("~/img/logo/bcd_preview_rev_1.png")" alt=""></div>
             <div class="cs">
                 <a class="a" asp-controller="Home" asp-action="ChinhSach">Chính sách về quyền tiêng tư</a>
                 <a class="a" asp-controller="Home" asp-action="DieuKhoan">Điều khoản dịch vụ</a>
@@ -65,7 +68,7 @@
                 <a class="a" asp-controller="Home" asp-action="LienHe">Liên hệ chúng tôi</a>
                
             </div>
-            <div class="logo_Big"><img src="@Url.Content("~/images/logo/abc_preview_rev_1.png")" alt=""></div>
+            <div class="logo_Big"><img src="@Url.Content("~/img/logo/abc_preview_rev_1.png")" alt=""></div>
 
         </div>
         <div class="copyright">

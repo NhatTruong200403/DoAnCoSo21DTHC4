@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240428091627_v1")]
-    partial class v1
+    [Migration("20240429130102_AddCompanyTable")]
+    partial class AddCompanyTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,6 +165,78 @@ namespace DoAnCNTT.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CarTypes");
+                });
+
+            modelBuilder.Entity("DoAnCNTT.Models.CarTypeDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarTypeId");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("CarTypesDetails");
+                });
+
+            modelBuilder.Entity("DoAnCNTT.Models.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IconImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
@@ -609,6 +681,25 @@ namespace DoAnCNTT.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DoAnCNTT.Models.CarTypeDetail", b =>
+                {
+                    b.HasOne("DoAnCNTT.Models.CarType", "CarType")
+                        .WithMany("CarTypeDetail")
+                        .HasForeignKey("CarTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DoAnCNTT.Models.Company", "Company")
+                        .WithMany("CarTypeDetail")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CarType");
+
+                    b.Navigation("Company");
+                });
+
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
                 {
                     b.HasOne("DoAnCNTT.Models.Payment", "Payment")
@@ -765,7 +856,14 @@ namespace DoAnCNTT.Migrations
 
             modelBuilder.Entity("DoAnCNTT.Models.CarType", b =>
                 {
+                    b.Navigation("CarTypeDetail");
+
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("DoAnCNTT.Models.Company", b =>
+                {
+                    b.Navigation("CarTypeDetail");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Payment", b =>

@@ -7,34 +7,33 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DoAnCNTT.Data;
 using DoAnCNTT.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using DoAnCNTT.Models.Utilities;
 
 namespace DoAnCNTT.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class CarTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        public CarTypesController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+
+        public CarTypesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
-        // GET: Controllers/CarTypes
+        // GET: Admin/CarTypes
         public async Task<IActionResult> Index()
         {
             return View(await _context.CarTypes.ToListAsync());
         }
 
-        // GET: Controllers/CarTypes/Details/5
-        public async Task<IActionResult> Details(int id)
+        // GET: Admin/CarTypes/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -51,19 +50,25 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return View(carType);
         }
 
-        // GET: Controllers/CarTypes/Create
-        public async Task<IActionResult> Create()
+        // GET: Admin/CarTypes/Create
+        public IActionResult Create()
         {
+            var companies = _context.Companies.ToList();
+            ViewData["Companies"] = new SelectList(companies, "Id", "Name");
             return View();
         }
 
+        // POST: Admin/CarTypes/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id")] CarType carType)
+        public async Task<IActionResult> Create([Bind("Name,Id,IsDeleted")] CarType carType)
         {
             var user = await _userManager.GetUserAsync(User);
-            carType.CreatedById = user.Id;
+            carType.CreatedById = user!.Id;
             carType.CreatedOn = DateTime.Now;
+            carType.ModifiedOn = null;
             if (ModelState.IsValid)
             {
                 _context.Add(carType);
@@ -73,18 +78,14 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return View(carType);
         }
 
-        // GET: Controllers/CarTypes/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        // GET: Admin/CarTypes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
-            {
-                ViewData["Id1"] = user.Id;
-            }
+
             var carType = await _context.CarTypes.FindAsync(id);
             if (carType == null)
             {
@@ -93,33 +94,32 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return View(carType);
         }
 
-        public async Task<CarType?> GetExistingCarTypes(int id)
-            => await _context.CarTypes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
-
-        // POST: Controllers/CarTypes/Edit/5
+        public async Task<CarType?> GetExistingCarType(int id) 
+                => await _context.CarTypes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+        // POST: Admin/CarTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,CreatedById,CreatedOn,ModifiedById,ModifiedOn,IsDeleted")] CarType carType)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IsDeleted")] CarType carType)
         {
             if (id != carType.Id)
             {
                 return NotFound();
             }
+            var user = await _userManager.GetUserAsync(User); //Lấy thông tin user
+            var existingCarType = await GetExistingCarType(id); // Lấy giá trị cũ của khuyến mãi
+            carType.CreatedOn = existingCarType!.CreatedOn;
+            carType.CreatedById = existingCarType.CreatedById;
+            carType.ModifiedById = existingCarType!.ModifiedById;
+            carType.ModifiedOn = existingCarType.ModifiedOn;
 
+            bool hasChanges = EditHelper<CarType>.HasChanges(carType, existingCarType);
+            EditHelper<CarType>.SetModifiedIfNecessary(carType, hasChanges, existingCarType, user!.Id);
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var user = await _userManager.GetUserAsync(User);
-                    var existingCarType = await GetExistingCarTypes(id);
-                    carType.CreatedOn = existingCarType.CreatedOn;
-                    carType.CreatedById = existingCarType.CreatedById;
-                    carType.ModifiedOn = existingCarType.ModifiedOn;
-                    carType.ModifiedById = existingCarType.ModifiedById;
-                    bool hasChanges = EditHelper<CarType>.HasChanges(carType, existingCarType);
-                    EditHelper<CarType>.SetModifiedIfNecessary(carType, hasChanges, existingCarType, user!.Id);
                     _context.Update(carType);
                     await _context.SaveChangesAsync();
                 }
@@ -137,39 +137,6 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(carType);
-        }
-
-        // GET: Controllers/CarTypes/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var carType = await _context.CarTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (carType == null)
-            {
-                return NotFound();
-            }
-
-            return View(carType);
-        }
-
-        // POST: Controllers/CarTypes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var carType = await _context.CarTypes.FindAsync(id);
-            if (carType != null)
-            {
-                _context.CarTypes.Remove(carType);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool CarTypeExists(int id)

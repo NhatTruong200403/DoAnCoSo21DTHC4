@@ -90,7 +90,6 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CreateDate"] = promotion.CreatedOn;
             return View(promotion);
         }
         
