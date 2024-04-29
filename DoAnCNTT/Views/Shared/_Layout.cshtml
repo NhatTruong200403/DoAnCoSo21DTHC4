@@ -35,13 +35,16 @@
                         @if(User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Promotion</a>
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Promotions</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="Amenities" asp-action="Index">Amenities</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">CarTypes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Companies" asp-action="Index">Companies</a>
                             </li>
                         }
                     </ul>
