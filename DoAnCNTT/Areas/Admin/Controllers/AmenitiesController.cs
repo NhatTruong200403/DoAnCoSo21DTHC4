@@ -65,7 +65,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(User);
-                amenity.CreatedById = user.Id;
+                amenity.CreatedById = user!.Id;
                 amenity.CreatedOn = DateTime.Now;
                 if(IconImage != null)
                 {
@@ -118,7 +118,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                     {
                         amenity.IconImage = existingAmenity!.IconImage;
                     }
-                    amenity.CreatedOn = existingAmenity.CreatedOn;
+                    amenity.CreatedOn = existingAmenity!.CreatedOn;
                     amenity.CreatedById = existingAmenity.CreatedById;
                     amenity.ModifiedOn = existingAmenity.ModifiedOn;
                     amenity.ModifiedById = existingAmenity.ModifiedById;

@@ -18,6 +18,8 @@ namespace DoAnCNTT.Data
         public DbSet<PostAmenity> PostAmenities { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Rating> Ratings { get; set; }   
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CarTypeDetail> CarTypesDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
