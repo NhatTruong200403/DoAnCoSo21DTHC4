@@ -5,34 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách tiện nghi</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm tiện nghi</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Tên
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IconImage)
+                Icon
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedById)
+                Mã người tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
+                Ngày tạo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModifiedById)
+                Mã người cập nhật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
+                Ngày cập nhật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
+                Ẩn
             </th>
             <th></th>
         </tr>
@@ -62,8 +62,8 @@
                 @Html.DisplayFor(modelItem => item.IsDeleted)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
             </td>
         </tr>
 }
