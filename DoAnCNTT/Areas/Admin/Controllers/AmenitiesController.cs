@@ -9,10 +9,12 @@ using DoAnCNTT.Data;
 using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Identity;
 using DoAnCNTT.Models.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoAnCNTT.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AmenitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
