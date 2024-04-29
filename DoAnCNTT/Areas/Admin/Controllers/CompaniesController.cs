@@ -45,7 +45,11 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            var companyCarTypes = _context.CarTypesDetails
+                .Where(c => c.CompanyId == company.Id)
+                .Select(c => c.CarType.Name)
+                .ToList();
+            ViewData["CompanyCarTypes"] = companyCarTypes;
             return View(company);
         }
 
@@ -63,7 +67,26 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         // GET: Admin/Companies/Create
         public IActionResult Create()
         {
+            var carTypes = _context.CarTypes.ToList();
+            ViewData["CarTypes"] = new SelectList(carTypes, "Id", "Name");
             return View();
+        }
+
+        private async Task AddSelectedCarTypes(int companyId, int[] SelectedCarTypes)
+        {
+            if (SelectedCarTypes != null)
+            {
+                foreach (var item in SelectedCarTypes)
+                {
+                    var carTypeDetail = new CarTypeDetail()
+                    {
+                        CarTypeId = item,
+                        CompanyId = companyId
+                    };
+                    _context.CarTypesDetails.Add(carTypeDetail);
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
 
         // POST: Admin/Companies/Create
@@ -71,7 +94,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,IsDeleted")] Company company, IFormFile? IconImage)
+        public async Task<IActionResult> Create([Bind("Name,Id,IsDeleted")] Company company, IFormFile? IconImage, int[] SelectedCarTypes)
         {
             if (ModelState.IsValid)
             {
@@ -84,6 +107,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                 }
                 _context.Add(company);
                 await _context.SaveChangesAsync();
+                await AddSelectedCarTypes(company.Id, SelectedCarTypes);
                 return RedirectToAction(nameof(Index));
             }
             return View(company);

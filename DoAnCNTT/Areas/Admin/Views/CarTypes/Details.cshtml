@@ -17,6 +17,15 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt class="col-sm-2">
+            Tên hãng xe:
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in @ViewBag.CarTypeCompanies)
+            {
+                <div>@item</div>
+            }
+        </dd>
         <dt class = "col-sm-2">
             Mã người tạo
         </dt>

@@ -46,7 +46,11 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            var carTypeCompanies = _context.CarTypesDetails
+                .Where(c => c.CarTypeId == carType.Id)
+                .Select(c => c.Company.Name)
+                .ToList().Distinct();
+            ViewData["CarTypeCompanies"] = carTypeCompanies;
             return View(carType);
         }
 
@@ -58,12 +62,26 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return View();
         }
 
+
+        private async Task AddCarTypeDetailAsync(int carTypeId, int[] selectedCompanies)
+        {
+            foreach(var item in selectedCompanies)
+            {
+                var carTypeDetail = new CarTypeDetail()
+                {
+                    CarTypeId = carTypeId,
+                    CompanyId = item
+                };
+                _context.CarTypesDetails.Add(carTypeDetail);
+                await _context.SaveChangesAsync();
+            }    
+        }
         // POST: Admin/CarTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,IsDeleted")] CarType carType)
+        public async Task<IActionResult> Create([Bind("Name,Id,IsDeleted")] CarType carType, int[] SelectedCompanies)
         {
             var user = await _userManager.GetUserAsync(User);
             carType.CreatedById = user!.Id;
@@ -73,6 +91,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             {
                 _context.Add(carType);
                 await _context.SaveChangesAsync();
+                await AddCarTypeDetailAsync(carType.Id, SelectedCompanies);
                 return RedirectToAction(nameof(Index));
             }
             return View(carType);

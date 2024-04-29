@@ -23,6 +23,18 @@
                 <input asp-for="IconImage" type="file" class="form-control" />
                 <span asp-validation-for="IconImage" class="text-danger"></span>
             </div>
+            <div class="checkbox-list">
+                Loại xe:
+                @foreach (var carType in ViewBag.CarTypes)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input car-type-checkbox" type="checkbox" name="SelectedCarTypes" value="@carType.Value" id="carType-@carType.Value">
+                        <label class="form-check-label" for="carType-@carType.Value">
+                            @carType.Text
+                        </label>
+                    </div>
+                }
+            </div>
             Trạng thái
             <div class="form-group form-check">
                 <label class="form-check-label">
