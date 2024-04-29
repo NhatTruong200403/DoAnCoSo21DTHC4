@@ -25,7 +25,10 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+<<<<<<< Updated upstream
     <Folder Include="wwwroot\images\amenities\" />
+=======
+>>>>>>> Stashed changes
   </ItemGroup>
 
 </Project>

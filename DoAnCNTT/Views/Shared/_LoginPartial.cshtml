@@ -5,17 +5,24 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-     <li class="nav-item margintop">
+     @* <li class="nav-item margintop">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
-    </li>
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"> Xin chao 
-                @* <img class="avatar" src="@Url.Content("~/img/T1.png")" alt="Alternate Text" /> *@
-        </a>
-    </li>
-    
+    </li> *@
+        var user = await UserManager.GetUserAsync(User);
+        var fullName = user.Name;
+        <li class="nav-item">
+            <a class="nav-link text-dark aaaaaaa" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+
+                <div style="margin-top:13px;">
+                    @fullName
+                </div>
+                <div class="image-container1">
+                    <img src="@Url.Content(user.Image)" alt="Image" />
+                </div>
+            </a>
+        </li>
 }
 else
 {
@@ -27,3 +34,38 @@ else
     </li>
 }
 </ul>
+<style>
+    .aaaaaaa {
+        display: flex;
+    }
+
+    .image-container1 {
+        width: 50px;
+        height: 50px;
+        overflow: hidden;
+        padding: 0px;
+        margin-inline: 10px;
+    }
+
+        .image-container1 img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+    .nutlogin {
+        padding: 10px 25px;
+        font-size: 18px;
+        color: white;
+        background-color: #333;
+        margin-right: 10px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+        .nutlogin:hover {
+            padding: 9px 23px;
+            color: black;
+        }
+</style>
