@@ -45,13 +45,13 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
         public async Task<string> SaveImage(IFormFile file)
         {
-            var savePath = "./wwwroot/images/amenities/";
+            var savePath = "./wwwroot/images/";
             var filePath = Path.Combine(savePath + file?.FileName);
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await file!.CopyToAsync(fileStream);
             }
-            return "/images/amenities/" + file.FileName;
+            return "/images/" + file.FileName;
         }
         public IActionResult Create()
         {
