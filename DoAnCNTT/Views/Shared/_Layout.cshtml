@@ -11,6 +11,7 @@
     <link href="~/css/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DoAnCNTT.styles.css" asp-append-version="true" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <header>
@@ -47,6 +48,12 @@
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="Companies" asp-action="Index">Companies</a>
                             </li>
                         }
+                        @if (User.IsInRole("Customer"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Customer" asp-controller="Posts" asp-action="Index">Posts</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -58,7 +65,7 @@
             @RenderBody()
         </main>
     </div>
-    <footer class="footer" 
+    <footer class="footer" style="height: 50px">
         <div class="container">
             <div class="logo_Small"><img src="@Url.Content("~/img/logo/bcd_preview_rev_1.png")" alt=""></div>
             <div class="cs">

@@ -15,6 +15,7 @@ namespace DoAnCNTT.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostImages> PostImages { get; set; }   
         public DbSet<PostAmenity> PostAmenities { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Rating> Ratings { get; set; }   
