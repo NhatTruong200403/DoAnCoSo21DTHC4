@@ -6,19 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using DoAnCNTT.Data;
 
 namespace DoAnCNTT.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
         //private readonly UserManager<ApplicationUser> _userManager;
         
 
-        public HomeController(ILogger<HomeController> logger/*, UserManager<ApplicationUser> userManager*/)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             //_userManager = userManager;
+            _context = context;
         }
 
 
@@ -91,7 +94,8 @@ namespace DoAnCNTT.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var post = _context.Posts.ToList();
+            return View(post);
         }
 
         public IActionResult ChinhSach()
