@@ -4,6 +4,7 @@ using DoAnCNTT.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240430032408_AddPostCompanyRelationship")]
+    partial class AddPostCompanyRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenities", (string)null);
+                    b.ToTable("Amenities");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.ApplicationUser", b =>
@@ -161,7 +164,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarTypes", (string)null);
+                    b.ToTable("CarTypes");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.CarTypeDetail", b =>
@@ -199,7 +202,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("CarTypesDetails", (string)null);
+                    b.ToTable("CarTypesDetails");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Company", b =>
@@ -233,7 +236,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
@@ -290,7 +293,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Invoices", (string)null);
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Payment", b =>
@@ -321,7 +324,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Post", b =>
@@ -400,7 +403,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.PostAmenity", b =>
@@ -438,7 +441,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostAmenities", (string)null);
+                    b.ToTable("PostAmenities");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.PostImages", b =>
@@ -459,7 +462,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostImages", (string)null);
+                    b.ToTable("PostImages");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Promotion", b =>
@@ -496,7 +499,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Promotions", (string)null);
+                    b.ToTable("Promotions");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Rating", b =>
@@ -535,7 +538,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Report", b =>
@@ -571,7 +574,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Report", (string)null);
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

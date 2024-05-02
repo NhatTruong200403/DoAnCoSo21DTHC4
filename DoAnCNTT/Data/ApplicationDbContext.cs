@@ -1,6 +1,7 @@
 ﻿using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace DoAnCNTT.Data
 {
@@ -15,6 +16,7 @@ namespace DoAnCNTT.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostImages> PostImages { get; set; }   
         public DbSet<PostAmenity> PostAmenities { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Rating> Ratings { get; set; }   
@@ -22,6 +24,7 @@ namespace DoAnCNTT.Data
         public DbSet<CarTypeDetail> CarTypesDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
             base.OnModelCreating(builder);
         }
     }

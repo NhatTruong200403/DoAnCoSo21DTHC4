@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DoAnCNTT.Models
 {
     public class Post : BaseModel
     {
         public string? Name { get; set; }
+        public string? Image { get; set; }
+        public List<PostImages>? Images { get; set; }
         public string? Description { get; set; }
-        public int Seat {  get; set; }
+        public int Seat { get; set; }
         public string? RentLocation { get; set; }
         public bool HasDriver { get; set; }
         public decimal Price { get; set; }
@@ -19,6 +22,9 @@ namespace DoAnCNTT.Models
         public int CarTypeId { get; set; }
         [ValidateNever]
         public CarType CarType { get; set; } = null!;
+        public int CompanyId { get; set; }
+        [ValidateNever]
+        public Company Company { get; set; } = null!;
         public string? UserId { get; set; }
         [ValidateNever]
         public ApplicationUser User { get; set; } = null!;
