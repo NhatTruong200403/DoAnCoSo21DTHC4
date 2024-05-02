@@ -56,6 +56,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
+            ViewData["PostAmenities"] = _context.PostAmenities.Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity.Name).ToList();
             ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();
             return View(post);
         }
@@ -63,8 +64,10 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // GET: Customer/Posts/Create
         public IActionResult Create()
         {
-            var carTypes = _context.CarTypes.Where(c => c.IsDeleted == false);
+            var carTypes = _context.CarTypes.Where(c => c.IsDeleted == false).ToList();
+            var amenities = _context.Amenities.Where(a => a.IsDeleted == false).ToList();
             ViewData["CarTypeId"] = new SelectList(carTypes, "Id", "Name");
+            ViewData["Amenities"] = new SelectList(amenities, "Id", "Name");
             return View();
         }
 
@@ -100,13 +103,45 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
             return Json(companies);
         }
+        public async Task SavePostAmenitiesAsync(int postId, int[] selectedAmenities)
+        {
+            foreach (var item in selectedAmenities)
+            {
+                var postAmenities = new PostAmenity()
+                {
+                    AmenityId = item,
+                    PostId = postId
+                };
+                _context.PostAmenities.Add(postAmenities);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
+        private async Task SavePostImage(Post post, List<IFormFile> Images)
+        {
+            post.Images = new List<PostImages>();
+            if (Images != null)
+            {
+                foreach (var image in Images)
+                {
+                    if (image != null && image.Length > 0)
+                    {
+                        var postImage = new PostImages();
+                        postImage.Url = await SaveImage(image);
+                        post.Images.Add(postImage);
+                        _context.PostImages.Add(postImage);
+                    }
+                }
+            }
+        }
 
         // POST: Customer/Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post,string Gear, IFormFile? Image, List<IFormFile> Images)
+        public async Task<IActionResult> Create([Bind("Name,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post,string Gear, IFormFile? Image, List<IFormFile> Images, int[] SelectedAmenities)
         {
             if (ModelState.IsValid)
             {
@@ -133,6 +168,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 await SavePostImage(post, Images);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
+                await SavePostAmenitiesAsync(post.Id, SelectedAmenities);
                 return RedirectToAction(nameof(Index));
             }
             var carTypes = _context.CarTypes.Where(c => c.IsDeleted == false);
@@ -140,23 +176,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(post);
         }
 
-        private async Task SavePostImage(Post post, List<IFormFile> Images)
-        {
-            post.Images = new List<PostImages>();
-            if (Images != null)
-            {
-                foreach (var image in Images)
-                {
-                    if (image != null && image.Length > 0)
-                    {
-                        var postImage = new PostImages();
-                        postImage.Url = await SaveImage(image);
-                        post.Images.Add(postImage);
-                        _context.PostImages.Add(postImage);
-                    }
-                }
-            }
-        }
+
         // GET: Customer/Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -170,9 +190,44 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
-            var carTypes = _context.CarTypes.Where(c => c.IsDeleted == false);
+            var carTypes = _context.CarTypes.Where(c => c.IsDeleted == false).ToList();
+            var amenities = _context.Amenities.Where(a => a.IsDeleted == false).ToList();
             ViewData["CarTypeId"] = new SelectList(carTypes, "Id", "Name");
+            ViewData["Amenities"] = new SelectList(amenities, "Id", "Name");
+            ViewData["PostAmenities"] = _context.PostAmenities.Where(p => p.PostId == id && p.IsDeleted == false).Select(p => p.Amenity.Name).ToList();
             return View(post);
+        }
+
+        private async Task RemovePostAmenities(int postId)
+        {
+            var postAmenitiesToRemove = _context.PostAmenities.Where(p => p.PostId == postId).ToList();
+            _context.PostAmenities.RemoveRange(postAmenitiesToRemove);
+            await _context.SaveChangesAsync();
+        }
+
+        private bool IsPostAmenitiesChange(int[] SelectedAmenities, int postId)
+        {
+            var amenities = _context.Amenities.ToList();
+            var postAmenities = _context.PostAmenities
+                                    .Where(p => p.PostId == postId)
+                                    .Select(p => p.Amenity.Name).ToList();
+            if (SelectedAmenities.Length > 0)
+            {
+                // Kiểm tra các checkbox đã chọn và có thay đổi không
+                foreach (var item in amenities)
+                {
+                    bool isChecked = postAmenities != null && postAmenities.Contains(item.Name);
+                    bool currentChecked = SelectedAmenities != null && Array.IndexOf(SelectedAmenities, item.Id) != -1;
+
+                    // Nếu trạng thái của checkbox đã thay đổi, đặt giá trị của biến bool là true
+                    if (isChecked != currentChecked)
+                    {
+
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public async Task<Post?> GetExistingPost(int id) 
@@ -183,7 +238,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Image,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post, string Gear, IFormFile? Image, List<IFormFile> Images)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Image,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post, string Gear, IFormFile? Image, List<IFormFile> Images, int[] SelectedAmenities)
         {
             if (id != post.Id)
             {
@@ -227,14 +282,25 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             post.ModifiedOn = existingPost.ModifiedOn;
             post.ModifiedById = existingPost.ModifiedById;
             post.IsAvailable = true;
-            bool hasChanges = EditHelper<Post>.HasChanges(post, existingPost); //Hàm kiểm tra
-            EditHelper<Post>.SetModifiedIfNecessary(post, hasChanges, existingPost, user!.Id); //Hàm cập nhật nếu thay đổi
+            var isChange = IsPostAmenitiesChange(SelectedAmenities, post.Id);
+            if (isChange)
+            {
+                await RemovePostAmenities(post.Id);
+                await SavePostAmenitiesAsync(post.Id, SelectedAmenities);
+                EditHelper<Post>.SetModifiedIfNecessary(post, true, existingPost, user!.Id);
+            }
+            else 
+            {
+                bool hasChanges = EditHelper<Post>.HasChanges(post, existingPost); //Hàm kiểm tra
+                EditHelper<Post>.SetModifiedIfNecessary(post, hasChanges, existingPost, user!.Id);  //Hàm cập nhật nếu thay đổi
+            }
             if (ModelState.IsValid)
             {
                 try
                 { 
                     _context.Update(post);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -270,7 +336,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();
+            ViewData["PostAmenities"] = _context.PostAmenities.Where(p => p.PostId == id && p.IsDeleted == false).Select(p => p.Amenity.Name).ToList();
             return View(post);
         }
 

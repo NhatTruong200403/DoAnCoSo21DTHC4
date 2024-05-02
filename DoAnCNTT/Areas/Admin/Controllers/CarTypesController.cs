@@ -110,9 +110,21 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            var companies = _context.Companies.ToList();
+            ViewData["Companies"] = new SelectList(companies, "Id", "Name");
+            ViewData["CarTypeDetails"] = _context.CarTypesDetails
+                                                    .Where(p => p.CarTypeId == id && p.IsDeleted == false)
+                                                    .Select(p => p.Company.Name).ToList();
+
             return View(carType);
         }
 
+        private async Task RemoveCarTypeDetailAsync(int carTypeId)
+        {
+            var carTypeDetailsToRemove = _context.CarTypesDetails.Where(p => p.CarTypeId == carTypeId).ToList();
+            _context.CarTypesDetails.RemoveRange(carTypeDetailsToRemove);
+            await _context.SaveChangesAsync();
+        }
         public async Task<CarType?> GetExistingCarType(int id) 
                 => await _context.CarTypes.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         // POST: Admin/CarTypes/Edit/5
@@ -120,12 +132,13 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IsDeleted")] CarType carType)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IsDeleted")] CarType carType, int[] SelectedCompanies)
         {
             if (id != carType.Id)
             {
                 return NotFound();
             }
+
             var user = await _userManager.GetUserAsync(User); //Lấy thông tin user
             var existingCarType = await GetExistingCarType(id); // Lấy giá trị cũ của khuyến mãi
             carType.CreatedOn = existingCarType!.CreatedOn;
@@ -133,8 +146,19 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             carType.ModifiedById = existingCarType!.ModifiedById;
             carType.ModifiedOn = existingCarType.ModifiedOn;
 
-            bool hasChanges = EditHelper<CarType>.HasChanges(carType, existingCarType);
-            EditHelper<CarType>.SetModifiedIfNecessary(carType, hasChanges, existingCarType, user!.Id);
+            var isChange = IsCarTypeDetailsChange(SelectedCompanies, carType.Id);
+            if (isChange)
+            {
+                await RemoveCarTypeDetailAsync(carType.Id);
+                await AddCarTypeDetailAsync(carType.Id, SelectedCompanies!);
+                EditHelper<CarType>.SetModifiedIfNecessary(carType, true, existingCarType, user!.Id);
+
+            }
+            else
+            {
+                bool hasChanges = EditHelper<CarType>.HasChanges(carType, existingCarType);
+                EditHelper<CarType>.SetModifiedIfNecessary(carType, hasChanges, existingCarType, user!.Id);
+            }    
             if (ModelState.IsValid)
             {
                 try
@@ -156,6 +180,31 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(carType);
+        }
+
+        private bool IsCarTypeDetailsChange(int[] SelectedCompanies, int carTypeId)
+        {
+            var companies = _context.Companies.ToList();
+            var carTypeDetails = _context.CarTypesDetails
+                                    .Where(p => p.CarTypeId == carTypeId)
+                                    .Select(p => p.Company.Name).ToList();
+            if (SelectedCompanies.Length > 0)
+            {
+                // Kiểm tra các checkbox đã chọn và có thay đổi không
+                foreach (var item in companies)
+                {
+                    bool isChecked = carTypeDetails != null && carTypeDetails.Contains(item.Name);
+                    bool currentChecked = SelectedCompanies != null && Array.IndexOf(SelectedCompanies, item.Id) != -1;
+
+                    // Nếu trạng thái của checkbox đã thay đổi, đặt giá trị của biến bool là true
+                    if (isChecked != currentChecked)
+                    {
+
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool CarTypeExists(int id)

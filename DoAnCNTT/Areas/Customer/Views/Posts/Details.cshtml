@@ -5,26 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết bài đăng</h1>
 
 <div>
     <h4>Post</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Tên
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
+            Hình ảnh
         </dt>
         <dd class = "col-sm-10">
             <img src="@Model.Image" alt="hinhanh.jpg" width="200px"/>
         </dd>
         <dt class="col-sm-2">
-            Images
+            Danh sách hình
         </dt>
         <dd class="col-sm-10">
             @foreach (var image in @ViewBag.PostImages)
@@ -33,37 +33,46 @@
             }
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Mô tả
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Seat)
+            Chỗ ngồi
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Seat)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RentLocation)
+            Địa chỉ nhận xe
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RentLocation)
         </dd>
+        <dt class="col-sm-2">
+            Tiện ích
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var amenity in ViewBag.PostAmenities)
+            {
+                <div>@amenity</div>
+            }
+        </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HasDriver)
+            Có tài xế
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.HasDriver)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            Giá thuê
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Price) nghìn đồng/ngày
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gear)
+            Loại hộp số
         </dt>
         <dd class = "col-sm-10">
             @if (Model.Gear)
@@ -76,44 +85,44 @@
             }
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fuel)
+            Nhiên liệu
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Fuel)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FuelConsumed)
+            Nhiên liệu tiêu thụ
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FuelConsumed)
+            @Html.DisplayFor(model => model.FuelConsumed) lít/100km
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RideNumber)
+            Số chuyến 
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RideNumber)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsAvailable)
+            Có thể thuê
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IsAvailable)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CarType)
+            Loại xe
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarType.Id)
+            @Html.DisplayFor(model => model.CarType.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Company)
+            Hãng xe
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Company.Id)
+            @Html.DisplayFor(model => model.Company.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a> |
+    <a asp-action="Index">Trở về danh sách</a>
 </div>

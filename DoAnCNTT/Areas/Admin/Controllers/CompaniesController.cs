@@ -72,7 +72,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return View();
         }
 
-        private async Task AddSelectedCarTypes(int companyId, int[] SelectedCarTypes)
+        private async Task AddCarTypeDetailAsync(int companyId, int[] SelectedCarTypes)
         {
             if (SelectedCarTypes != null)
             {
@@ -107,7 +107,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                 }
                 _context.Add(company);
                 await _context.SaveChangesAsync();
-                await AddSelectedCarTypes(company.Id, SelectedCarTypes);
+                await AddCarTypeDetailAsync(company.Id, SelectedCarTypes);
                 return RedirectToAction(nameof(Index));
             }
             return View(company);
@@ -126,7 +126,20 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            var carTypes = _context.CarTypes.ToList();
+            var carTypeDetails = _context.CarTypesDetails
+                        .Where(p => p.CompanyId == id && p.IsDeleted == false)
+                        .Select(p => p.CarType.Name).ToList();
+            ViewData["CarTypes"] = new SelectList(carTypes, "Id", "Name");
+            ViewData["CarTypeDetails"] = carTypeDetails;
             return View(company);
+        }
+
+        private async Task RemoveCarTypeDetailAsync(int companyId)
+        {
+            var carTypeDetailsToRemove = _context.CarTypesDetails.Where(p => p.CompanyId == companyId).ToList();
+            _context.CarTypesDetails.RemoveRange(carTypeDetailsToRemove);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Company?> GetExistingCompany(int id) 
@@ -137,7 +150,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IsDeleted")] Company company, IFormFile? IconImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,IsDeleted")] Company company, IFormFile? IconImage, int[] SelectedCarTypes)
         {
             if (id != company.Id)
             {
@@ -162,8 +175,19 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                     company.CreatedById = existingCompany.CreatedById;
                     company.ModifiedOn = existingCompany.ModifiedOn;
                     company.ModifiedById = existingCompany.ModifiedById;
-                    bool hasChanges = EditHelper<Company>.HasChanges(company, existingCompany); //Hàm kiểm tra
-                    EditHelper<Company>.SetModifiedIfNecessary(company, hasChanges, existingCompany, user!.Id); //Hàm cập nhật nếu thay đổi
+                    var isChange = IsCarTypeDetailsChange(SelectedCarTypes, company.Id);
+                    if (isChange)
+                    {
+                        await RemoveCarTypeDetailAsync(company.Id);
+                        await AddCarTypeDetailAsync(company.Id, SelectedCarTypes!);
+                        EditHelper<Company>.SetModifiedIfNecessary(company, true, existingCompany, user!.Id);
+
+                    }
+                    else
+                    {
+                        bool hasChanges = EditHelper<Company>.HasChanges(company, existingCompany);
+                        EditHelper<Company>.SetModifiedIfNecessary(company, hasChanges, existingCompany, user!.Id);
+                    }
                     _context.Update(company);
                     await _context.SaveChangesAsync();
                 }
@@ -182,6 +206,32 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             }
             return View(company);
         }
+
+        private bool IsCarTypeDetailsChange(int[] SelectedCarTypes, int companyId)
+        {
+            var carTypes = _context.CarTypes.ToList();
+            var carTypeDetails = _context.CarTypesDetails
+                                    .Where(p => p.CompanyId == companyId && p.IsDeleted == false)
+                                    .Select(p => p.CarType.Name).ToList();
+            if (SelectedCarTypes.Length > 0)
+            {
+                // Kiểm tra các checkbox đã chọn và có thay đổi không
+                foreach (var item in carTypes)
+                {
+                    bool isChecked = carTypeDetails != null && carTypeDetails.Contains(item.Name);
+                    bool currentChecked = SelectedCarTypes != null && Array.IndexOf(SelectedCarTypes, item.Id) != -1;
+
+                    // Nếu trạng thái của checkbox đã thay đổi, đặt giá trị của biến bool là true
+                    if (isChecked != currentChecked)
+                    {
+
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         private bool CompanyExists(int id)
         {
             return _context.Companies.Any(e => e.Id == id);

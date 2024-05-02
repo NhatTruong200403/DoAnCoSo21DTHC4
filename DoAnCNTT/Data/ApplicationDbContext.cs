@@ -1,6 +1,7 @@
 ﻿using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace DoAnCNTT.Data
 {
@@ -23,6 +24,7 @@ namespace DoAnCNTT.Data
         public DbSet<CarTypeDetail> CarTypesDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
             base.OnModelCreating(builder);
         }
     }
