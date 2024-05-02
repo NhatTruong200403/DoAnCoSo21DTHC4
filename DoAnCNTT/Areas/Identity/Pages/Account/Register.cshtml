@@ -4,12 +4,12 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-4">
+
+<div class="row1">
+    @* <div class="col-md-4"> *@
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
+        <h1>@ViewData["Title"]</h1>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -40,10 +40,10 @@
             <div class="form-floating mb-3">
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Back to Login</a>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary Submit">Register</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    @* <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to register.</h3>
             <hr />
@@ -73,7 +73,32 @@
             }
         </section>
     </div>
-</div>
+</div> *@
+
+
+    <style>
+        .row1 {
+            width: 450px;
+            margin-inline: auto;
+            margin-block: 40px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 4px 20px 0 rgba(0,0,0,0.19);
+        }
+
+            .row1 h2 {
+                text-align: center;
+            }
+
+        .tatmau {
+            text-decoration: blink;
+            color: black;
+        }
+
+        .Submit {
+            background-color: #333;
+        }
+    </style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

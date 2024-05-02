@@ -69,6 +69,8 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             public string FullName { get; set; }
             [Display(Name = "Images")]
             public string Images { get; set; }
+            [Display(Name = "License")]
+            public string? License { get; set; }
             [Display(Name = "Birthday")]
             public DateTime? Birthday { get; set; }
         }
@@ -93,12 +95,13 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            DateTime? dateTime = null; 
+            DateTime? dateTime = null;
+            
             if (user.Birthday != null)
             {
                 dateTime = (DateTime)user.Birthday;
             }
-
+            
             var name = user.Name;
             Username = userName;
 
@@ -150,19 +153,28 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             }
             if (Request.Form.Files.Count != 0)
             {
-                var newImagePath = await SaveImage(Request.Form.Files[0]);
-                if (currentUser.Image != newImagePath)
+                foreach (var file in Request.Form.Files)
                 {
-                    currentUser.Image = newImagePath;
-                    await _context.SaveChangesAsync();
+                    var newImagePath = await SaveImage(file);
+
+                    if (file.Name == "Input.Images") 
+                    {
+                        currentUser.Image = newImagePath;
+                    }
+                    else if (file.Name == "Input.License") 
+                    {
+                        currentUser.License = newImagePath;
+                    }
                 }
+
+                await _context.SaveChangesAsync();
             }
             else
             {
                 currentUser.Image = user.Image;
+                currentUser.License = user.License;
                 await _context.SaveChangesAsync();
             }
-
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -178,11 +190,14 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
                 
                 DateTime birthdayDateTime = Input.Birthday.Value;               
                 currentUser.Birthday = birthdayDateTime;
+                await _context.SaveChangesAsync();
             }
             else
             {
                 currentUser.Birthday = currentUser.Birthday;
+                await _context.SaveChangesAsync();
             }
+            
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

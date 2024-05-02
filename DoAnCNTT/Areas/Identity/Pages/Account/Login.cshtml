@@ -5,12 +5,12 @@
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row">
-    <div class="col-md-4">
+
+<div class="row1">
+    @* <div class="col-md-4"> *@
         <section>
             <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
+                <h1>@ViewData["Title"]</h1>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
@@ -30,7 +30,7 @@
                     </label>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary Submit">Log in</button>
                 </div>
                 <div>
                     <p>
@@ -45,7 +45,7 @@
                 </div>
             </form>
         </section>
-    </div>
+    @* </div> *@
     @* <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to log in.</h3>
@@ -77,6 +77,34 @@
         </section>
     </div> *@
 </div>
+
+
+
+<style>
+    .row1 {
+        width: 450px;
+        margin-inline: auto;
+        margin-block: 40px;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 4px 20px 0 rgba(0,0,0,0.19);
+    }
+
+        .row1 h2 {
+            text-align: center;
+        }
+
+    .tatmau {
+        text-decoration: blink;
+        color: black;
+    }
+
+    .Submit {
+        background-color: #333;
+    }
+</style>
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
