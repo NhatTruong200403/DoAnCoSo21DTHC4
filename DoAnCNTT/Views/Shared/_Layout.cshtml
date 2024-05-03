@@ -33,7 +33,7 @@
             <partial name="_LoginPartial" />
         </nav>
     </header>
-    <div class="container" style="min-height:765px;margin-bottom:10px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+    <div class="container" style="min-height:765px;margin-bottom:10px">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -70,12 +70,22 @@
         color: black;
         user-select: none;
     }
+
+    .nav .nav-nohover{
+        position: relative;
+        font-size: 1.1em;
+        color: black;
+        text-decoration: none;
+        font-weight: 500;
+        margin-left: 40px;
+    }
+
     .nav .nav-normal{
         position: relative;
         font-size: 1.1em;
         color: black;
         text-decoration: none;
-        font-weight: 500px;
+        font-weight: 500;
         margin-left: 40px;
     }
     .nav .nav-normal::after{
