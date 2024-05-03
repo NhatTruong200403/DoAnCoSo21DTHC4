@@ -1,8 +1,75 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<DoAnCNTT.Models.Post>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Danh sách bài đăng</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên
+            </th>
+            <th>
+                Hình ảnh
+            </th>
+            <th>
+                Mô tả
+            </th>
+            <th>
+                Địa chỉ nhận
+            </th>
+            <th>
+                Có tài xế
+            </th>
+            <th>
+                Giá
+            </th>
+            <th>
+                Hộp số
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <img src="@item.Image" alt="hinhanh.jpg" width="200px" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RentLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HasDriver)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @if (item.Gear)
+                    {
+                        <text>Số tự động</text>
+                    }
+                    else
+                    {
+                        <text>Số sàn</text>
+                    }
+                </td>
+                <td>
+                    <a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

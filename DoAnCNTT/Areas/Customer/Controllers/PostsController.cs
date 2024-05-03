@@ -16,7 +16,7 @@ using System.Drawing;
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = "Customer")]
+
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,13 +29,15 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         }
 
         // GET: Customer/Posts
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(User);
             var posts = _context.Posts.
                 Include(p => p.CarType).
                 Include(p => p.Company).
                 Include(p => p.User).
-                Where(p => p.IsDeleted == false).ToListAsync();
+                Where(p => p.IsDeleted == false && p.UserId == user!.Id).ToListAsync();
             return View(await posts);
         }
 
@@ -62,6 +64,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         }
 
         // GET: Customer/Posts/Create
+        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
             var carTypes = _context.CarTypes.Where(c => c.IsDeleted == false).ToList();
@@ -141,6 +144,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([Bind("Name,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post,string Gear, IFormFile? Image, List<IFormFile> Images, int[] SelectedAmenities)
         {
             if (ModelState.IsValid)
@@ -178,6 +182,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
 
         // GET: Customer/Posts/Edit/5
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -238,6 +243,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Image,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post, string Gear, IFormFile? Image, List<IFormFile> Images, int[] SelectedAmenities)
         {
             if (id != post.Id)
@@ -320,6 +326,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         }
 
         // GET: Customer/Posts/Delete/5
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -344,6 +351,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // POST: Customer/Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Posts.FindAsync(id);
