@@ -11,7 +11,7 @@
         </form>
     </li> *@
         var user = await UserManager.GetUserAsync(User);
-        var fullName = user.Name;
+        var fullName = user!.Name;
         <li class="nav-item">
             <a class="nav-link text-dark aaaaaaa" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
 

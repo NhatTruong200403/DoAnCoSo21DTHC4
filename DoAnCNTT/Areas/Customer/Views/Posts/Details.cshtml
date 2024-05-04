@@ -1,5 +1,7 @@
 ﻿@model DoAnCNTT.Models.Post
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -123,6 +125,17 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a> |
+    @{
+        var currentUser = await UserManager.GetUserAsync(User);
+        if(SignInManager.IsSignedIn(User))
+        {
+            if (currentUser!.Id == Model.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
+            }
+        }
+    }
+
+
     <a asp-action="Index">Trở về danh sách</a>
 </div>
