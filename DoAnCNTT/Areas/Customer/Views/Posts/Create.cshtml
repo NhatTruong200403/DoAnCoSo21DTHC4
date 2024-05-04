@@ -6,22 +6,18 @@
 }
 <script>
     $(document).ready(function () {
-        // Gán sự kiện onchange cho select của CarTypeId
         $('#carTypeId').change(function () {
-            var selectedCarTypeId = $(this).val(); // Lấy giá trị đã chọn
-            if (selectedCarTypeId) { // Kiểm tra xem đã chọn loại xe chưa
-                // Gọi phương thức GetCompanyCarType thông qua Ajax
+            var selectedCarTypeId = $(this).val(); 
+            if (selectedCarTypeId) { 
                 $.ajax({
-                    url: '/Customer/Posts/GetCompanyCarType', // Đường dẫn tới action GetCompanyCarType trong controller Posts của area Customer
+                    url: '/Customer/Posts/GetCompanyCarType', 
                     type: 'GET',
                     data: { carTypeId: selectedCarTypeId },
                     success: function (data) {
-                        // Xóa các mục hiện tại trong select của CompanyId
                         $('#companyId').empty();
-                        // Thêm các mục mới dựa trên dữ liệu trả về từ action
                         $.each(data, function (index, company) {
                             $('#companyId').append($('<option>', {
-                                value: company.id, // Điều chỉnh giá trị và text cho mục option tùy theo dữ liệu trả về
+                                value: company.id, 
                                 text: company.name
                             }));
                         });
@@ -31,7 +27,6 @@
                     }
                 });
             } else {
-                // Nếu không chọn loại xe, xóa các mục hiện tại trong select của CompanyId
                 $('#companyId').empty();
             }
         });
@@ -49,6 +44,19 @@
                 <label asp-for="Name" class="control-label">Tên</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CarTypeId" class="control-label">Loại Xe</label>
+                <select id="carTypeId" class="form-control" asp-for="CarTypeId" asp-items="ViewBag.CarTypeId">
+                    <option value="">-- Chọn loại xe --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompanyId" class="control-label">Hãng Xe</label>
+                <select id="companyId" class="form-control" asp-for="CompanyId" asp-items="ViewBag.CompanyId">
+                    <option value="">-- Chọn hãng xe --</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label">Hình ảnh</label>
@@ -82,7 +90,7 @@
                 {
                     <div class="form-check">
                         <input type="checkbox" name="SelectedAmenities" value="@amenity.Value" class="form-check-input" />
-                        <label class="form-check-label">@amenity.Text</label>
+                        <label class="form-check-label"><img src="" /> @amenity.Text</label>
                     </div>
                 }
             </div>
@@ -120,19 +128,6 @@
                 <label asp-for="FuelConsumed" class="control-label">Nhiên liệu tiêu thụ (lít/100km)</label>
                 <input asp-for="FuelConsumed" class="form-control" />
                 <span asp-validation-for="FuelConsumed" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarTypeId" class="control-label">Loại Xe</label>
-                <select id="carTypeId" class="form-control" asp-for="CarTypeId" asp-items="ViewBag.CarTypeId">
-                    <option value="">-- Chọn loại xe --</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="CompanyId" class="control-label">Hãng Xe</label>
-                <select id="companyId" class="form-control" asp-for="CompanyId" asp-items="ViewBag.CompanyId">
-                    <option value="">-- Chọn hãng xe --</option>
-                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Tạo" class="btn btn-primary" />

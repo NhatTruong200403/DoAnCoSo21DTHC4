@@ -2,73 +2,48 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
+
 @if (SignInManager.IsSignedIn(User))
 {
-     @* <li class="nav-item margintop">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li> *@
+        <a class="nav-nohover">|</a>
         var user = await UserManager.GetUserAsync(User);
-        var fullName = user!.Name;
-        <li class="nav-item">
-            <a class="nav-link text-dark aaaaaaa" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-
-                <div style="margin-top:13px;">
-                    @fullName
-                </div>
-                <div class="image-container1">
-                    <img src="@Url.Content(user.Image)" alt="Image" />
-                </div>
-            </a>
-        </li>
+        var fullName = user.Name;
+        <a class="nav-normal" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                @fullName
+                <img class="user-img-home" src="@Url.Content(user.Image)" alt="Image" />
+        </a>
+    
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/logout">logout</a>
-    </li>
+        <a asp-area="Identity" asp-page="/Account/Login">
+            <btn class="login-button">Login</btn>
+        </a>
 }
-</ul>
+
 <style>
-    .aaaaaaa {
-        display: flex;
+    .nav .user-img-home{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 2px solid black;
     }
 
-    .image-container1 {
-        width: 50px;
-        height: 50px;
-        overflow: hidden;
-        padding: 0px;
-        margin-inline: 10px;
+    .nav .login-button{
+        padding: 15px 25px;
+        background: transparent;
+        border: 2px solid black;
+        outline: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1.1em;
+        color: black;
+        font-weight: 500;
+        margin-left: 40px;
     }
 
-        .image-container1 img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-    .nutlogin {
-        padding: 10px 25px;
-        font-size: 18px;
-        color: white;
-        background-color: #333;
-        margin-right: 10px;
-        text-decoration: none;
-        border-radius: 5px;
+    .nav .login-button:hover{
+            background: black;
+            color: white;
     }
-
-        .nutlogin:hover {
-            padding: 9px 23px;
-            color: black;
-        }
 </style>

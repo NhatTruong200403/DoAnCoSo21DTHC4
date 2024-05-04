@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240430025547_AddPostImageTable")]
-    partial class AddPostImageTable
+    [Migration("20240503140406_Begin")]
+    partial class Begin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -338,6 +338,9 @@ namespace DoAnCNTT.Migrations
                     b.Property<int>("CarTypeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(max)");
 
@@ -395,6 +398,8 @@ namespace DoAnCNTT.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarTypeId");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("UserId");
 
@@ -765,11 +770,19 @@ namespace DoAnCNTT.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DoAnCNTT.Models.Company", "Company")
+                        .WithMany("Posts")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DoAnCNTT.Models.ApplicationUser", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId");
 
                     b.Navigation("CarType");
+
+                    b.Navigation("Company");
 
                     b.Navigation("User");
                 });
@@ -899,6 +912,8 @@ namespace DoAnCNTT.Migrations
             modelBuilder.Entity("DoAnCNTT.Models.Company", b =>
                 {
                     b.Navigation("CarTypeDetail");
+
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Payment", b =>
