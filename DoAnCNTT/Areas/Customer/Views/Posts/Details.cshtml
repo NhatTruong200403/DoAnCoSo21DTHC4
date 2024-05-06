@@ -398,10 +398,9 @@
             {
                 <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
             }
+                <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Thuê xe</a> 
         }
     }
-
-    <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Đặt cọc</a> |
     <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
 

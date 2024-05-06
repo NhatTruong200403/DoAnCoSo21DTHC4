@@ -5,7 +5,6 @@ namespace DoAnCNTT.Models
     public class Invoice : BaseModel
     {
         public decimal Total { get; set; }
-        public decimal ReturnTotal { get; set; }
         public DateTime ReturnOn {  get; set; }
         public int BookingId { get; set; }
         [ValidateNever]
