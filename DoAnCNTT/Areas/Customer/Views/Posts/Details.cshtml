@@ -229,7 +229,7 @@
                 }
                 <span>Chủ xe</span>
                 <div style="display:flex;">
-                    <img src="@Url.Content(user.Image)" style="width:70px;height:70px;" />
+                    <img src="@Url.Content(user.Image)" style="width:70px;height:70px;border-radius:50%;" />
                     <div style="margin-left:20px;">
                         <span style="font-weight:bold;font-size:25px;">@user.Name</span>
                         <div>
@@ -291,6 +291,26 @@
                 Đánh giá
 
                 <div class="comment">
+
+                   @*  @foreach (var amenity in ViewBag.Comment)
+                    {
+                        var cmt = false;
+                        foreach (var img in ViewBag.Cmt)
+                        {
+                            if (img. == amenity.Name)
+                            {
+                                <div class="item" style="padding:10px;">
+                                    <img src="@img.IconImage" style="width:24px;margin-right:10px;" alt="@img.Name" />
+                                    <span>@amenity.Name</span>
+                                </div>
+                                foundImage = true;
+                                break;
+                            }
+                        }
+                    } *@
+
+
+
                     @for (int i = 0; i < ViewBag.Comment.Count; i++)
                     {
                     <div class="comment-avatar">

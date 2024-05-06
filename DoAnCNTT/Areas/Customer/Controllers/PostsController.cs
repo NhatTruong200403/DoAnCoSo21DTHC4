@@ -63,6 +63,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();
             ViewData["Comment"] = _context.Ratings.Where(p => p.PostId == id).Select(p=>p.Comment).ToList();
             ViewData["Star"] = _context.Ratings.Where(p => p.PostId == id).Select(p => p.Point).ToList();
+            ViewData["Cmt"] = _context.Ratings.Where(p=>p.PostId == id).ToList();
             return View(post);
         }
 

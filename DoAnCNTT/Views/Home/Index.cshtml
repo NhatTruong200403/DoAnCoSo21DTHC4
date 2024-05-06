@@ -70,6 +70,39 @@
     </div>
 </section>
 
+
+<div>
+    <h1>Calculate Middle Date</h1>
+    <label for="startDate">Start Date:</label>
+    <input type="datetime-local" id="startDate" />
+    <br />
+    <label for="endDate">End Date:</label>
+    <input type="datetime-local" id="endDate" />
+    <br />
+    <p>Middle Date: <span id="middleDate"></span></p>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#startDate, #endDate').change(function () {
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+
+            if (startDate && endDate) {
+                $.ajax({
+                    url: '/Home/CalculateMiddleDate',
+                    type: 'POST',
+                    data: { startDate: startDate, endDate: endDate },
+                    success: function (result) {
+                        $('#middleDate').text(result);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+ 
 <style>
     .box {
         width: 305px;
