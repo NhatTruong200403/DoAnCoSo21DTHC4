@@ -68,16 +68,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(booking);
         }
 
-        //[HttpPost]
-        //public IActionResult CalculateMiddleDate(DateTime startDate, DateTime endDate)
-        //{
-        //    // Tính toán giá trị mới cho Total ở đây
-        //    // Ví dụ: 
-        //    var totalDays = (endDate - startDate).TotalDays;
-        //    var total = totalDays * 10; // Giả sử giá trị total được tính bằng số ngày nhân với một hằng số (10) nào đó
-
-        //    return Json(total);
-        //}
 
         [HttpPost]
         public ActionResult CalculateMiddleDate(string startDate, string endDate, decimal total)
