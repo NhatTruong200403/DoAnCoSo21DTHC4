@@ -29,7 +29,7 @@ namespace DoAnCNTT.Models
         [ValidateNever]
         public ApplicationUser User { get; set; } = null!;
         public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
-        public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+        public ICollection<Booking> Booking { get; set; } = new List<Booking>();
         public ICollection<PostAmenity> PostAmenities { get; set; } = new List<PostAmenity>();
         public ICollection<Report> Reports { get; set; } = new List<Report>();
     }

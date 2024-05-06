@@ -111,24 +111,6 @@ namespace DoAnCNTT.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Promotions",
                 columns: table => new
                 {
@@ -335,18 +317,20 @@ namespace DoAnCNTT.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Invoices",
+                name: "Booking",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Deposit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PrePayment = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FinalValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RecieveOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PostId = table.Column<int>(type: "int", nullable: false),
-                    PromotionId = table.Column<int>(type: "int", nullable: false),
-                    PaymentId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PromotionId = table.Column<int>(type: "int", nullable: false),
+                    InvoiceId = table.Column<int>(type: "int", nullable: false),
                     CreatedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -355,26 +339,20 @@ namespace DoAnCNTT.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Invoices", x => x.Id);
+                    table.PrimaryKey("PK_Booking", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Invoices_AspNetUsers_UserId",
+                        name: "FK_Booking_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Invoices_Payments_PaymentId",
-                        column: x => x.PaymentId,
-                        principalTable: "Payments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Invoices_Posts_PostId",
+                        name: "FK_Booking_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Invoices_Promotions_PromotionId",
+                        name: "FK_Booking_Promotions_PromotionId",
                         column: x => x.PromotionId,
                         principalTable: "Promotions",
                         principalColumn: "Id",
@@ -483,6 +461,31 @@ namespace DoAnCNTT.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Invoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BookingId = table.Column<int>(type: "int", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedById = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Booking_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Booking",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -523,6 +526,21 @@ namespace DoAnCNTT.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Booking_PostId",
+                table: "Booking",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Booking_PromotionId",
+                table: "Booking",
+                column: "PromotionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Booking_UserId",
+                table: "Booking",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CarTypesDetails_CarTypeId",
                 table: "CarTypesDetails",
                 column: "CarTypeId");
@@ -533,24 +551,10 @@ namespace DoAnCNTT.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Invoices_PaymentId",
+                name: "IX_Invoices_BookingId",
                 table: "Invoices",
-                column: "PaymentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Invoices_PostId",
-                table: "Invoices",
-                column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Invoices_PromotionId",
-                table: "Invoices",
-                column: "PromotionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Invoices_UserId",
-                table: "Invoices",
-                column: "UserId");
+                column: "BookingId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostAmenities_AmenityId",
@@ -633,16 +637,16 @@ namespace DoAnCNTT.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Payments");
-
-            migrationBuilder.DropTable(
-                name: "Promotions");
+                name: "Booking");
 
             migrationBuilder.DropTable(
                 name: "Amenities");
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

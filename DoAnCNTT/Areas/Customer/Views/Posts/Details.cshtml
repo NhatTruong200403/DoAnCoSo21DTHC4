@@ -1,5 +1,9 @@
-﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model DoAnCNTT.Models.Post
+@model DoAnCNTT.Models.Post
+@using Microsoft.AspNetCore.Identity
+
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
@@ -387,8 +391,19 @@
     
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a> |
-    <a asp-action="Index">Trở về danh sách</a>
+    @{
+        var currentUser = await UserManager.GetUserAsync(User);
+        if(SignInManager.IsSignedIn(User))
+        {
+            if (currentUser!.Id == Model.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
+            }
+        }
+    }
+
+    <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Đặt cọc</a> |
+    <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
 
 
