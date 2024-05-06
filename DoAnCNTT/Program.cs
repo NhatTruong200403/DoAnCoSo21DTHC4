@@ -2,6 +2,8 @@ using DoAnCNTT.Data;
 using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using static System.Formats.Asn1.AsnWriter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ var connectionString = builder.Configuration.
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -23,13 +27,20 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddControllersWithViews();
 
-/*var configuration = builder.Configuration;
+var configuration = builder.Configuration;
 
 builder.Services.AddAuthentication().AddGoogle(options =>
 {
     options.ClientId = configuration["Authentication:Google:ClientId"];
     options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-});*/
+    options.Scope.Add("profile");
+    options.Events.OnCreatingTicket = (context) =>
+    {
+        //context.Identity.AddClaim(new Claim("image", context.User.GetProperty("image").ToString()));
+        context.Identity.AddClaim(new Claim("picture", context.User.GetProperty("picture").ToString()));
+        return Task.CompletedTask;
+    };
+});
 
 
 var app = builder.Build();

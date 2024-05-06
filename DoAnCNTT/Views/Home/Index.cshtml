@@ -4,72 +4,184 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<p>
+    <a asp-action="Create">Tạo bài đăng </a>
+</p>
+<section class="py-2">
+    <div class="container ">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
 
-<h1>Danh sách bài đăng</h1>
+            @foreach (var item in Model)
+            {
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Tên
-            </th>
-            <th>
-                Hình ảnh
-            </th>
-            <th>
-                Mô tả
-            </th>
-            <th>
-                Địa chỉ nhận
-            </th>
-            <th>
-                Có tài xế
-            </th>
-            <th>
-                Giá
-            </th>
-            <th>
-                Hộp số
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    <img src="@item.Image" alt="hinhanh.jpg" width="200px" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RentLocation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HasDriver)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @if (item.Gear)
-                    {
-                        <text>Số tự động</text>
-                    }
-                    else
-                    {
-                        <text>Số sàn</text>
-                    }
-                </td>
-                <td>
-                    <a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
-                </td>
-            </tr>
+                <div class="box" style="padding:3px;margin-left:20px;">
+                    @*
+                <div class="pta">
+                <img src="@item.Image" alt="">
+                </div> *@
+
+                    <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
+                        <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
+                    </div>
+
+                    <div class="ptb">
+                        @if (item.Gear)
+                        {
+                            <div class="ptb1 apt" style="padding:2px 4px;">Số tự động</div>
+                        }
+                        else
+                        {
+                            <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
+                        }
+                        <div class="ptb1 bpt" style="padding:2px 4px;">Giao xe tận nơi</div>
+                        <div class="ptb1 cpt" style="padding:2px 4px;">Giảm 20%</div>
+                    </div>
+
+                    <div class="ptc"><a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
+                    <div class="ptd">
+                        <img src="@Url.Content("~/images/logo/road-map-line.svg")" class="icon_map" alt="">
+                        <span class="text_map">@Html.DisplayFor(modelItem => item.RentLocation)</span>
+                    </div>
+                    <hr>
+                    <div class="pte">
+                        <div class="pte_left">
+                            <div class="dgsao">
+                                <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
+                                <span class="text_saodanhgia">5.0</span>
+                            </div>
+
+                            <div class="sochuyen">
+                                <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
+                                <div class="text_sochuyen">20 chuyến</div>
+                            </div>
+                            <!-- <div class="sochuyen">
+                                Chưa có chuyến.
+                            </div> -->
+                        </div>
+                        <div class="pte_right">
+                            @* <div class="giagoc">100k</div> *@
+                            <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+ 
+<style>
+    .box {
+        width: 305px;
+        height: 345px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+    }
+
+    .pta {
+        padding: 0px;
+        margin: 10px;
+    }
+
+        .pta img {
+            border-radius: 15px;
+            width: 280px;
+            height: 180px;
         }
-    </tbody>
-</table>
+
+    .ptb {
+        padding: 0px;
+        display: flex;
+        width: 100%;
+        margin: 0;
+    }
+
+    .ptb1 {
+        font-size: 13px;
+        border-radius: 50px;
+        margin: 0;
+    }
+
+        .ptb1.apt {
+            background-color: aquamarine;
+        }
+
+        .ptb1.bpt {
+            background-color: rgb(243, 253, 49);
+        }
+
+        .ptb1.cpt {
+            background-color: rgb(79, 143, 255);
+        }
+
+    .ptb div {
+        padding: 0px;
+        margin-inline: 10px;
+    }
+
+    .ptc {
+        padding: 0px;
+        margin-block: 7px;
+    }
+
+    .ptd {
+        padding: 0px;
+        margin-inline: 10px;
+        display: flex;
+    }
+
+        .ptd .icon_map {
+            width: 25px;
+        }
+
+        .ptd .text_map {
+            padding-top: 3px;
+        }
+
+    hr {
+        width: 275px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    @* margin:5px; *@
+    }
+
+    .pte {
+        padding: 0px;
+        margin-inline: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .pte .pte_left {
+            display: flex;
+        }
+
+            .pte .pte_left .dgsao {
+                display: flex;
+                margin-right: 10px;
+            }
+
+            .pte .pte_left .sochuyen {
+                display: flex;
+            }
+
+                .pte .pte_left .sochuyen .icon_map {
+                    width: 19px;
+                }
+
+            .pte .pte_left .dgsao .icon_sao_danhgia {
+                width: 18px;
+                /* color: rgb(253, 236, 0); */
+            }
+
+        .pte .pte_right {
+            display: flex;
+        }
+
+            .pte .pte_right div {
+                margin-right: 10px;
+            }
+
+</style>
