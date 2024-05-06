@@ -290,6 +290,71 @@
             <div>
                 Đánh giá
 
+                <div class="comment">
+                    @for (int i = 0; i < ViewBag.Comment.Count; i++)
+                    {
+                    <div class="comment-avatar">
+                        <img src="~/images/ImageUser/user.png" alt="hinhanh.jpg" />
+                    </div>
+                        <div class="comment-content">
+                            <div class="rating">
+                                @for (int j = 0; j < ViewBag.Star[i]; j++)
+                                {
+                                    if(ViewBag.Star[i]==1)
+                                    {
+                                        <span class="star">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        break;
+                                    }
+                                    else if (ViewBag.Star[i]== 2)
+                                    {
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        break;
+                                    }
+                                    else if (ViewBag.Star[i] == 3)
+                                    {
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        break;
+                                    }
+                                    else if (ViewBag.Star[i] == 4)
+                                    {
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star-none">&#9733;</span>
+                                        break;
+                                    }
+                                    else if(ViewBag.Star[i] == 5)
+                                    {
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        break;
+                                    }
+                                }
+                            </div>
+                            <p class="comment-text">@ViewBag.Comment[i]</p>
+                        </div>
+                    }
+                </div>
+            <!-- <div>
+                <partial name ="AddComment"  />
+            </div> -->
+
             </div>
 
 
@@ -305,7 +370,6 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a> |
     <a asp-action="Index">Trở về danh sách</a>
 </div>
-
 
 
 
@@ -367,119 +431,40 @@
     border-radius: 16px;
     object-fit: cover;
 }
+    .comment-item {
+        display: flex;
+        margin-bottom: 20px;
+    }
 
+    .comment-avatar img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .comment-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-left: 10px;
+    }
+
+        .comment-content .rating {
+            font-size: 20px;
+        }
+
+        .comment-content .star {
+            color: #FFD700;
+            display: inline-block;
+        }
+
+        .comment-content .star-none{
+            color: none;
+            display: inline-block;
+        }
+
+        .comment-content .comment-text {
+            margin-top: 5px;
+            font-size: 14px;
+        }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-@*
-
-
-
-            <dt class="col-sm-2">
-                Loại xe
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CarType.Name)
-            </dd>
-            <dt class="col-sm-2">
-                Hãng xe
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Company.Name)
-            </dd>
-
-
-
-
-            <dt class="col-sm-2">
-                Mô tả
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                Chỗ ngồi
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Seat)
-            </dd>
-            <dt class="col-sm-2">
-                Địa chỉ nhận xe
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.RentLocation)
-            </dd>
-            <dt class="col-sm-2">
-                Tiện ích
-            </dt>
-            <dd class="col-sm-10">
-
-            </dd>
-
-            <dt class="col-sm-2">
-                Có tài xế
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.HasDriver)
-            </dd>
-            <dt class="col-sm-2">
-                Giá thuê
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Price) nghìn đồng/ngày
-            </dd>
-            <dt class="col-sm-2">
-                Loại hộp số
-            </dt>
-            <dd class="col-sm-10">
-                @if (Model.Gear)
-                {
-                    <text>Số tự động</text>
-                }
-                else
-                {
-                    <text>Số sàn</text>
-                }
-            </dd>
-            <dt class="col-sm-2">
-                Nhiên liệu
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Fuel)
-            </dd>
-            <dt class="col-sm-2">
-                Nhiên liệu tiêu thụ
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.FuelConsumed) lít/100km
-            </dd>
-            <dt class="col-sm-2">
-                Số chuyến
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.RideNumber)
-            </dd>
-            <dt class="col-sm-2">
-                Có thể thuê
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.IsAvailable)
-            </dd> *@
-
-
-
-
-
-
-
-
