@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Total" class="control-label"></label>
-                <input asp-for="Total" id="Total" class="form-control" readonly />
+                <input asp-for="Total" id="Total" class="form-control"  readonly />
                 <span asp-validation-for="Total" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -65,23 +65,28 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $(document).ready(function () {
-            $('#startDate, #endDate').change(function () {
-                var startDate = $('#startDate').val();
-                var endDate = $('#endDate').val();
-
-                if (startDate && endDate) {
-                    $.ajax({
-                        url: 'Customer/Bookings/CalculateMiddleDate',
-                        type: 'POST',
-                        data: { startDate: startDate, endDate: endDate },
-                        success: function (result) {
-                            $('#Total').val(result);
-                        }
-                    });
-                }
-            });
-        });
-    </script>
 }
+
+<script>
+    $(document).ready(function () {
+        $('#startDate, #endDate').change(function () {
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+            var total = @Model.Total;
+            if (startDate && endDate) {
+                $.ajax({
+                    url: '/Customer/Bookings/CalculateMiddleDate',
+                    type: 'POST',
+                    data: { startDate: startDate, endDate: endDate, total : total },
+                    success: function (result) {
+                        var numberOfDays = parseInt(result);
+                        
+                        // $('#middleDate').text(numberOfDays);
+                        $('#Total').val(numberOfDays);
+                    }
+                });
+            }
+        });
+    });
+
+</script>

@@ -94,15 +94,15 @@ namespace DoAnCNTT.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult CalculateMiddleDate(string startDate, string endDate)
-        {
-            DateTime start = DateTime.Parse(startDate);
-            DateTime end = DateTime.Parse(endDate);
-            int numberOfDays = (int)(end - start).TotalDays;
-            
-            return Content((numberOfDays*540).ToString());
-        }
+        //[HttpPost]
+        //public ActionResult CalculateMiddleDate(string startDate, string endDate)
+        //{
+        //    DateTime start = DateTime.Parse(startDate);
+        //    DateTime end = DateTime.Parse(endDate);
+        //    int numberOfDays = (int)(end - start).TotalDays;
+
+        //    return Content((numberOfDays).ToString());
+        //}
 
 
         public IActionResult Index()
