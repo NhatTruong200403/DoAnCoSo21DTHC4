@@ -60,6 +60,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             }
             ViewData["PostAmenities"] = _context.PostAmenities.Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity.Name).ToList();
             ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();
+            ViewData["Comment"] = _context.Ratings.Where(p => p.PostId == id).Select(p=>p.Comment).ToList();
+            ViewData["Star"] = _context.Ratings.Where(p => p.PostId == id).Select(p => p.Point).ToList();
             return View(post);
         }
 
@@ -369,5 +371,12 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         {
             return _context.Posts.Any(e => e.Id == id);
         }
+        public async Task<IActionResult> GetComment(int id)
+        {
+            var commment = await _context.Ratings.Where(p => p.PostId == id).ToListAsync();
+            return RedirectToAction(nameof(Details));
+        }
+        
     }
+
 }
