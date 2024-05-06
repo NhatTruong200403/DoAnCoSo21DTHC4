@@ -136,6 +136,6 @@
         }
     }
 
-
-    <a asp-action="Index">Trở về danh sách</a>
+    <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Đặt cọc</a> |
+    <a href="javascript:history.go(-1);">Quay lại</a>
 </div>

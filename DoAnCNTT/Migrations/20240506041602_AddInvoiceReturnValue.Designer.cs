@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240503140406_Begin")]
-    partial class Begin
+    [Migration("20240506041602_AddInvoiceReturnValue")]
+    partial class AddInvoiceReturnValue
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,6 +136,67 @@ namespace DoAnCNTT.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("DoAnCNTT.Models.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("FinalValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrePayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("PromotionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RecieveOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReturnOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("PromotionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Booking");
+                });
+
             modelBuilder.Entity("DoAnCNTT.Models.CarType", b =>
                 {
                     b.Property<int>("Id")
@@ -247,14 +308,14 @@ namespace DoAnCNTT.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedById")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Deposit")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -263,68 +324,23 @@ namespace DoAnCNTT.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PaymentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PromotionId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RecieveOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ReturnOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<decimal>("ReturnTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentId");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("PromotionId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("BookingId")
+                        .IsUnique();
 
                     b.ToTable("Invoices");
-                });
-
-            modelBuilder.Entity("DoAnCNTT.Models.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CreatedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedById")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Post", b =>
@@ -710,6 +726,31 @@ namespace DoAnCNTT.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DoAnCNTT.Models.Booking", b =>
+                {
+                    b.HasOne("DoAnCNTT.Models.Post", "Post")
+                        .WithMany("Booking")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DoAnCNTT.Models.Promotion", "Promotion")
+                        .WithMany("Booking")
+                        .HasForeignKey("PromotionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DoAnCNTT.Models.ApplicationUser", "User")
+                        .WithMany("Booking")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Promotion");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DoAnCNTT.Models.CarTypeDetail", b =>
                 {
                     b.HasOne("DoAnCNTT.Models.CarType", "CarType")
@@ -731,35 +772,13 @@ namespace DoAnCNTT.Migrations
 
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
                 {
-                    b.HasOne("DoAnCNTT.Models.Payment", "Payment")
-                        .WithMany("Invoices")
-                        .HasForeignKey("PaymentId")
+                    b.HasOne("DoAnCNTT.Models.Booking", "Booking")
+                        .WithOne("Invoice")
+                        .HasForeignKey("DoAnCNTT.Models.Invoice", "BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DoAnCNTT.Models.Post", "Post")
-                        .WithMany("Invoices")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DoAnCNTT.Models.Promotion", "Promotion")
-                        .WithMany("Invoices")
-                        .HasForeignKey("PromotionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DoAnCNTT.Models.ApplicationUser", "User")
-                        .WithMany("Invoices")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Payment");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("Promotion");
-
-                    b.Navigation("User");
+                    b.Navigation("Booking");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Post", b =>
@@ -897,9 +916,15 @@ namespace DoAnCNTT.Migrations
 
             modelBuilder.Entity("DoAnCNTT.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Invoices");
+                    b.Navigation("Booking");
 
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("DoAnCNTT.Models.Booking", b =>
+                {
+                    b.Navigation("Invoice")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.CarType", b =>
@@ -916,16 +941,11 @@ namespace DoAnCNTT.Migrations
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("DoAnCNTT.Models.Payment", b =>
-                {
-                    b.Navigation("Invoices");
-                });
-
             modelBuilder.Entity("DoAnCNTT.Models.Post", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("Booking");
 
-                    b.Navigation("Invoices");
+                    b.Navigation("Images");
 
                     b.Navigation("PostAmenities");
 
@@ -936,7 +956,7 @@ namespace DoAnCNTT.Migrations
 
             modelBuilder.Entity("DoAnCNTT.Models.Promotion", b =>
                 {
-                    b.Navigation("Invoices");
+                    b.Navigation("Booking");
                 });
 #pragma warning restore 612, 618
         }

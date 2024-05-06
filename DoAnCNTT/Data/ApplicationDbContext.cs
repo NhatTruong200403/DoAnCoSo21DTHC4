@@ -13,8 +13,8 @@ namespace DoAnCNTT.Data
         }
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<CarType> CarTypes { get; set; }
+        public DbSet<Booking> Booking { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<Payment> Payments { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostImages> PostImages { get; set; }   
         public DbSet<PostAmenity> PostAmenities { get; set; }
@@ -24,7 +24,17 @@ namespace DoAnCNTT.Data
         public DbSet<CarTypeDetail> CarTypesDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Booking>()
+                .HasOne(b => b.Invoice)
+                .WithOne(i => i.Booking)
+                .HasForeignKey<Invoice>(i => i.BookingId);
 
+            // Nếu bạn cần thiết lập tự động tạo khóa chính (primary key) cho các quan hệ một-một, bạn có thể sử dụng câu lệnh dưới đây:
+            builder.Entity<Booking>()
+            .HasKey(b => b.Id);
+
+            builder.Entity<Invoice>()
+                .HasKey(i => i.Id);
             base.OnModelCreating(builder);
         }
     }

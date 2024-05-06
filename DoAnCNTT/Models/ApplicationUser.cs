@@ -10,6 +10,6 @@ namespace DoAnCNTT.Models
         public string? Image {  get; set; }
         public DateTime? Birthday { get; set; }
         public ICollection<Post> Posts { get; set; } = new List<Post>();    
-        public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+        public ICollection<Booking> Booking { get; set; } = new List<Booking>();
     }
 }
