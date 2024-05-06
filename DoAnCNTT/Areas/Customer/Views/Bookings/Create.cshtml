@@ -4,7 +4,25 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script>
+    $(document).ready(function () {
+        $('#startDate, #endDate').change(function () {
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
 
+            if (startDate && endDate) {
+                $.ajax({
+                    url: 'Customer/Bookings/CalculateMiddleDate',
+                    type: 'POST',
+                    data: { startDate: startDate, endDate: endDate },
+                    success: function (result) {
+                        $('#Total').val(result);
+                    }
+                });
+            }
+        });
+    });
+</script>
 <h1>Create</h1>
 
 <h4>Booking</h4>
@@ -65,23 +83,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        $(document).ready(function () {
-            $('#startDate, #endDate').change(function () {
-                var startDate = $('#startDate').val();
-                var endDate = $('#endDate').val();
-
-                if (startDate && endDate) {
-                    $.ajax({
-                        url: 'Customer/Bookings/CalculateMiddleDate',
-                        type: 'POST',
-                        data: { startDate: startDate, endDate: endDate },
-                        success: function (result) {
-                            $('#Total').val(result);
-                        }
-                    });
-                }
-            });
-        });
-    </script>
 }
