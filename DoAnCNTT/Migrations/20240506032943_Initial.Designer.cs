@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:DoAnCNTT/Migrations/20240506032943_Initial.Designer.cs
     [Migration("20240506032943_Initial")]
+========
+    [Migration("20240505153138_Initial")]
+>>>>>>>> b0a0018af7bcf7558e457a73f003d99a08a4331a:DoAnCNTT/Migrations/20240505153138_Initial.Designer.cs
     partial class Initial
     {
         /// <inheritdoc />
