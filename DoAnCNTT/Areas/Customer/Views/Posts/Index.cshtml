@@ -82,27 +82,33 @@
 
 *@
 <section class="py-2">
-    <div class="container px-4 px-lg-5 mt-5">
+    <div class="container ">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
 
             @foreach (var item in Model)
             {
 
-                <div class="box" style="padding:3px;">
+                <div class="box" style="padding:3px;margin-left:20px;">
+@* 
                     <div class="pta">
                         <img src="@item.Image" alt="">
+                    </div> *@
+
+                    <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
+                        <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
                     </div>
+
                     <div class="ptb">
                         @if (item.Gear)
                         {
-                            <div class="ptb1 apt">Số tự động</div>
+                            <div class="ptb1 apt" style="padding:2px 4px;">Số tự động</div>
                         }
                         else
                         {
-                            <div class="ptb1 apt">Số sàn</div>
+                            <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
                         }
-                        <div class="ptb1 bpt">Giao xe tận nơi</div>
-                        <div class="ptb1 cpt">Giảm 20%</div>
+                        <div class="ptb1 bpt" style="padding:2px 4px;">Giao xe tận nơi</div>
+                        <div class="ptb1 cpt" style="padding:2px 4px;">Giảm 20%</div>
                     </div>
 
                     <div class="ptc"><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
@@ -114,12 +120,12 @@
                     <div class="pte">
                         <div class="pte_left">
                             <div class="dgsao">
-                                <img src="./star-s-fill.svg" class="icon_sao_danhgia" alt="">
+                                <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
                                 <span class="text_saodanhgia">5.0</span>
                             </div>
 
                             <div class="sochuyen">
-                                <img src="./luggage-cart-line.svg" class="icon_map" alt="">
+                                <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
                                 <div class="text_sochuyen">20 chuyến</div>
                             </div>
                             <!-- <div class="sochuyen">
@@ -127,8 +133,8 @@
                             </div> -->
                         </div>
                         <div class="pte_right">
-                            <div class="giagoc">100k</div>
-                            <div class="giagiam">80k/ngày</div>
+                            @* <div class="giagoc">100k</div> *@
+                            <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
                         </div>
                     </div>
 
@@ -166,24 +172,20 @@
     }
 
     .ptb1 {
-        @* padding: 2px 4px; *@
         font-size: 13px;
         border-radius: 50px;
         margin: 0;
     }
 
         .ptb1.apt {
-            @* margin-left: 8px; *@
             background-color: aquamarine;
         }
 
         .ptb1.bpt {
-            @* margin-left: 8px; *@
             background-color: rgb(243, 253, 49);
         }
 
         .ptb1.cpt {
-            @* margin-left: 8px; *@
             background-color: rgb(79, 143, 255);
         }
 

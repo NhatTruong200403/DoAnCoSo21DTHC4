@@ -1,128 +1,485 @@
-﻿@model DoAnCNTT.Models.Post
-
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model DoAnCNTT.Models.Post
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Chi tiết bài đăng</h1>
-
 <div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Tên
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            Hình ảnh
-        </dt>
-        <dd class = "col-sm-10">
-            <img src="@Model.Image" alt="hinhanh.jpg" width="200px"/>
-        </dd>
-        <dt class="col-sm-2">
-            Danh sách hình
-        </dt>
-        <dd class="col-sm-10">
-            @foreach (var image in @ViewBag.PostImages)
-            {
-                <img src="@image" alt="Image" width="200px"/>
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            Mô tả
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            Chỗ ngồi
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Seat)
-        </dd>
-        <dt class = "col-sm-2">
-            Địa chỉ nhận xe
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RentLocation)
-        </dd>
-        <dt class="col-sm-2">
-            Tiện ích
-        </dt>
-        <dd class="col-sm-10">
-            @foreach (var amenity in ViewBag.PostAmenities)
-            {
-                <div>@amenity</div>
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            Có tài xế
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HasDriver)
-        </dd>
-        <dt class = "col-sm-2">
-            Giá thuê
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price) nghìn đồng/ngày
-        </dd>
-        <dt class = "col-sm-2">
-            Loại hộp số
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.Gear)
-            {
-                <text>Số tự động</text>
-            }
-            else
-            {
-                <text>Số sàn</text>
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            Nhiên liệu
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fuel)
-        </dd>
-        <dt class = "col-sm-2">
-            Nhiên liệu tiêu thụ
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FuelConsumed) lít/100km
-        </dd>
-        <dt class = "col-sm-2">
-            Số chuyến 
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RideNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            Có thể thuê
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAvailable)
-        </dd>
-        <dt class = "col-sm-2">
-            Loại xe
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarType.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            Hãng xe
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Company.Name)
-        </dd>
-    </dl>
+        <div class="cover-car-container">
+            <div class="main-img">
+                <div class="cover-car-item">
+                    <img loading="lazy" alt=""
+                         src="@Model.Image">
+                </div>
+            </div>
+            <div class="sub-img">
+                @foreach (var image in @ViewBag.PostImages)
+                {
+                    <div class="cover-car-item">
+                        <img loading="lazy"
+                             src="@image"
+                             alt="">
+                    </div>
+                }
+            </div>
+        </div>
+    <div class="cover-car-container" style="margin-top:20px;">
+        <div class="main-img">
+            <div>
+                <span style="font-size:35px;font-weight:bold;">@Html.DisplayFor(model => model.Name)</span>
+                <ul style="display:flex;">
+                    @{
+                        var rideNumber = Model.RideNumber;
+                    }
+
+                    @if (rideNumber > 0)
+                    {
+                        <li style="display:flex;margin-left:-35px;">
+                            <img width="24px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt=""> <div style="margin-top:0px;font-size:18px;margin-right:10px;">5.0</div>
+                        </li>
+                        
+                        <li style="display:flex;">
+                            <img width="24px" src="@Url.Content("~/images/logo/luggage-cart-line.svg")" alt=""><div style="margin-top:0px;font-size:18px;margin-right:15px;"> @rideNumber chuyến</div>
+                        </li>
+                    }
+                    else
+                    {
+                        <li style="margin-left:-35px;">
+                            chưa có chuyến
+                        </li>
+                    }
+                    
+                    
+                    <li >
+                        @Html.DisplayFor(model => model.RentLocation)
+                    </li>
+                </ul>
+
+            </div>
+            <hr style="opacity:0.3;" />
+            <div>
+                <div style="font-weight:bold;">
+                    Đặc điểm
+                </div>
+                <ul class="grid-li">
+                    <li>
+                        <div><img style="width:35px;" src="@Url.Content("~/images/logo/luggage.png")" /></div>
+                        <div>Số chổ</div>
+                        <div style="font-weight:bold;">@Html.DisplayFor(model => model.Seat)</div>
+                    </li>
+                    <li>
+                        <div><img style="width:35px;" src="@Url.Content("~/images/logo/gearbox.png")" /></div>
+                        <div>Hộp số</div>
+                        <div>
+                            @if (Model.Gear)
+                            {
+                                <div style="font-weight:bold;">Số tự động</div>
+                            }
+                            else
+                            {
+                                <div style="font-weight:bold;">Số sàn</div>
+                            }
+                        </div>
+                    </li>
+                    <li>
+                        <div><img style="width:35px;" src="@Url.Content("~/images/logo/fuel.png")" /></div>
+                        <div>Nhiên liệu</div>
+                        <div style="font-weight:bold;">
+                            @Html.DisplayFor(model => model.Fuel)
+                        </div>
+                    </li>
+                    <li>
+                        <div><img style="width:35px;" src="@Url.Content("~/images/logo/car-engine.png")" /></div>
+                        <div>Nhiên liệu tiêu hao</div>
+                        <div style="font-weight:bold;">
+                            @Html.DisplayFor(model => model.FuelConsumed) lít/100km
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <hr style="opacity:0.3;" />
+
+            <div>
+                <div style="font-weight:bold;">Mô tả</div>
+                <div>
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+
+            <hr style="opacity:0.3;" />
+
+            <div>
+                <div style="font-weight:bold;">
+                    Các tiện nghi khác
+                </div>
+                @* <div>
+                    @foreach (var amenity in ViewBag.PostAmenities)
+                    {
+                        var foundImage = false;
+                        foreach (var img in ViewBag.PostIMG)
+                        {
+                            if (img.Name == amenity.Name)
+                            {
+                                <img src="@img.IconImage" style="width:20px;" alt="@img.Name" />
+                                <span>@amenity.Name</span>
+                                foundImage = true;
+                                break;
+                            }
+                        }
+                        if (!foundImage)
+                        {
+                            <div>No image found for @amenity.Name</div>
+                        }
+                    }
+                </div> *@
+                <div class="grid-li">
+                    @foreach (var amenity in ViewBag.PostAmenities)
+                    {
+                        var foundImage = false;
+                        foreach (var img in ViewBag.PostIMG)
+                        {
+                            if (img.Name == amenity.Name)
+                            {
+                                <div class="item" style="padding:10px;">
+                                    <img src="@img.IconImage" style="width:24px;margin-right:10px;" alt="@img.Name" />
+                                    <span>@amenity.Name</span>
+                                </div>
+                                foundImage = true;
+                                break;
+                            }
+                        }
+                        if (!foundImage)
+                        {
+                            <div class="item">
+                                No image found for @amenity.Name
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <hr style="opacity:0.3;" />
+
+            <div>
+                <div style="font-weight:bold;">
+                    Giấy tờ thuê xe ?
+                </div>
+                <div>
+                    <div class="flex-container">
+                        <div class="small-div"></div>
+                        <div class="large-div" style="padding:10px 20px;">
+                            <span> ! Chọn 1 trong 2 hình thức</span>
+                            <div style="margin-left:10px;margin-block:5px;font-weight:600;">
+                                <img style="width:35px;margin-right:10px;" src="@Url.Content("~/images/logo/driving-license.png")" />
+                                   GPLX & CCCD gắn chip(Đối chiếu)
+                            </div>
+                            <div style="margin-left:10px;font-weight:600;">
+                                <img style="width:35px;margin-right:10px;" src="@Url.Content("~/images/logo/gplx_passport.png")" />
+                                  GPLX(Đối chiếu) & Passport(Giữ lại)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div style="font-weight:bold;">
+                    Tài sản thế chấp ?
+                </div>
+                <div>
+                    <div class="flex-container">
+                        <div class="small-div"></div>
+                        <div class="large-div">
+                            <span> 15 triệu (tiền mặt/chuyển khoản cho chủ xe khi nhận xe) hoặc Xe máy (kèm cà vẹt gốc) giá trị 15 triệu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div>
+                <div>Điều khoản</div>
+            </div>
+
+            <div>
+                <div>
+                    Chính sách hủy chuyến
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            <hr style="opacity:0.3;" />
+            <div>
+                @{
+                    var user = await UserManager.GetUserAsync(User);
+                }
+                <span>Chủ xe</span>
+                <div style="display:flex;">
+                    <img src="@Url.Content(user.Image)" style="width:70px;height:70px;" />
+                    <div style="margin-left:20px;">
+                        <span style="font-weight:bold;font-size:25px;">@user.Name</span>
+                        <div>
+                            <i>
+                                @if (rideNumber > 0)
+                                {
+                                    <div style="display:flex;">
+                                        <li style="margin-right:10px;">
+                                            5.0
+                                        </li>
+                                        <li>
+                                            @rideNumber chuyến
+                                        </li>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <li style="">
+                                        chưa có chuyến
+                                    </li>
+                                }
+                            </i>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div>
+                    <ul class="grid-li">
+                        <li>
+                            <div>
+                                Tỉ lệ phản hồi
+                            </div>
+                            <div>
+                                100%
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                Thời gian phản hồi
+                            </div>
+                            <div>
+                                5 phút
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                Tỉ lệ đồng ý
+                            </div>
+                            <div>
+                                100%
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div>
+                Đánh giá
+
+            </div>
+
+
+
+
+
+            </div>
+        <div class="sub-img">Trống</div>
+        </div>
+    
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a> |
     <a asp-action="Index">Trở về danh sách</a>
 </div>
+
+
+
+
+
+<style>
+    .flex-container {
+        display: flex;
+    }
+
+    .small-div {
+        flex: 0 0 1%;
+        background-color: #f26a2b; /* Màu nền của div đầu tiên */
+        border-top-left-radius: 10px; /* Độ cong góc trái trên */
+        border-bottom-left-radius: 10px; /* Độ cong góc trái dưới */
+    }
+
+    .large-div {
+        flex: 0 0 99%;
+        background-color: #fef7f0;
+    }
+    .grid-li {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 cột bằng nhau */
+        gap: 10px; /* Khoảng cách giữa các cột */
+    }
+    .cover-car-container {
+        display: flex;
+        position: relative;
+        grid-gap: 16px;
+        gap: 16px;
+        width: 100%;
+    }
+
+        .cover-car-container .main-img {
+            position: relative;
+            width: calc(68% - 16px);
+            height: 100%;
+        }
+
+        .cover-car-container .sub-img {
+            width: 32%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            grid-gap: 16px;
+            gap: 16px;
+        }
+
+            .cover-car-container .sub-img img {
+                height: 176px;
+            }
+    .cover-car-item {
+        cursor: pointer;
+    }
+
+    .cover-car-item img {
+    width: 100%;
+    height: 560px;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+
+
+
+            <dt class="col-sm-2">
+                Loại xe
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CarType.Name)
+            </dd>
+            <dt class="col-sm-2">
+                Hãng xe
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Company.Name)
+            </dd>
+
+
+
+
+            <dt class="col-sm-2">
+                Mô tả
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-2">
+                Chỗ ngồi
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Seat)
+            </dd>
+            <dt class="col-sm-2">
+                Địa chỉ nhận xe
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RentLocation)
+            </dd>
+            <dt class="col-sm-2">
+                Tiện ích
+            </dt>
+            <dd class="col-sm-10">
+
+            </dd>
+
+            <dt class="col-sm-2">
+                Có tài xế
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.HasDriver)
+            </dd>
+            <dt class="col-sm-2">
+                Giá thuê
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Price) nghìn đồng/ngày
+            </dd>
+            <dt class="col-sm-2">
+                Loại hộp số
+            </dt>
+            <dd class="col-sm-10">
+                @if (Model.Gear)
+                {
+                    <text>Số tự động</text>
+                }
+                else
+                {
+                    <text>Số sàn</text>
+                }
+            </dd>
+            <dt class="col-sm-2">
+                Nhiên liệu
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Fuel)
+            </dd>
+            <dt class="col-sm-2">
+                Nhiên liệu tiêu thụ
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FuelConsumed) lít/100km
+            </dd>
+            <dt class="col-sm-2">
+                Số chuyến
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.RideNumber)
+            </dd>
+            <dt class="col-sm-2">
+                Có thể thuê
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.IsAvailable)
+            </dd> *@
+
+
+
+
+
+
+
+

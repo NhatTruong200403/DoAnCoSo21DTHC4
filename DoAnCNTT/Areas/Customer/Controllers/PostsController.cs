@@ -58,7 +58,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
-            ViewData["PostAmenities"] = _context.PostAmenities.Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity.Name).ToList();
+            ViewData["PostAmenities"] = _context.PostAmenities.Include(pa => pa.Amenity).Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity).ToList();
+            ViewData["PostIMG"] = _context.Amenities.ToList();
             ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();
             return View(post);
         }

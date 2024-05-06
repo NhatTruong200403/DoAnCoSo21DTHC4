@@ -1,5 +1,4 @@
 ﻿@model DoAnCNTT.Models.Post
-
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -63,11 +62,17 @@
                 <input asp-for="Image" type="file" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                 <label asp-for="Images" class="control-label">Danh sách ảnh</label>
                 <input type="file" asp-for="Images" class="form-control" multiple />
                 <span asp-validation-for="Images" class="text-danger"></span>
+            </div> *@
+            <div class="form-group">
+                <label asp-for="Images" class="control-label">Danh sách ảnh (tối đa 3 ảnh)</label>
+                <input type="file" asp-for="Images" class="form-control" multiple accept="image/*" onchange="limitFiles(this, 3)" />
+                <span asp-validation-for="Images" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
@@ -90,7 +95,7 @@
                 {
                     <div class="form-check">
                         <input type="checkbox" name="SelectedAmenities" value="@amenity.Value" class="form-check-input" />
-                        <label class="form-check-label"><img src="" /> @amenity.Text</label>
+                        <label class="form-check-label"> @amenity.Text</label>
                     </div>
                 }
             </div>
@@ -140,6 +145,25 @@
     <a asp-action="Index">Trở về danh sách</a>
 </div>
 
+
+<script>
+    function limitFiles(input, maxFiles) {
+        // Kiểm tra số lượng tệp tin đã chọn
+        if (input.files.length > maxFiles) {
+            alert("Bạn chỉ có thể chọn tối đa " + maxFiles + " tệp tin hình ảnh.");
+            // Xóa tất cả các tệp tin đã chọn vượt quá giới hạn
+            input.value = "";
+        }
+    }
+</script>
+
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+
+
+
+
+
