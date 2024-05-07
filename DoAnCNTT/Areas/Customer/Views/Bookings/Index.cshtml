@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<DoAnCNTT.Models.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lịch sử đặt xe";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Lịch sử đặt xe</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,13 +14,7 @@
     <thead>
         <tr>
             <th>
-                Đặt cọc
-            </th>
-            <th>
-                Tổng tiền
-            </th>
-            <th>
-                Thành tiền
+                Bài đăng
             </th>
             <th>
                 Ngày nhận
@@ -29,7 +23,13 @@
                 Ngày trả
             </th>
             <th>
-                Bài đăng
+                Tổng tiền
+            </th>
+            <th>
+                Thành tiền
+            </th>
+            <th>
+                Đặt cọc
             </th>
             <th></th>
         </tr>
@@ -38,13 +38,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PrePayment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinalValue)
+                @Html.DisplayFor(modelItem => item.Post.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RecieveOn)
@@ -53,7 +47,13 @@
                 @Html.DisplayFor(modelItem => item.ReturnOn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Post.Name)
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrePayment)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |

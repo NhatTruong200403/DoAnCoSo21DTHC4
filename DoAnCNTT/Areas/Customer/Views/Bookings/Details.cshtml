@@ -1,34 +1,30 @@
 ﻿@model DoAnCNTT.Models.Booking
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết đặt cọc";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết đặt cọc</h1>
 
 <div>
     <h4>Booking</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            Đặt cọc
+        <dt class="col-sm-2">
+            Bài đăng
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrePayment)
+        <dd class="col-sm-10">
+            <div>
+                Id:
+                @Html.DisplayFor(model => model.Post.Id)
+            </div>
+            <div>
+                Name:
+                @Html.DisplayFor(model => model.Post.Name)
+            </div>
         </dd>
-        <dt class = "col-sm-2">
-            Tổng cộng
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Total)
-        </dd>
-        <dt class = "col-sm-2">
-            Thành tiền
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FinalValue)
-        </dd>
+
         <dt class = "col-sm-2">
             Ngày nhận
         </dt>
@@ -41,24 +37,29 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ReturnOn)
         </dd>
-        <dt class = "col-sm-2">
-            Bài đăng
+        <dt class="col-sm-2">
+            Tổng cộng
         </dt>
-        <dd class="col-sm-10">        
-            <div>
-                Id:
-                @Html.DisplayFor(model => model.Post.Id)
-            </div>
-            <div>
-                Name:
-                @Html.DisplayFor(model => model.Post.Name)
-            </div>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Total)
         </dd>
         <dt class = "col-sm-2">
             Giảm giá
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Promotion.Content)
+        </dd>
+        <dt class="col-sm-2">
+            Thành tiền
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FinalValue)
+        </dd>
+        <dt class="col-sm-2">
+            Đặt cọc
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrePayment)
         </dd>
         <dt class="col-sm-2">
             Đã đặt cọc
