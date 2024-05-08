@@ -394,16 +394,18 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="@booking.PromotionId" class="control-label"></label>
-                                <select asp-for="@booking.PromotionId" class="form-control" asp-items="ViewBag.Promotions"></select>
+                                <select asp-for="@booking.PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions">
+                                    <option value="">-- Chọn khuyến mãi --</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label asp-for="@booking.FinalValue" class="control-label"></label>
-                                <input asp-for="@booking.FinalValue" class="form-control" readonly />
+                                <input asp-for="@booking.FinalValue" id="finalValue" class="form-control" readonly />
                                 <span asp-validation-for="@booking.FinalValue" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="@booking.PrePayment" class="control-label"></label>
-                                <input asp-for="@booking.PrePayment" class="form-control" readonly />
+                                <input asp-for="@booking.PrePayment" id="prePayment" class="form-control" readonly />
                                 <span asp-validation-for="@booking.PrePayment" class="text-danger"></span>
                             </div>
 
@@ -463,18 +465,39 @@
             $('#startDate, #endDate').change(function () {
                 var startDate = $('#startDate').val();
                 var endDate = $('#endDate').val();
-                var total = @Model.Price;
+                var total = @Model!.Price;
                 if (startDate && endDate) {
                     $.ajax({
                         url: '/Customer/Bookings/CalculateMiddleDate',
                         type: 'POST',
                         data: { startDate: startDate, endDate: endDate, total: total },
                         success: function (result) {
-                            var numberOfDays = parseInt(result);
-                            $('#Total').val(numberOfDays);
+                            //var numberOfDays = parseInt(result);
+
+                            // $('#middleDate').text(numberOfDays);
+                            $('#Total').val(result);
+                            $('#finalValue').val(result);
+                            $('#prePayment').val(result * 0.5);
                         }
                     });
                 }
+            });
+            $('#Total, #promotionSelect').change(function () {
+                var promotionId = $('#promotionSelect').val();
+                var total = $('#Total').val();
+
+                $.ajax({
+                    url: '/Customer/Bookings/CalculateFinalValue',
+                    type: 'POST',
+                    data: { total: total, promotionId: promotionId },
+                    success: function (result) {
+                        $('#finalValue').val(result.total);
+                        $('#prePayment').val(result.total * 0.5);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
             });
         });
 
