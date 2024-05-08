@@ -119,26 +119,6 @@
                 <div style="font-weight:bold;">
                     Các tiện nghi khác
                 </div>
-                @* <div>
-                    @foreach (var amenity in ViewBag.PostAmenities)
-                    {
-                        var foundImage = false;
-                        foreach (var img in ViewBag.PostIMG)
-                        {
-                            if (img.Name == amenity.Name)
-                            {
-                                <img src="@img.IconImage" style="width:20px;" alt="@img.Name" />
-                                <span>@amenity.Name</span>
-                                foundImage = true;
-                                break;
-                            }
-                        }
-                        if (!foundImage)
-                        {
-                            <div>No image found for @amenity.Name</div>
-                        }
-                    }
-                </div> *@
                 <div class="grid-li">
                     @foreach (var amenity in ViewBag.PostAmenities)
                     {
@@ -226,9 +206,9 @@
 
 
             <hr style="opacity:0.3;" />
-            <div>
+             <div>
                 @{
-                    var user = await UserManager.GetUserAsync(User);
+                    var user = await UserManager.FindByIdAsync(Model.CreatedById);
                 }
                 <span>Chủ xe</span>
                 <div style="display:flex;">
@@ -288,92 +268,45 @@
                     </ul>
                 </div>
             </div>
-
+ 
 
             <div>
                 Đánh giá
 
                 <div class="comment">
 
-                   @*  @foreach (var amenity in ViewBag.Comment)
+                    <h2>Comments</h2>
+                    @if (ViewData["Cmt"] != null)
                     {
-                        var cmt = false;
-                        foreach (var img in ViewBag.Cmt)
+                        var comments = ViewData["Cmt"] as List<Rating>;
+                        foreach (var comment in comments)
                         {
-                            if (img. == amenity.Name)
-                            {
-                                <div class="item" style="padding:10px;">
-                                    <img src="@img.IconImage" style="width:24px;margin-right:10px;" alt="@img.Name" />
-                                    <span>@amenity.Name</span>
-                                </div>
-                                foundImage = true;
-                                break;
-                            }
-                        }
-                    } *@
-
-
-
-                    @for (int i = 0; i < ViewBag.Comment.Count; i++)
-                    {
-                    <div class="comment-avatar">
-                        <img src="~/images/ImageUser/user.png" alt="hinhanh.jpg" />
-                    </div>
-                        <div class="comment-content">
-                            <div class="rating">
-                                @for (int j = 0; j < ViewBag.Star[i]; j++)
-                                {
-                                    if(ViewBag.Star[i]==1)
-                                    {
-                                        <span class="star">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        break;
-                                    }
-                                    else if (ViewBag.Star[i]== 2)
-                                    {
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        break;
-                                    }
-                                    else if (ViewBag.Star[i] == 3)
-                                    {
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        break;
-                                    }
-                                    else if (ViewBag.Star[i] == 4)
-                                    {
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star-none">&#9733;</span>
-                                        break;
-                                    }
-                                    else if(ViewBag.Star[i] == 5)
-                                    {
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        <span class="star">&#9733;</span>
-                                        break;
-                                    }
+                            <div class="comment-avatar">
+                                @{
+                                    var user0 = await UserManager.FindByIdAsync(comment.CreatedById);
                                 }
+                                <img src="@user0.Image" alt="hinhanh.jpg" />
                             </div>
-                            <p class="comment-text">@ViewBag.Comment[i]</p>
-                        </div>
+                            <div>
+                                <p>@comment.Comment</p>
+                                <p>
+                                    Rating:
+                                    @for (int i = 0; i < comment.Point; i++)
+                                    {
+                                        <img width="24px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt="">
+                                    }
+                                </p>
+                            </div>
+                        }
                     }
-                </div>
+                    else
+                    {
+                        <p>Không có đánh giá.</p>
+                    }
+
+
+
+
             <!-- <div>
                 <partial name ="AddComment"  />
             </div> -->
@@ -385,13 +318,113 @@
 
 
             </div>
-        <div class="sub-img">Trống</div>
+            <div class="sub-img">
+                Trống
+                <div class="">
+                    @{
+                        var currentUser = await UserManager.GetUserAsync(User);
+                        Booking booking;
+                        var recieveOn = DateTime.Today;
+                        var returnOn = recieveOn.AddDays(1);
+                        if (Model != null && Model.Id != null && Model.Price != null && currentUser != null && currentUser.Id != null)
+                        {
+                            booking = new Booking()
+                            {
+                                PostId = Model.Id,
+                                UserId = currentUser.Id,
+                                CreatedOn = DateTime.Now,
+                                RecieveOn = DateTime.Today,
+                                ReturnOn = returnOn,
+                                Total = Model.Price,
+                                PrePayment = Model.Price * (decimal)0.3,
+                                FinalValue = Model.Price
+                            };
+                        }
+                        else
+                        {
+                            booking = new Booking()
+                            {
+                                PostId = Model.Id,
+                                UserId = "1",
+                                CreatedOn = DateTime.Now,
+                                RecieveOn = DateTime.Today,
+                                ReturnOn = returnOn,
+                                Total = Model.Price,
+                                PrePayment = Model.Price * (decimal)0.3,
+                                FinalValue = Model.Price
+                            };
+                        }
+                        
+                    }
+                    <div class="">
+                        <form asp-controller="Bookings" asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="@booking.PostId" class="control-label"></label>
+                                <input asp-for="@booking.PostId" class="form-control" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="UserId" class="control-label"></label>
+                                <input asp-for="UserId" class="form-control" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@booking.RecieveOn" class="control-label"></label>
+                                <input asp-for="@booking.RecieveOn" type="date" id="startDate" class="form-control" onchange="validateDate()" />
+                                <span asp-validation-for="@booking.RecieveOn" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@booking.ReturnOn" class="control-label"></label>
+                                <input asp-for="@booking.ReturnOn" type="date" id="endDate" class="form-control" onchange="validateDate()" />
+                                <span asp-validation-for="@booking.ReturnOn" class="text-danger"></span>
+                            </div>
+                            @* <div class="form-group">
+                                <label asp-for="@booking.RecieveOn" class="control-label"></label>
+                                <input asp-for="@booking.RecieveOn" type="date" id="startDate" class="form-control" />
+                                <span asp-validation-for="@booking.RecieveOn" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@booking.ReturnOn" class="control-label"></label>
+                                <input asp-for="@booking.ReturnOn" type="date" id="endDate" class="form-control" />
+                                <span asp-validation-for="@booking.ReturnOn" class="text-danger"></span>
+                            </div> *@
+                            <div class="form-group">
+                                <label asp-for="@booking.Total" class="control-label"></label>
+                                <input asp-for="@booking.Total" id="Total" class="form-control" readonly />
+                                <span asp-validation-for="@booking.Total" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@booking.PromotionId" class="control-label"></label>
+                                <select asp-for="@booking.PromotionId" class="form-control" asp-items="ViewBag.Promotions"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@booking.FinalValue" class="control-label"></label>
+                                <input asp-for="@booking.FinalValue" class="form-control" readonly />
+                                <span asp-validation-for="@booking.FinalValue" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@booking.PrePayment" class="control-label"></label>
+                                <input asp-for="@booking.PrePayment" class="form-control" readonly />
+                                <span asp-validation-for="@booking.PrePayment" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+
         </div>
-    
+        
 </div>
+    
+
 <div>
     @{
-        var currentUser = await UserManager.GetUserAsync(User);
+         // var currentUser = await UserManager.GetUserAsync(User);
         if(SignInManager.IsSignedIn(User))
         {
             if (currentUser!.Id == Model.UserId)
@@ -405,6 +438,48 @@
     <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
 
+
+
+
+    <script>
+        function validateDate() {
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
+
+            // Chuyển đổi các chuỗi ngày thành đối tượng Date để so sánh
+            var start = new Date(startDate);
+            var end = new Date(endDate);
+
+            // Kiểm tra nếu RecieveOn lớn hơn ReturnOn
+            if (start > end) {
+                // Hiển thị thông báo lỗi
+                alert("RecieveOn không được lớn hơn ReturnOn");
+                // Thiết lập giá trị của RecieveOn là ngày hiện tại
+                document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
+                // Thiết lập giá trị của ReturnOn là ngày kế tiếp của RecieveOn
+                document.getElementById("endDate").value = new Date(start.getTime() + 86400000).toISOString().split('T')[0];
+            }
+        }
+        $(document).ready(function () {
+            $('#startDate, #endDate').change(function () {
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+                var total = @Model.Price;
+                if (startDate && endDate) {
+                    $.ajax({
+                        url: '/Customer/Bookings/CalculateMiddleDate',
+                        type: 'POST',
+                        data: { startDate: startDate, endDate: endDate, total: total },
+                        success: function (result) {
+                            var numberOfDays = parseInt(result);
+                            $('#Total').val(numberOfDays);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
 
 
 
@@ -502,3 +577,6 @@
             font-size: 14px;
         }
 </style>
+
+
+

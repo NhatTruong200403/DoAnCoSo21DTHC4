@@ -14,7 +14,6 @@ var connectionString = builder.Configuration.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -36,7 +35,6 @@ builder.Services.AddAuthentication().AddGoogle(options =>
     options.Scope.Add("profile");
     options.Events.OnCreatingTicket = (context) =>
     {
-        //context.Identity.AddClaim(new Claim("image", context.User.GetProperty("image").ToString()));
         context.Identity.AddClaim(new Claim("picture", context.User.GetProperty("picture").ToString()));
         return Task.CompletedTask;
     };

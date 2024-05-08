@@ -41,7 +41,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(await posts);
         }
 
-        // GET: Customer/Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -64,6 +63,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewData["Comment"] = _context.Ratings.Where(p => p.PostId == id).Select(p=>p.Comment).ToList();
             ViewData["Star"] = _context.Ratings.Where(p => p.PostId == id).Select(p => p.Point).ToList();
             ViewData["Cmt"] = _context.Ratings.Where(p=>p.PostId == id).ToList();
+            var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
+            ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
             return View(post);
         }
 
