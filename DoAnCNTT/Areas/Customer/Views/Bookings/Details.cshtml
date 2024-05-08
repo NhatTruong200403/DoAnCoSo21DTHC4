@@ -1,103 +1,75 @@
 ﻿@model DoAnCNTT.Models.Booking
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết đặt cọc";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết đặt cọc</h1>
 
 <div>
     <h4>Booking</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrePayment)
+        <dt class="col-sm-2">
+            Bài đăng
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrePayment)
+        <dd class="col-sm-10">
+            <div>
+                Id:
+                @Html.DisplayFor(model => model.Post.Id)
+            </div>
+            <div>
+                Name:
+                @Html.DisplayFor(model => model.Post.Name)
+            </div>
         </dd>
+
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Total)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Total)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FinalValue)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FinalValue)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RecieveOn)
+            Ngày nhận
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.RecieveOn)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReturnOn)
+            Ngày trả
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ReturnOn)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Post)
+        <dt class="col-sm-2">
+            Tổng cộng
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Post.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Total)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            Giảm giá
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
+            @Html.DisplayFor(model => model.Promotion.Content)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Promotion)
+        <dt class="col-sm-2">
+            Thành tiền
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Promotion.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FinalValue)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InvoiceId)
+        <dt class="col-sm-2">
+            Đặt cọc
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InvoiceId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrePayment)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedById)
+        <dt class="col-sm-2">
+            Đã đặt cọc
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedById)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedById)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedById)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsPay)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a href="javascript:history.go(-1);">Quay lại</a>
 </div>

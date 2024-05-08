@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<DoAnCNTT.Models.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lịch sử đặt xe";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Lịch sử đặt xe</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,46 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PrePayment)
+                Bài đăng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Total)
+                Ngày nhận
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FinalValue)
+                Ngày trả
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecieveOn)
+                Tổng tiền
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReturnOn)
+                Thành tiền
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Promotion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.InvoiceId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedById)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedById)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
+                Đặt cọc
             </th>
             <th></th>
         </tr>
@@ -62,13 +38,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PrePayment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinalValue)
+                @Html.DisplayFor(modelItem => item.Post.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RecieveOn)
@@ -77,36 +47,17 @@
                 @Html.DisplayFor(modelItem => item.ReturnOn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Post.Id)
+                @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.FinalValue)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Promotion.Id)
+                @Html.DisplayFor(modelItem => item.PrePayment)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.InvoiceId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedById)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedById)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
             </td>
         </tr>
 }

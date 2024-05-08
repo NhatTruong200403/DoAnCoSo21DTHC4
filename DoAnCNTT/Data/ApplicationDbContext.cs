@@ -24,14 +24,7 @@ namespace DoAnCNTT.Data
         public DbSet<CarTypeDetail> CarTypesDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Booking>()
-                .HasOne(b => b.Invoice)
-                .WithOne(i => i.Booking)
-                .HasForeignKey<Invoice>(i => i.BookingId);
 
-            // Nếu bạn cần thiết lập tự động tạo khóa chính (primary key) cho các quan hệ một-một, bạn có thể sử dụng câu lệnh dưới đây:
-            builder.Entity<Booking>()
-            .HasKey(b => b.Id);
 
             builder.Entity<Invoice>()
                 .HasKey(i => i.Id);

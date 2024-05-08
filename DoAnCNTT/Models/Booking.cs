@@ -9,6 +9,7 @@ namespace DoAnCNTT.Models
         public decimal FinalValue { get; set; }
         public DateTime RecieveOn { get; set; }
         public DateTime ReturnOn { get; set; }
+        public bool IsPay {  get; set; }
         public int PostId { get; set; }
         [ValidateNever]
         public Post Post { get; set; } = null!;
@@ -18,8 +19,5 @@ namespace DoAnCNTT.Models
         public int PromotionId { get; set; }
         [ValidateNever]
         public Promotion Promotion { get; set; } = null!;
-        public int InvoiceId { get; set; }
-        [ValidateNever]
-        public Invoice Invoice { get; set; } = null!;
     }
 }

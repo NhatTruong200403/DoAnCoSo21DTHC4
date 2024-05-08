@@ -12,9 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240506032943_Initial")]
-
-    partial class Initial
+    [Migration("20240506090945_AddIsPayBooking")]
+    partial class AddIsPayBooking
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,6 +157,9 @@ namespace DoAnCNTT.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPay")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedById")
@@ -326,6 +328,12 @@ namespace DoAnCNTT.Migrations
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReturnOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ReturnTotal")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");

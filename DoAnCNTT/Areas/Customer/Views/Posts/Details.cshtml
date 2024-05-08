@@ -6,7 +6,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết bài đăng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -431,10 +431,9 @@
             {
                 <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
             }
+                <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Thuê xe</a> 
         }
     }
-
-    <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Đặt cọc</a> |
     <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
 

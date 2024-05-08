@@ -81,8 +81,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 RecieveOn = DateTime.Today,
                 ReturnOn = DateTime.Today,
                 Total = post!.Price,
+                FinalValue = post!.Price,
                 PrePayment = post!.Price * (decimal)0.3,
-                FinalValue = post!.Price
             };
             var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
             ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
@@ -101,75 +101,32 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return Json(numberOfDays*total);
         }
 
+        public IActionResult CalculateFinalValue(decimal total, int promotionId)
+        { 
+            // Lấy giá trị Promotion tương ứng từ CSDL
+            var promotion = _context.Promotions.FirstOrDefault(p => p.Id == promotionId);
+            if (promotion == null)
+            {
+                return Json(new { total = total });
+            }
+            else
+            {
+                return Json(new { total = total - (total * promotion.DiscountValue) });
+            }
+        }
+
         // POST: Customer/Bookings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id,CreatedById,CreatedOn,ModifiedById,ModifiedOn,IsDeleted")] Booking booking)
+        public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id,CreatedById,CreatedOn,ModifiedById,ModifiedOn,IsDeleted")] Booking booking)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
-            return View(booking);
-        }
-
-        // GET: Customer/Bookings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var booking = await _context.Booking.FindAsync(id);
-            if (booking == null)
-            {
-                return NotFound();
-            }
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
-            return View(booking);
-        }
-
-        // POST: Customer/Bookings/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id,CreatedById,CreatedOn,ModifiedById,ModifiedOn,IsDeleted")] Booking booking)
-        {
-            if (id != booking.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(booking);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookingExists(booking.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MomoPayment", "Invoices", new { bookingId = booking.Id });
             }
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
             ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);

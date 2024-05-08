@@ -65,6 +65,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+
 <script>
     $(document).ready(function () {
         $('#startDate, #endDate').change(function () {
@@ -75,7 +76,7 @@
                 $.ajax({
                     url: '/Customer/Bookings/CalculateMiddleDate',
                     type: 'POST',
-                    data: { startDate: startDate, endDate: endDate, total : total },
+                    data: { startDate: startDate, endDate: endDate, total: total },
                     success: function (result) {
                         var numberOfDays = parseInt(result);
                         $('#Total').val(numberOfDays);
@@ -83,6 +84,84 @@
                 });
             }
         });
-    });
+        $('#Total, #promotionSelect').change(function () {
+            var promotionId = $('#promotionSelect').val();
+        var total = $('#Total').val();
 
+        $.ajax({
+            url: '/Customer/Bookings/CalculateFinalValue',
+            type: 'POST',
+            data: { total: total, promotionId: promotionId },
+            success: function (result) {
+                $('#finalValue').val(result.total);
+                $('#prePayment').val(result.total * 0.5);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+    });
 </script>
+<h4>Booking</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group" hidden>
+                <label asp-for="PostId" class="control-label"></label>
+                <input asp-for="PostId" class="form-control" />
+            </div>
+            <div class="form-group"hidden>
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="RecieveOn" class="control-label">Ngày nhận</label>
+                <input asp-for="RecieveOn" type="date" id="startDate" class="form-control"/>
+                <span asp-validation-for="RecieveOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReturnOn" class="control-label">Ngày trả</label>
+                <input asp-for="ReturnOn" type="date" id="endDate" class="form-control" />
+                <span asp-validation-for="ReturnOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label">Tổng cộng</label>
+                <input asp-for="Total" id="Total" class="form-control"  readonly />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PromotionId" class="control-label">Chọn giảm giá</label>
+                <select asp-for="PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions">
+                    <option value="">-- Chọn khuyến mãi --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinalValue" class="control-label">Thành tiền</label>
+                <input asp-for="FinalValue" id="finalValue" class="form-control" readonly />
+                <span asp-validation-for="FinalValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrePayment" class="control-label">Đặt cọc</label>
+                <input asp-for="PrePayment" id="prePayment" class="form-control" readonly />
+                <span asp-validation-for="PrePayment" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Đặt cọc" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a href="javascript:history.go(-1);">Quay lại</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

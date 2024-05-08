@@ -4,6 +4,7 @@ using DoAnCNTT.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506091453_RemoveReturnTotal")]
+    partial class RemoveReturnTotal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,6 +152,9 @@ namespace DoAnCNTT.Migrations
 
                     b.Property<decimal>("FinalValue")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -331,7 +337,8 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
+                    b.HasIndex("BookingId")
+                        .IsUnique();
 
                     b.ToTable("Invoices");
                 });
@@ -766,8 +773,8 @@ namespace DoAnCNTT.Migrations
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
                 {
                     b.HasOne("DoAnCNTT.Models.Booking", "Booking")
-                        .WithMany()
-                        .HasForeignKey("BookingId")
+                        .WithOne("Invoice")
+                        .HasForeignKey("DoAnCNTT.Models.Invoice", "BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -912,6 +919,12 @@ namespace DoAnCNTT.Migrations
                     b.Navigation("Booking");
 
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("DoAnCNTT.Models.Booking", b =>
+                {
+                    b.Navigation("Invoice")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.CarType", b =>

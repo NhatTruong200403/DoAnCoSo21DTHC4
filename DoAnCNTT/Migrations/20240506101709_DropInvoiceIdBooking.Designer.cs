@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240506041602_AddInvoiceReturnValue")]
-    partial class AddInvoiceReturnValue
+    [Migration("20240506101709_DropInvoiceIdBooking")]
+    partial class DropInvoiceIdBooking
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,10 +153,10 @@ namespace DoAnCNTT.Migrations
                     b.Property<decimal>("FinalValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("InvoiceId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPay")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedById")
@@ -329,16 +329,12 @@ namespace DoAnCNTT.Migrations
                     b.Property<DateTime>("ReturnOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("ReturnTotal")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId")
-                        .IsUnique();
+                    b.HasIndex("BookingId");
 
                     b.ToTable("Invoices");
                 });
@@ -773,8 +769,8 @@ namespace DoAnCNTT.Migrations
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
                 {
                     b.HasOne("DoAnCNTT.Models.Booking", "Booking")
-                        .WithOne("Invoice")
-                        .HasForeignKey("DoAnCNTT.Models.Invoice", "BookingId")
+                        .WithMany()
+                        .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -919,12 +915,6 @@ namespace DoAnCNTT.Migrations
                     b.Navigation("Booking");
 
                     b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("DoAnCNTT.Models.Booking", b =>
-                {
-                    b.Navigation("Invoice")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.CarType", b =>

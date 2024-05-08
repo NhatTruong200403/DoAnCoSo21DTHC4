@@ -1,54 +1,54 @@
 ﻿@model DoAnCNTT.Models.Amenity
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết tiện nghi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Chi tiết tiện nghi</h1>
 
 <div>
-    <h4>Amenity</h4>
+    <h4>Thông tin tiện nghi</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            Tên
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IconImage)
+            Icon
         </dt>
         <dd class = "col-sm-10">
             <img src="@Model.IconImage" alt="hinhanh.jpg" width="200px" />
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedById)
+            Mã người tạo
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CreatedById)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedOn)
+            Ngày tạo
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CreatedOn)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedById)
+            Mã người cập nhật
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ModifiedById)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedOn)
+            Ngày cập nhật
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.ModifiedOn)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
+            Ẩn
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IsDeleted)
@@ -56,6 +56,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a> |
+    <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
