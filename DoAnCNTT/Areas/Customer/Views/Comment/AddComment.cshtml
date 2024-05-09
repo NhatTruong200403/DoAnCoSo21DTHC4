@@ -1,0 +1,78 @@
+﻿@model DoAnCNTT.Models.Rating
+
+@{
+    ViewData["Title"] = "AddComment";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddComment" asp-controller="Comment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Comment" class="control-label">Bình luận</label>
+                <input asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Point" class="control-label">Point</label>
+                <div class="form-check">
+                    <input asp-for="Point" class="form-check-input" type="radio" id="point1" value="1">
+                    <label class="form-check-label" for="point1">1 sao</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="Point" class="form-check-input" type="radio" id="point2" value="2">
+                    <label class="form-check-label" for="point2">2 sao</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="Point" class="form-check-input" type="radio" id="point3" value="3">
+                    <label class="form-check-label" for="point3">3 sao</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="Point" class="form-check-input" type="radio" id="point4" value="4">
+                    <label class="form-check-label" for="point4">4 sao</label>
+                </div>
+                <div class="form-check">
+                    <input asp-for="Point" class="form-check-input" type="radio" id="point5" value="5">
+                    <label class="form-check-label" for="point5">5 sao</label>
+                </div>
+                <span asp-validation-for="Point" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="PostId" class="control-label"></label>
+                <input asp-for="PostId" class ="form-control"></input>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="CreatedById" class="control-label"></label>
+                <input asp-for="CreatedById" class="form-control" />
+                <span asp-validation-for="CreatedById" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="CreatedOn" class="control-label"></label>
+                <input asp-for="CreatedOn" class="form-control" type="datetime" />
+                <span asp-validation-for="CreatedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="ModifiedById" class="control-label"></label>
+                <input asp-for="ModifiedById" class="form-control" />
+                <span asp-validation-for="ModifiedById" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="ModifiedOn" class="control-label"></label>
+                <input asp-for="ModifiedOn" class="form-control" />
+                <span asp-validation-for="ModifiedOn" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check" hidden>
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

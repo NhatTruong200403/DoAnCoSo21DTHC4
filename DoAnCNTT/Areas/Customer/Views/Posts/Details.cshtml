@@ -8,6 +8,7 @@
 @{
     ViewData["Title"] = "Chi tiết bài đăng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = await UserManager.GetUserAsync(User);
 }
 
 <div>
@@ -303,6 +304,19 @@
                     {
                         <p>Không có đánh giá.</p>
                     }
+                    <div>
+                        @{
+                            var rating = new Rating()
+                            {
+                                PostId = Model.Id,
+                                CreatedById = currentUser == null ? null : currentUser!.Id,
+                                CreatedOn = DateTime.Now
+
+                            };
+                            <partial name="../Comment/AddComment.cshtml" model="rating" />
+                    }   
+                            
+                    </div>
 
 
 
@@ -419,11 +433,10 @@
             </div>
  *@
             @{
-                var currentUser = await UserManager.GetUserAsync(User);
                 var booking = new Booking()
                 {
                     PostId = Model.Id,
-                    UserId = currentUser!.Id,
+                    UserId = currentUser == null ? null : currentUser!.Id,
                     CreatedOn = DateTime.Now,
                     RecieveOn = DateTime.Today,
                     ReturnOn = DateTime.Today,
@@ -435,13 +448,18 @@
                 <partial name="../Bookings/Create.cshtml" model="booking" />
             }
         </div>
+        @* <div>
+            @{
+                    @Html.Partial("/Areas/Customer/Views/Bookings/Create.cshtml", new DoAnCNTT.Models.Booking())
+            }
+        </div> *@
         
 </div>
     
 
 <div>
     @{
-        //var currentUser = await UserManager.GetUserAsync(User);
+        // var currentUser = await UserManager.GetUserAsync(User);
         if(SignInManager.IsSignedIn(User))
         {
             if (currentUser!.Id == Model.UserId)

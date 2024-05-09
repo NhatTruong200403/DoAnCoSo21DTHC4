@@ -2,10 +2,13 @@
 using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class CommentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -15,7 +18,9 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public async Task<IActionResult> AddComment(int id, [Bind("Comment,Point")] Rating rating)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddComment([Bind("PostId,Comment,Point,CreatedById,CreatedOn")] Rating rating)
         {
             if (rating == null)
             {
@@ -23,14 +28,75 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             }
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
-                rating.CreatedOn = DateTime.Now;
-                rating.CreatedById = user!.Id;
-                rating.PostId = id;
                 _context.Add(rating);
                 await _context.SaveChangesAsync();
             }
-            return PartialView(rating);
+            return RedirectToAction("Details", "Posts", new { area = "Customer", id = rating.PostId });
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateComment(int id, [Bind("Id, Comment, Point")] Rating rating)
+        {
+            if (id != rating.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingRating = await _context.Ratings.FindAsync(id);
+                    if (existingRating == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingRating.Comment = rating.Comment;
+                    existingRating.Point = rating.Point;
+
+                    _context.Update(existingRating);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RatingExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return View();
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCommentConfirmed(int id)
+        {
+            var rating = await _context.Ratings.FindAsync(id);
+            if (rating == null)
+            {
+                return NotFound();
+            }
+
+            _context.Ratings.Remove(rating);
+            await _context.SaveChangesAsync();
+
+            return View();
+        }
+
+        private bool RatingExists(int id)
+        {
+            return _context.Ratings.Any(e => e.Id == id);
+        }
+
     }
 }
+
+
+
+
