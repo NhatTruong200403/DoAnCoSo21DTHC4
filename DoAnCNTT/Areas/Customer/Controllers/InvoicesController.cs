@@ -192,8 +192,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                         BookingId = booking.Id
                     };
                     _context.Invoices.Add(invoice);
-                    await UpdatePostInfo(booking);
                     _context.SaveChanges();
+                    await UpdatePostInfo(booking);
 
                 }
 
@@ -208,7 +208,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             var post = await _context.Posts.FindAsync(booking!.PostId);
             if (post != null)
             {
-                post.IsAvailable = true;
+                post.IsAvailable = false;
                 post.RideNumber += 1;
             }
             _context.SaveChanges();

@@ -318,7 +318,7 @@
 
 
             </div>
-            <div class="sub-img">
+@*             <div class="sub-img">
                 Trống
                 <div class="">
                     @{
@@ -369,15 +369,15 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="@booking.RecieveOn" class="control-label"></label>
-                                <input asp-for="@booking.RecieveOn" type="date" id="startDate" class="form-control" onchange="validateDate()" />
+                                <input asp-for="@booking.RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
                                 <span asp-validation-for="@booking.RecieveOn" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="@booking.ReturnOn" class="control-label"></label>
-                                <input asp-for="@booking.ReturnOn" type="date" id="endDate" class="form-control" onchange="validateDate()" />
+                                <input asp-for="@booking.ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
                                 <span asp-validation-for="@booking.ReturnOn" class="text-danger"></span>
                             </div>
-                            @* <div class="form-group">
+                            <div class="form-group">
                                 <label asp-for="@booking.RecieveOn" class="control-label"></label>
                                 <input asp-for="@booking.RecieveOn" type="date" id="startDate" class="form-control" />
                                 <span asp-validation-for="@booking.RecieveOn" class="text-danger"></span>
@@ -386,7 +386,7 @@
                                 <label asp-for="@booking.ReturnOn" class="control-label"></label>
                                 <input asp-for="@booking.ReturnOn" type="date" id="endDate" class="form-control" />
                                 <span asp-validation-for="@booking.ReturnOn" class="text-danger"></span>
-                            </div> *@
+                            </div>
                             <div class="form-group">
                                 <label asp-for="@booking.Total" class="control-label"></label>
                                 <input asp-for="@booking.Total" id="Total" class="form-control" readonly />
@@ -410,15 +410,29 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary" />
+                                <input type="submit" value="Create" class="btn btn-primary" id="createButton"/>
                             </div>
                         </form>
                     </div>
                 </div>
 
             </div>
-
-
+ *@
+            @{
+                var currentUser = await UserManager.GetUserAsync(User);
+                var booking = new Booking()
+                {
+                    PostId = Model.Id,
+                    UserId = currentUser.Id,
+                    CreatedOn = DateTime.Now,
+                    RecieveOn = DateTime.Today,
+                    ReturnOn = DateTime.Today,
+                    Total = Model!.Price,
+                    FinalValue = Model!.Price,
+                    PrePayment = Model!.Price * (decimal)0.3,
+                };
+                @Html.Partial("../Bookings/Create.cshtml", booking)
+            }
         </div>
         
 </div>
@@ -426,14 +440,17 @@
 
 <div>
     @{
-         // var currentUser = await UserManager.GetUserAsync(User);
+        //var currentUser = await UserManager.GetUserAsync(User);
         if(SignInManager.IsSignedIn(User))
         {
             if (currentUser!.Id == Model.UserId)
             {
-                <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
+                    <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
             }
-                <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Thuê xe</a> 
+            if(Model.IsAvailable == true)
+            {
+                <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Thuê xe</a>
+            }
         }
     }
     <a href="javascript:history.go(-1);">Quay lại</a>
@@ -442,66 +459,71 @@
 
 
 
-    <script>
-        function validateDate() {
-            var startDate = document.getElementById("startDate").value;
-            var endDate = document.getElementById("endDate").value;
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var createButton = document.getElementById("createButton");
+        if (@Model.IsAvailable == false) 
+                createButton.hidden = true;
+    });
+    // function validateDate() {
+    //     var startDate = document.getElementById("startDate").value;
+    //     var endDate = document.getElementById("endDate").value;
 
-            // Chuyển đổi các chuỗi ngày thành đối tượng Date để so sánh
-            var start = new Date(startDate);
-            var end = new Date(endDate);
+    //     // Chuyển đổi các chuỗi ngày thành đối tượng Date để so sánh
+    //     var start = new Date(startDate);
+    //     var end = new Date(endDate);
 
-            // Kiểm tra nếu RecieveOn lớn hơn ReturnOn
-            if (start > end) {
-                // Hiển thị thông báo lỗi
-                alert("RecieveOn không được lớn hơn ReturnOn");
-                // Thiết lập giá trị của RecieveOn là ngày hiện tại
-                document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
-                // Thiết lập giá trị của ReturnOn là ngày kế tiếp của RecieveOn
-                document.getElementById("endDate").value = new Date(start.getTime() + 86400000).toISOString().split('T')[0];
-            }
-        }
-        $(document).ready(function () {
-            $('#startDate, #endDate').change(function () {
-                var startDate = $('#startDate').val();
-                var endDate = $('#endDate').val();
-                var total = @Model!.Price;
-                if (startDate && endDate) {
-                    $.ajax({
-                        url: '/Customer/Bookings/CalculateMiddleDate',
-                        type: 'POST',
-                        data: { startDate: startDate, endDate: endDate, total: total },
-                        success: function (result) {
-                            //var numberOfDays = parseInt(result);
+    //     // Kiểm tra nếu RecieveOn lớn hơn ReturnOn
+    //     if (start > end) {
+    //         // Hiển thị thông báo lỗi
+    //         alert("RecieveOn không được lớn hơn ReturnOn");
+    //         // Thiết lập giá trị của RecieveOn là ngày hiện tại
+    //         document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
+    //         // Thiết lập giá trị của ReturnOn là ngày kế tiếp của RecieveOn
+    //         document.getElementById("endDate").value = new Date(start.getTime() + 86400000).toISOString().split('T')[0];
+    //     }
+    // }
+    // $(document).ready(function () {
+    //     $('#startDate, #endDate').change(function () {
+    //         var startDate = $('#startDate').val();
+    //         var endDate = $('#endDate').val();
+    //         var total = @Model!.Price;
+    //         if (startDate && endDate) {
+    //             $.ajax({
+    //                 url: '/Customer/Bookings/CalculateMiddleDate',
+    //                 type: 'POST',
+    //                 data: { startDate: startDate, endDate: endDate, total: total },
+    //                 success: function (result) {
+    //                     //var numberOfDays = parseInt(result);
 
-                            // $('#middleDate').text(numberOfDays);
-                            $('#Total').val(result);
-                            $('#finalValue').val(result);
-                            $('#prePayment').val(result * 0.5);
-                        }
-                    });
-                }
-            });
-            $('#Total, #promotionSelect').change(function () {
-                var promotionId = $('#promotionSelect').val();
-                var total = $('#Total').val();
+    //                     // $('#middleDate').text(numberOfDays);
+    //                     $('#Total').val(result);
+    //                     $('#finalValue').val(result);
+    //                     $('#prePayment').val(result * 0.5);
+    //                 }
+    //             });
+    //         }
+    //     });
+    //     $('#Total, #promotionSelect').change(function () {
+    //         var promotionId = $('#promotionSelect').val();
+    //         var total = $('#Total').val();
 
-                $.ajax({
-                    url: '/Customer/Bookings/CalculateFinalValue',
-                    type: 'POST',
-                    data: { total: total, promotionId: promotionId },
-                    success: function (result) {
-                        $('#finalValue').val(result.total);
-                        $('#prePayment').val(result.total * 0.5);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-            });
-        });
+    //         $.ajax({
+    //             url: '/Customer/Bookings/CalculateFinalValue',
+    //             type: 'POST',
+    //             data: { total: total, promotionId: promotionId },
+    //             success: function (result) {
+    //                 $('#finalValue').val(result.total);
+    //                 $('#prePayment').val(result.total * 0.5);
+    //             },
+    //             error: function (xhr, status, error) {
+    //                 console.error(error);
+    //             }
+    //         });
+    //     });
+    // });
 
-    </script>
+</script>
 
 
 
