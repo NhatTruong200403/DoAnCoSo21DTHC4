@@ -52,7 +52,15 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                @if(@ViewBag.IsAvailable == false)
+                {
+                    <input type="submit" value="Create" class="btn btn-primary" disabled/>
+                }
+                else
+                {
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                }
+
             </div>
         </form>
     </div>
