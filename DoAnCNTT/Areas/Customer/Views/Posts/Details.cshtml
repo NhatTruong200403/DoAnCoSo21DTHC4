@@ -279,14 +279,17 @@
                     <h2>Comments</h2>
                     @if (ViewData["Cmt"] != null)
                     {
-                        var comments = ViewData["Cmt"] as List<Rating>;
+                        var comments = ViewBag.Cmt as List<Rating>;
                         foreach (var comment in comments)
                         {
                             <div class="comment-avatar">
                                 @{
-                                    var user0 = await UserManager.FindByIdAsync(comment.CreatedById);
+                                    var userComment = await UserManager.FindByIdAsync(comment.CreatedById);
+                                    if (userComment != null)
+                                    {
+                                        <img src="@userComment.Image" alt="hinhanh.jpg" />
+                                    }
                                 }
-                                <img src="@user0.Image" alt="hinhanh.jpg" />
                             </div>
                             <div>
                                 <p>@comment.Comment</p>
@@ -306,14 +309,14 @@
                     }
                     <div>
                         @{
-                            var rating = new Rating()
+                            var newRating = new Rating()
                             {
                                 PostId = Model.Id,
                                 CreatedById = currentUser == null ? null : currentUser!.Id,
                                 CreatedOn = DateTime.Now
 
                             };
-                            <partial name="../Comment/AddComment.cshtml" model="rating" />
+                            <partial name="../Comment/AddComment.cshtml" model="newRating" />
                     }   
                             
                     </div>

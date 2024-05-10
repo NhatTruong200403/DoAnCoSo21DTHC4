@@ -11,5 +11,6 @@ namespace DoAnCNTT.Models
         public DateTime? Birthday { get; set; }
         public ICollection<Post> Posts { get; set; } = new List<Post>();    
         public ICollection<Booking> Booking { get; set; } = new List<Booking>();
+        public ICollection<Rating> Rating { get; set; } = new List<Rating>();
     }
 }
