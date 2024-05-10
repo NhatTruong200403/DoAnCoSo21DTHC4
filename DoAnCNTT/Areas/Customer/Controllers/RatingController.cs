@@ -9,18 +9,18 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    public class CommentController : Controller
+    public class RatingController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public CommentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public RatingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddComment([Bind("PostId,Comment,Point,CreatedById,CreatedOn")] Rating rating)
+        public async Task<IActionResult> AddComment([Bind("PostId,Comment,Point,CreatedById,CreatedOn,UserId")] Rating rating)
         {
             if (rating == null)
             {

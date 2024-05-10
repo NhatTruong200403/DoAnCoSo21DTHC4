@@ -40,6 +40,22 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(await posts);
         }
 
+        public async Task<bool> IsPostAvailable(int postId)
+        {
+            var booking = await _context.Booking
+                        .Where(b => b.PostId == postId)
+                        .OrderByDescending(b => b.Id)
+                        .FirstOrDefaultAsync(); ;
+            if(booking != null)
+            {
+                if (booking.ReturnOn <= DateTime.Now)
+                {
+                    return true;
+                }
+            }    
+            return false;
+        }    
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,6 +72,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
+            post.IsAvailable = await IsPostAvailable(post.Id);
             ViewData["PostAmenities"] = _context.PostAmenities.Include(pa => pa.Amenity).Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity).ToList();
             ViewData["PostIMG"] = _context.Amenities.ToList();
             ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();

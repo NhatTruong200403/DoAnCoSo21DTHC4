@@ -313,10 +313,10 @@
                             {
                                 PostId = Model.Id,
                                 CreatedById = currentUser == null ? null : currentUser!.Id,
-                                CreatedOn = DateTime.Now
-
+                                CreatedOn = DateTime.Now,
+                                UserId = currentUser == null ? null : currentUser!.Id
                             };
-                            <partial name="../Comment/AddComment.cshtml" model="newRating" />
+                            <partial name="../Rating/AddComment.cshtml" model="newRating" />
                     }   
                             
                     </div>

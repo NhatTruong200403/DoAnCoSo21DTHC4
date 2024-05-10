@@ -50,49 +50,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(booking);
         }
 
-        //// GET: Customer/Bookings/Create
-        //public async Task<IActionResult> Create(string userId, int postId)
-        //{
-        //    var post = await _context.Posts.FindAsync(postId);
-        //    var booking = new Booking()
-        //    {
-        //        PostId = postId,
-        //        UserId = userId,
-        //        CreatedOn = DateTime.Now,
-        //        RecieveOn = DateTime.Today,
-        //        ReturnOn = DateTime.Today,
-        //        Total = post!.Price,
-        //        PrePayment = post!.Price * (decimal)0.3,
-        //        FinalValue = post!.Price
-        //    };
-        //    var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
-        //    ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
-        //    //return View(booking);
-        //    return View(booking);
-        //}
-
-
- /*       public async Task<IActionResult> Create(string userId, int postId)
-        {
-            var post = await _context.Posts.FindAsync(postId);
-            var booking = new Booking()
-            {
-                PostId = postId,
-                UserId = userId,
-                CreatedOn = DateTime.Now,
-                RecieveOn = DateTime.Today,
-                ReturnOn = DateTime.Today,
-                Total = post!.Price,
-                FinalValue = post!.Price,
-                PrePayment = post!.Price * (decimal)0.3,
-            };
-            var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
-            ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
-            return PartialView("Create", booking);
-        }*/
-
-
-
         [HttpPost]
         public ActionResult CalculateMiddleDate(string startDate, string endDate, decimal total)
         {
