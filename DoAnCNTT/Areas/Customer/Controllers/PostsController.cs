@@ -16,7 +16,6 @@ using System.Drawing;
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
-
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;

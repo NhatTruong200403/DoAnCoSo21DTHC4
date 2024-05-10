@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DoAnCNTT.Data;
 using DoAnCNTT.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize(Roles = "Customer")]
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +25,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // GET: Customer/Bookings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User);
+            var applicationDbContext = _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User).Where(b => b.IsDeleted == false);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -70,7 +72,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         //}
 
 
-        public async Task<IActionResult> Create(string userId, int postId)
+ /*       public async Task<IActionResult> Create(string userId, int postId)
         {
             var post = await _context.Posts.FindAsync(postId);
             var booking = new Booking()
@@ -87,7 +89,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
             ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
             return PartialView("Create", booking);
-        }
+        }*/
 
 
 
@@ -97,7 +99,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
             DateTime start = DateTime.Parse(startDate);
             DateTime end = DateTime.Parse(endDate);
-            int numberOfDays = (int)(end - start).TotalDays;
+            int numberOfDays = (int)(end - start).TotalHours;
             return Json(numberOfDays*total);
         }
 

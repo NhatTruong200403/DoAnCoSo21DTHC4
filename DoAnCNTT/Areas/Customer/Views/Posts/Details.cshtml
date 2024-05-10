@@ -423,7 +423,7 @@
                 var booking = new Booking()
                 {
                     PostId = Model.Id,
-                    UserId = currentUser!.Id,
+                    UserId = currentUser == null ? null : currentUser!.Id,
                     CreatedOn = DateTime.Now,
                     RecieveOn = DateTime.Today,
                     ReturnOn = DateTime.Today,
@@ -447,10 +447,6 @@
             if (currentUser!.Id == Model.UserId)
             {
                     <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
-            }
-            if(Model.IsAvailable == true)
-            {
-                <a asp-area="Customer" asp-controller="Bookings" asp-action="Create" asp-route-userId="@Model?.UserId" asp-route-postId="@Model?.Id">Thuê xe</a>
             }
         }
     }

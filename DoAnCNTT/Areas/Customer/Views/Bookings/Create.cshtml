@@ -1,73 +1,70 @@
 ﻿@model DoAnCNTT.Models.Booking
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     //Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Booking</h4>
+<h4>Đặt xe</h4>
 <hr />
 <div class="">
     <div class="">
         <form asp-controller="Bookings" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="PostId" class="control-label"></label>
-                <input asp-for="PostId" class="form-control" readonly />
+                <input asp-for="PostId" class="form-control"  />
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control" readonly />
+                <input asp-for="UserId" class="form-control"  />
             </div>
             <div class="form-group">
-                <label asp-for="RecieveOn" class="control-label"></label>
-                <input asp-for="RecieveOn" type="date" id="startDate" class="form-control" />
+                <label asp-for="RecieveOn" class="control-label">Nhận xe</label>
+                <input asp-for="RecieveOn" type="date" id="startDate" class="form-control" onchange="validateDate()" />
                 <span asp-validation-for="RecieveOn" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ReturnOn" class="control-label"></label>
-                <input asp-for="ReturnOn" type="date" id="endDate" class="form-control" />
+                <label asp-for="ReturnOn" class="control-label">Trả xe</label>
+                <input asp-for="ReturnOn" type="date" id="endDate" class="form-control" onchange="validateDate()" />
                 <span asp-validation-for="ReturnOn" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Total" class="control-label"></label>
+                <label asp-for="Total" class="control-label">Tổng cộng</label>
                 <input asp-for="Total" id="Total" class="form-control" readonly />
                 <span asp-validation-for="Total" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PromotionId" class="control-label"></label>
-                <select asp-for="PromotionId" class="form-control" asp-items="ViewBag.Promotions" id="promotionSelect"></select>
+                <label asp-for="PromotionId" class="control-label">Khuyến mãi</label>
+                <select asp-for="PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions"></select>
             </div>
             <div class="form-group">
-                <label asp-for="FinalValue" class="control-label"></label>
+                <label asp-for="FinalValue" class="control-label">Thành tiền</label>
                 <input asp-for="FinalValue" id="finalValue" class="form-control" readonly />
                 <span asp-validation-for="FinalValue" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrePayment" class="control-label"></label>
+                <label asp-for="PrePayment" class="control-label">Đặt cọc</label>
                 <input asp-for="PrePayment" id="prePayment" class="form-control" readonly />
                 <span asp-validation-for="PrePayment" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                @if(@ViewBag.IsAvailable == false)
-                {
-                    <input type="submit" value="Create" class="btn btn-primary" disabled/>
+                @{
+                    if (@ViewBag.IsAvailable == false)
+                    {
+                        <input type="submit" value="Create" class="btn btn-primary" disabled />
+                    }
+                    else
+                    {
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    }
                 }
-                else
-                {
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                }
-
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
@@ -87,7 +84,7 @@
         // Kiểm tra nếu RecieveOn lớn hơn ReturnOn
         if (start > end) {
             // Hiển thị thông báo lỗi
-            alert("RecieveOn không được lớn hơn ReturnOn");
+            alert("Thời gian nhận xe phải trước thời gian trả");
             // Thiết lập giá trị của RecieveOn là ngày hiện tại
             document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
             // Thiết lập giá trị của ReturnOn là ngày kế tiếp của RecieveOn

@@ -10,10 +10,12 @@ using DoAnCNTT.Models;
 using DoAnCNTT.Payment.Momo;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize(Roles = "Customer")]
     public class InvoicesController : Controller
     {
 
@@ -178,6 +180,10 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             if (!Request.Query["errorCode"].Equals("0"))
             {
                 ViewBag.message = "Thanh toán thất bại";
+                booking!.IsDeleted = true;
+                _context.Booking.Update(booking);
+                _context.SaveChanges();
+                await UpdatePostInfo(booking, true, -1);
                 return RedirectToAction("Index", "Bookings");
             }
             else
@@ -193,7 +199,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                     };
                     _context.Invoices.Add(invoice);
                     _context.SaveChanges();
-                    await UpdatePostInfo(booking);
+                    await UpdatePostInfo(booking, false, 1);
 
                 }
 
@@ -203,13 +209,20 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
         }
 
-        private async Task UpdatePostInfo(Booking? booking)
+        private async Task UpdatePostInfo(Booking? booking, bool isAvailable, int rideNumber)
         {
             var post = await _context.Posts.FindAsync(booking!.PostId);
             if (post != null)
             {
-                post.IsAvailable = false;
-                post.RideNumber += 1;
+                post.IsAvailable = isAvailable;
+                if(post.RideNumber == 0 && rideNumber < 0)
+                {
+                    post.RideNumber = 0;
+                }    
+                else
+                {
+                    post.RideNumber += rideNumber;
+                }    
             }
             _context.SaveChanges();
         }
