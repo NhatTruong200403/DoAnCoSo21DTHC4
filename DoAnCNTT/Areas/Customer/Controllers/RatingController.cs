@@ -33,60 +33,56 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             }
             return RedirectToAction("Details", "Posts", new { area = "Customer", id = rating.PostId });
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateComment(int id, [Bind("Id, Comment, Point")] Rating rating)
-        {
-            if (id != rating.Id)
-            {
-                return NotFound();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> UpdateComment(int id, [Bind("Id, Comment, Point")] Rating rating)
+        //{
+        //    if (id != rating.Id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var existingRating = await _context.Ratings.FindAsync(id);
-                    if (existingRating == null)
-                    {
-                        return NotFound();
-                    }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var existingRating = await _context.Ratings.FindAsync(id);
+        //            if (existingRating == null)
+        //            {
+        //                return NotFound();
+        //            }
 
-                    existingRating.Comment = rating.Comment;
-                    existingRating.Point = rating.Point;
+        //            existingRating.Comment = rating.Comment;
+        //            existingRating.Point = rating.Point;
 
-                    _context.Update(existingRating);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RatingExists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-            return View();
-        }
+        //            _context.Update(existingRating);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!RatingExists(id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //    }
+        //    return View();
+        //}
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCommentConfirmed(int id)
+        public async Task<IActionResult> Delete(int id, int postId)
         {
             var rating = await _context.Ratings.FindAsync(id);
             if (rating == null)
             {
                 return NotFound();
             }
-
             _context.Ratings.Remove(rating);
             await _context.SaveChangesAsync();
-
-            return View();
+            return RedirectToAction("Details", "Posts", new { area = "Customer", id = postId}); ;
         }
 
         private bool RatingExists(int id)

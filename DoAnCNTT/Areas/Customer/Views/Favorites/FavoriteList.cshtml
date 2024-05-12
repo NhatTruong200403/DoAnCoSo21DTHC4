@@ -1,0 +1,55 @@
+﻿@model IEnumerable<DoAnCNTT.Models.Favorite>
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "FavoriteList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+<h1>Danh sách xe yêu thích</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Xe
+            </th>
+            @* <th>
+                Hình
+            </th> *@
+            <th>
+                Loại xe
+            </th>
+            <th>
+                Hãng xe
+            </th>
+            <th>
+                Thao tác:
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => @item.Post.Name)
+                </td>
+                @* <td>
+                    <img src="@item.Post.Image" alt="hinhanh.jpg">
+                </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => @item.Post.CarType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => @item.Post.Company)
+                </td>
+                <td>
+                    <a asp-action="Detail" asp-route-id="@item.PostId">Chi tiết</a>
+                    <a asp-action="RemoveFromFavoriteList" asp-route-id="@item.PostId" asp-route-userId="@currentUser.Id">Bỏ yêu thích</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
