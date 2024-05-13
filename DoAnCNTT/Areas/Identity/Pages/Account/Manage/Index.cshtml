@@ -43,7 +43,7 @@
                             </div>
                             <input id="imageUrl" type="file" asp-for="Input.Images" onchange="previewImage(this)" class="form-control" />
                         </div>
-                        @if (user.License == null)
+@*                         @if (user.License == null)
                         {
                             <div class="form-group">
                                 <label asp-for="Input.License" class="control-label">Giấy phép lái xe</label>
@@ -59,7 +59,7 @@
                                 <label asp-for="Input.License" class="control-label">Giấy phép lái xe</label>
                                 <input id="imageUrl" value="Đã có bằng lái" class="form-control" />
                             </div>
-                        }
+                        } *@
                     </div>
                 </div>
                 <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Lưu</button>
