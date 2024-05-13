@@ -288,6 +288,7 @@
                                     if (userComment != null)
                                     {
                                         <img src="@userComment.Image" alt="hinhanh.jpg" />
+                                        <p>@userComment.Name</p>
                                     }
                                 }
                             </div>
@@ -301,6 +302,11 @@
                                     }
                                 </p>
                             </div>
+                            @if(currentUser.Id == comment.UserId)
+                            {
+                                <a asp-action="Delete" asp-controller="Rating" asp-route-id="@comment.Id" asp-route-postId="@Model.Id">Xóa Cmt</a>  
+                            }
+                            
                         }
                     }
                     else
@@ -320,7 +326,9 @@
                     }   
                             
                     </div>
-
+                    <div>
+                        <a class="nav-normal" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+                    </div>
 
 
 

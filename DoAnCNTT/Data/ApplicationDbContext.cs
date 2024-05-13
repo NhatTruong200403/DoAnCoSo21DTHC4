@@ -22,6 +22,7 @@ namespace DoAnCNTT.Data
         public DbSet<Rating> Ratings { get; set; }   
         public DbSet<Company> Companies { get; set; }
         public DbSet<CarTypeDetail> CarTypesDetails { get; set; }
+        public DbSet<Favorite> Favorite { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
