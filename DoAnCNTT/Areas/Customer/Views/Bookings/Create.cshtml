@@ -3,14 +3,13 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    //Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Create";
 }
 
-<h4>Đặt xe</h4>
-<hr />
 <div class="">
-    <div class="">
+    <div class="" style="padding:20px;">
+        @* style="border:1px solid;padding:10px;" *@
+        <h3 style="font-size:30px;">@Model.Total/ngày</h3>
         <form asp-controller="Bookings" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" hidden>
@@ -21,51 +20,86 @@
                 <label asp-for="UserId" class="control-label"></label>
                 <input asp-for="UserId" class="form-control"  />
             </div>
-            <div class="form-group">
-                <label asp-for="RecieveOn" class="control-label">Nhận xe</label>
-                <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
-                <span asp-validation-for="RecieveOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReturnOn" class="control-label">Trả xe</label>
-                <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
-                <span asp-validation-for="ReturnOn" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="RecieveOn" class="control-label">Nhận xe</label>
+                    <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
+                    <span asp-validation-for="RecieveOn" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReturnOn" class="control-label">Trả xe</label>
+                    <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
+                    <span asp-validation-for="ReturnOn" class="text-danger"></span>
+                </div>
             <div class="form-group">
                 <label asp-for="Total" class="control-label">Tổng cộng</label>
-                <input asp-for="Total" id="Total" class="form-control" readonly />
+                <input asp-for="Total" id="Total" class="form-control" readonly style="border:none;background-color:white;" />
                 <span asp-validation-for="Total" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PromotionId" class="control-label">Khuyến mãi</label>
+                <label asp-for="PromotionId" class="control-label">Khuyến mãi: </label>
                 <select asp-for="PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="FinalValue" class="control-label">Thành tiền</label>
-                <input asp-for="FinalValue" id="finalValue" class="form-control" readonly />
-                <span asp-validation-for="FinalValue" class="text-danger"></span>
+            <div style="display:flex;justify-content: space-between;align-items: center; padding:10px;">
+                <div>Thành tiền </div>
+                <div class="form-group">
+                    <input asp-for="FinalValue" id="finalValue" readonly style="border:none;background-color:white;" />
+                    <span asp-validation-for="FinalValue" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
+            <div style="display:flex;justify-content: space-between;align-items: center; padding:10px;">
+                <div>Đặt cọc</div>
+                <div class="form-group">
+                    <input asp-for="PrePayment" id="prePayment" readonly style="border:none;background-color:white;" />
+                    <span asp-validation-for="PrePayment" class="text-danger"></span>
+                </div>
+            </div>
+          @*   <div class="form-group">
                 <label asp-for="PrePayment" class="control-label">Đặt cọc</label>
-                <input asp-for="PrePayment" id="prePayment" class="form-control" readonly />
+                <input asp-for="PrePayment" id="prePayment" class="form-control" readonly style="border:none;background-color:white;" />
                 <span asp-validation-for="PrePayment" class="text-danger"></span>
             </div>
-
+ *@
             <div class="form-group">
                 @{
                     if (@ViewBag.IsAvailable == false)
                     {
-                        <input type="submit" value="Create" class="btn btn-primary" disabled />
+                        <input type="submit" value="Create" class="btn btn-primary w" disabled />
                     }
                     else
                     {
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Create" class="btn btn-primary w" />
                     }
                 }
             </div>
         </form>
     </div>
 </div>
+
+
+<style>
+    .w{
+        width:100%;
+    }
+    .date-time-form {
+        position: relative;
+        display: flex;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        background: #fff;
+        margin-bottom: 12px;
+    }
+
+    .date-time-form .form-item {
+        width: 100%;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        grid-gap: 8px;
+        gap: 8px;
+        cursor: pointer;
+    }
+</style>
+
 
 @section Scripts {
     @{

@@ -1,20 +1,39 @@
-﻿@inject SignInManager<ApplicationUser> SignInManager
+﻿
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var currentUser = await UserManager.GetUserAsync(User); 
+}
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
 <ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+    <li class="nav-item"><a class="nav-link den @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Thông tin cá nhân</a></li>
+    @if (User.IsInRole("Customer"))
+    {
+        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe của bạn</a></li
+        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Hóa đơn đặt xe</a></li
+        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Đặt xe</a></li
+        <li class="nav-item"> <a class="nav-link den" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">Danh sách yêu thích</a></li>
+    }
+    
+    <li class="nav-item"><a class="nav-link den @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Thay đổi Email</a></li>
+    <li class="nav-item"><a class="nav-link den @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link den @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">Liên kết tài khoản</a></li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li
-     <li class="nav-item margintop">
+    <li class="nav-item"><a class="nav-link den @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Xác thực hai lớp</a></li>
+    <li class="nav-item"><a class="nav-link den @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Quản lý tài khoản</a></li
+    <li class="margintop" >
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            <button style="margin-left:15px;" type="submit" class="nav-link btn btn-link text-dark">Đăng xuất </button>
         </form>
     </li>
 </ul>
+<style>
+    .den{
+        color:black;
+    }
+</style>

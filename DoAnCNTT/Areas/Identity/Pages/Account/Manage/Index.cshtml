@@ -43,23 +43,7 @@
                             </div>
                             <input id="imageUrl" type="file" asp-for="Input.Images" onchange="previewImage(this)" class="form-control" />
                         </div>
-@*                         @if (user.License == null)
-                        {
-                            <div class="form-group">
-                                <label asp-for="Input.License" class="control-label">Giấy phép lái xe</label>
-                                <input id="imageUrl1" type="file" onchange="previewLicense(this)" asp-for="Input.License" class="form-control" />
-                                <div class="" style="margin:20px;">
-                                    <img class="disnon" style="margin:20px;height:200px;" id="productImage1" src="@Url.Content(user.License)" alt="Image" />
-                                </div>
-                            </div>
-                        }
-                        @if (user.License != null)
-                        {
-                            <div class="form-group" style="margin:20px;margin-left:0px;">
-                                <label asp-for="Input.License" class="control-label">Giấy phép lái xe</label>
-                                <input id="imageUrl" value="Đã có bằng lái" class="form-control" />
-                            </div>
-                        } *@
+                    
                     </div>
                 </div>
                 <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Lưu</button>

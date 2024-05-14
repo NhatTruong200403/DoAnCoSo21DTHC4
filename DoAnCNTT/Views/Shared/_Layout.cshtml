@@ -24,7 +24,7 @@
     <header>
         <h2 class="logo">CarRent</h2>
         <nav class="nav">
-            <a class="nav-normal" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a class="nav-normal" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
             <a class="nav-normal" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             @if(User.IsInRole("Admin"))
             {
@@ -33,13 +33,13 @@
                 <a class="nav-normal" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">CarTypes</a>
                 <a class="nav-normal" asp-area="Admin" asp-controller="Companies" asp-action="Index">Companies</a>
             }
-            @if (User.IsInRole("Customer"))
+           @*  @if (User.IsInRole("Customer"))
             {
                 <a class="nav-normal" asp-area="Customer" asp-controller="Posts" asp-action="Index">Posts</a>
                 <a class="nav-normal" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Invoices</a>
                 <a class="nav-normal" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Bookings</a>
                 <a class="nav-normal" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">FavoriteList</a>
-            }
+            } *@
             <partial name="_LoginPartial" />
         </nav>
     </header>
@@ -60,7 +60,6 @@
                
             </div>
             <div class="logo_Big"><img src="@Url.Content("~/images/logo/abc_preview_rev_1.png")" alt=""></div>
-
         </div>
         <div class="copyright">
             <p>Bản quyền © 2024 - DoAnCNTT.</p>

@@ -69,8 +69,6 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             public string FullName { get; set; }
             [Display(Name = "Images")]
             public string Images { get; set; }
-            [Display(Name = "License")]
-            public string? License { get; set; }
             [Display(Name = "Birthday")]
             public DateTime? Birthday { get; set; }
         }
@@ -161,10 +159,6 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
                     {
                         currentUser.Image = newImagePath;
                     }
-                    else if (file.Name == "Input.License") 
-                    {
-                        currentUser.License = newImagePath;
-                    }
                 }
 
                 await _context.SaveChangesAsync();
@@ -172,7 +166,6 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account.Manage
             else
             {
                 currentUser.Image = user.Image;
-                currentUser.License = user.License;
                 await _context.SaveChangesAsync();
             }
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

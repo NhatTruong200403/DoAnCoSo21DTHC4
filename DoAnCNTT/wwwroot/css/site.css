@@ -9,7 +9,7 @@
     font-style: normal;
 }
 body {
-    background: url(/images/background.jpg) no-repeat;
+    /*background: url(/images/background.jpg) no-repeat;*/
     background-size: cover;
     background-position: center;
     margin-bottom: 60px;
@@ -25,11 +25,12 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 100px;
+    /*padding: 20px 100px;*/
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid black;
+    /*border: 1px solid black;*/
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 html {
