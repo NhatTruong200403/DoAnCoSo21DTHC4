@@ -347,7 +347,7 @@
                     UserId = currentUser == null ? null : currentUser!.Id,
                     CreatedOn = DateTime.Now,
                     RecieveOn = DateTime.Today,
-                    ReturnOn = DateTime.Today,
+                    ReturnOn = DateTime.Today.AddDays(1),
                     Total = Model!.Price,
                     FinalValue = Model!.Price,
                     PrePayment = Model!.Price * (decimal)0.3,
