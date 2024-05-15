@@ -25,11 +25,19 @@ namespace DoAnCNTT.Data
         public DbSet<Favorite> Favorite { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
-
             builder.Entity<Invoice>()
                 .HasKey(i => i.Id);
             base.OnModelCreating(builder);
+
+            builder.Entity<Favorite>()
+           .HasOne(f => f.User)
+           .WithMany(u => u.Favorites)
+           .HasForeignKey(f => f.UserId);
+
+            builder.Entity<Favorite>()
+                .HasOne(f => f.Post)
+                .WithMany(p => p.Favorites)
+                .HasForeignKey(f => f.PostId);
         }
     }
 }

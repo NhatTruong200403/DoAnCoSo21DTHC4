@@ -12,9 +12,9 @@
     <li class="nav-item"><a class="nav-link den @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Thông tin cá nhân</a></li>
     @if (User.IsInRole("Customer"))
     {
-        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe của bạn</a></li
-        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Hóa đơn đặt xe</a></li
-        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Đặt xe</a></li
+        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe cho thuê của bạn</a></li
+        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Hóa đơn đặt cọc</a></li
+        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Lịch sử đặt xe</a></li
         <li class="nav-item"> <a class="nav-link den" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">Danh sách yêu thích</a></li>
     }
     

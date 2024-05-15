@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DoAnCNTT.Data;
+using DoAnCNTT.Models;
+using DoAnCNTT.Models.Utilities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DoAnCNTT.Data;
-using DoAnCNTT.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using System.Runtime.ConstrainedExecution;
-using DoAnCNTT.Models.Utilities;
-using System.Drawing;
 
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
@@ -40,21 +34,30 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(await posts);
         }
 
-        public async Task<bool> IsPostAvailable(int postId)
+        public async Task IsPostAvailable(Post post)
         {
             var booking = await _context.Booking
-                        .Where(b => b.PostId == postId)
+                        .Where(b => b.PostId == post.Id)
                         .OrderByDescending(b => b.Id)
-                        .FirstOrDefaultAsync(); ;
-            if(booking != null)
+                        .FirstOrDefaultAsync();
+            if (booking != null)
             {
                 if (booking.ReturnOn <= DateTime.Now)
                 {
-                    return true;
+                    post.IsAvailable = true;
                 }
-            }    
-            return false;
-        }    
+                else
+                {
+                    post.IsAvailable = false;
+                }
+            }
+            else
+            {
+                post.IsAvailable = true;
+            }
+            _context.Posts.Update(post);
+            _context.SaveChanges();
+        }
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -72,13 +75,13 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
-            post.IsAvailable = await IsPostAvailable(post.Id);
+            await IsPostAvailable(post);
             ViewData["PostAmenities"] = _context.PostAmenities.Include(pa => pa.Amenity).Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity).ToList();
             ViewData["PostIMG"] = _context.Amenities.ToList();
             ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();
-            ViewData["Comment"] = _context.Ratings.Where(p => p.PostId == id).Select(p=>p.Comment).ToList();
+            ViewData["Comment"] = _context.Ratings.Where(p => p.PostId == id).Select(p => p.Comment).ToList();
             ViewData["Star"] = _context.Ratings.Where(p => p.PostId == id).Select(p => p.Point).ToList();
-            ViewData["Cmt"] = _context.Ratings.Where(p=>p.PostId == id).ToList();
+            ViewData["Cmt"] = _context.Ratings.Where(p => p.PostId == id).ToList();
             var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
             ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
             return View(post);
@@ -166,7 +169,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Customer")]
-        public async Task<IActionResult> Create([Bind("Name,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post,string Gear, IFormFile? Image, List<IFormFile> Images, int[] SelectedAmenities)
+        public async Task<IActionResult> Create([Bind("Name,Description,Seat,RentLocation,HasDriver,Price,Fuel,FuelConsumed,CarTypeId,CompanyId,Id")] Post post, string Gear, IFormFile? Image, List<IFormFile> Images, int[] SelectedAmenities)
         {
             if (ModelState.IsValid)
             {
@@ -256,7 +259,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return false;
         }
 
-        public async Task<Post?> GetExistingPost(int id) 
+        public async Task<Post?> GetExistingPost(int id)
                 => await _context.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
 
         // POST: Customer/Posts/Edit/5
@@ -316,7 +319,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 await SavePostAmenitiesAsync(post.Id, SelectedAmenities);
                 EditHelper<Post>.SetModifiedIfNecessary(post, true, existingPost, user!.Id);
             }
-            else 
+            else
             {
                 bool hasChanges = EditHelper<Post>.HasChanges(post, existingPost); //Hàm kiểm tra
                 EditHelper<Post>.SetModifiedIfNecessary(post, hasChanges, existingPost, user!.Id);  //Hàm cập nhật nếu thay đổi
@@ -324,7 +327,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             if (ModelState.IsValid)
             {
                 try
-                { 
+                {
                     _context.Update(post);
                     await _context.SaveChangesAsync();
 
@@ -395,7 +398,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             var commment = await _context.Ratings.Where(p => p.PostId == id).ToListAsync();
             return RedirectToAction(nameof(Details));
         }
-        
+
     }
 
 }

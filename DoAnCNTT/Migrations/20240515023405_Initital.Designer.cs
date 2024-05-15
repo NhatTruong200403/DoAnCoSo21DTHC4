@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240512060504_v1")]
-    partial class v1
+    [Migration("20240515023405_Initital")]
+    partial class Initital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -298,6 +298,44 @@ namespace DoAnCNTT.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("DoAnCNTT.Models.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favorite");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
@@ -771,6 +809,23 @@ namespace DoAnCNTT.Migrations
                     b.Navigation("Company");
                 });
 
+            modelBuilder.Entity("DoAnCNTT.Models.Favorite", b =>
+                {
+                    b.HasOne("DoAnCNTT.Models.Post", "Post")
+                        .WithMany("Favorites")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DoAnCNTT.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Post");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
                 {
                     b.HasOne("DoAnCNTT.Models.Booking", "Booking")
@@ -947,6 +1002,8 @@ namespace DoAnCNTT.Migrations
             modelBuilder.Entity("DoAnCNTT.Models.Post", b =>
                 {
                     b.Navigation("Booking");
+
+                    b.Navigation("Favorites");
 
                     b.Navigation("Images");
 

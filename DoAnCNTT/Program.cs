@@ -27,7 +27,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
 var configuration = builder.Configuration;
-
+/*
 builder.Services.AddAuthentication().AddGoogle(options =>
 {
     options.ClientId = configuration["Authentication:Google:ClientId"];
@@ -38,7 +38,7 @@ builder.Services.AddAuthentication().AddGoogle(options =>
         context.Identity.AddClaim(new Claim("picture", context.User.GetProperty("picture").ToString()));
         return Task.CompletedTask;
     };
-});
+});*/
 
 
 var app = builder.Build();

@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using DoAnCNTT.Data;
 using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize(Roles = "Customer")]
     public class FavoritesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,6 +23,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             _userManager = userManager;
             _context = context;
         }
+
         [HttpGet]
         public async Task<IActionResult> AddToFavorite(int id, string userId)
         {
@@ -29,17 +32,21 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return BadRequest("Khong tim thay bai dang");
             }
-            var excistingFavorite = await _context.Favorite.FirstOrDefaultAsync(p => p.PostId == id && p.UserId == userId);
-            if (excistingFavorite == null)
+            var existingFavorite = await _context.Favorite.FirstOrDefaultAsync(p => p.PostId == id && p.UserId == userId);
+            if (existingFavorite == null)
             {
                 var Favorite = new Favorite
-                {   UserId = userId,
+                {
+                    UserId = userId,
                     PostId = id
                 };
                 _context.Favorite.Add(Favorite);
                 _context.SaveChanges();
                 return RedirectToAction("Details", "Posts", new { area = "Customer", id = id });
             }
+            existingFavorite.IsDeleted = false;
+            _context.Favorite.Update(existingFavorite);
+            _context.SaveChanges();
             return RedirectToAction("Details", "Posts", new { area = "Customer", id = id });
         }
         public IActionResult Detail(int id)
@@ -48,28 +55,31 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         }
         public IActionResult FavoriteList(string userId)
         {
-            ViewData["Car"] = _context.Favorite.Select(p=>p.Post.Name).ToList();
-            ViewData["Image"] = _context.Favorite.Select(p => p.Post.Image).ToList();
-            ViewData["CarType"] = _context.Favorite.Select(p => p.Post.CarType.Name).ToList();
-            ViewData["Company"] = _context.Favorite.Select(p=> p.Post.Company.Name).ToList();
-            var Favorite = _context.Favorite.Where(p=>p.UserId == userId).ToList();
-            return View(Favorite);
+            var favorites = _context.Favorite
+                                .Include(f => f.Post)
+                                .ThenInclude(p => p.CarType)
+                                .Include(f => f.Post)
+                                .ThenInclude(p => p.Company)
+                                .Where(f => f.UserId == userId && f.IsDeleted == false)
+                                .ToList();
+            return View(favorites);
         }
         [HttpGet]
         public async Task<IActionResult> RemoveFromFavoriteList(int? id, string userId)
         {
-            if(userId == null || id == null)
+            if (userId == null || id == null)
             {
                 return NotFound();
             }
-            var FavoriteList = await _context.Favorite.Where(p=>p.PostId == id && p.UserId == userId).FirstOrDefaultAsync();
-            if(FavoriteList == null)
+            var favoritePost = await _context.Favorite.Where(p => p.PostId == id && p.UserId == userId).FirstOrDefaultAsync();
+            if (favoritePost == null)
             {
                 return NotFound();
             }
-            _context.Remove(FavoriteList);
+            favoritePost.IsDeleted = true;
+            _context.Favorite.Update(favoritePost);
             _context.SaveChanges();
-            return RedirectToAction("FavoriteList", new {userId = userId});
+            return RedirectToAction("FavoriteList", new { userId = userId });
         }
     }
 }

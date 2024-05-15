@@ -12,5 +12,6 @@ namespace DoAnCNTT.Models
         public ICollection<Post> Posts { get; set; } = new List<Post>();    
         public ICollection<Booking> Booking { get; set; } = new List<Booking>();
         public ICollection<Rating> Rating { get; set; } = new List<Rating>();
+        public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
     }
 }

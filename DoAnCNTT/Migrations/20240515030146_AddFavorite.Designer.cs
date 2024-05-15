@@ -4,6 +4,7 @@ using DoAnCNTT.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240515030146_AddFavorite")]
+    partial class AddFavorite
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,7 +56,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenities", (string)null);
+                    b.ToTable("Amenities");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.ApplicationUser", b =>
@@ -191,7 +194,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Booking", (string)null);
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.CarType", b =>
@@ -222,7 +225,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CarTypes", (string)null);
+                    b.ToTable("CarTypes");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.CarTypeDetail", b =>
@@ -260,7 +263,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("CarTypesDetails", (string)null);
+                    b.ToTable("CarTypesDetails");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Company", b =>
@@ -294,7 +297,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Favorite", b =>
@@ -332,7 +335,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Favorite", (string)null);
+                    b.ToTable("Favorite");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Invoice", b =>
@@ -371,7 +374,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("BookingId");
 
-                    b.ToTable("Invoices", (string)null);
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Post", b =>
@@ -450,7 +453,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.PostAmenity", b =>
@@ -488,7 +491,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostAmenities", (string)null);
+                    b.ToTable("PostAmenities");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.PostImages", b =>
@@ -509,7 +512,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostImages", (string)null);
+                    b.ToTable("PostImages");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Promotion", b =>
@@ -546,7 +549,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Promotions", (string)null);
+                    b.ToTable("Promotions");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Rating", b =>
@@ -590,7 +593,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("DoAnCNTT.Models.Report", b =>
@@ -626,7 +629,7 @@ namespace DoAnCNTT.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Report", (string)null);
+                    b.ToTable("Report");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
