@@ -28,6 +28,8 @@
     <Folder Include="Areas\Customer\Data\" />
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
+    <Folder Include="Areas\Employee\Data\" />
+    <Folder Include="Areas\Employee\Models\" />
     <Folder Include="wwwroot\images\amenities\" />
     <Folder Include="wwwroot\images\companies\" />
     <Folder Include="wwwroot\images\post\" />

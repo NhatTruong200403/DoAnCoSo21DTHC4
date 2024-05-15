@@ -22,11 +22,32 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             _context = context;
         }
 
+        public void UpdateBookingStatus(List<Booking> bookings)
+        {
+            //var bookings = _context.Booking.Where(p => p.RecieveOn <= DateTime.Now && p.ReturnOn).ToList();
+            foreach (var item in bookings)
+            {
+                if(item.RecieveOn <= DateTime.Now && item.ReturnOn >= DateTime.Now)
+                {
+                    item.Status = "Đang thuê";
+                }    
+                if(item.ReturnOn < DateTime.Now)
+                {
+                    item.Status = "Hoàn tất";
+                }
+                _context.Booking.Update(item);
+                _context.SaveChanges();
+            }
+
+            
+        }
+
         // GET: Customer/Bookings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User).Where(b => b.IsDeleted == false);
-            return View(await applicationDbContext.ToListAsync());
+            var bookings = await _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User).Where(b => b.IsDeleted == false).ToListAsync();
+            UpdateBookingStatus(bookings);
+            return View(bookings);
         }
 
         // GET: Customer/Bookings/Details/5
@@ -79,8 +100,11 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id,CreatedById,CreatedOn,ModifiedById,ModifiedOn,IsDeleted")] Booking booking)
+        public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id,IsComplete,IsConfirm")] Booking booking)
         {
+            booking.CreatedOn = DateTime.Now;
+            booking.Status = "Đang chờ";
+            booking.IsRequest = false;
             if (ModelState.IsValid)
             {
                 _context.Add(booking);
@@ -122,7 +146,9 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             var booking = await _context.Booking.FindAsync(id);
             if (booking != null)
             {
-                _context.Booking.Remove(booking);
+                booking.IsRequest = true;
+                booking.Status = "Đang xử lí";
+                _context.Booking.Update(booking);
             }
 
             await _context.SaveChangesAsync();

@@ -42,14 +42,22 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                         .FirstOrDefaultAsync();
             if (booking != null)
             {
-                if (booking.ReturnOn <= DateTime.Now)
+                if(booking.RecieveOn > DateTime.Now && booking.ReturnOn > DateTime.Now)
                 {
                     post.IsAvailable = true;
-                }
-                else
+                }    
+                if (booking.RecieveOn <= DateTime.Now)
                 {
                     post.IsAvailable = false;
                 }
+                if (booking.ReturnOn <= DateTime.Now)
+                {
+                    post.IsAvailable = true;
+                }    
+                if(booking.IsDeleted == true)
+                {
+                    post.IsAvailable = true;
+                }    
             }
             else
             {

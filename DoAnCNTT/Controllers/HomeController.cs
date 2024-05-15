@@ -25,10 +25,21 @@ namespace DoAnCNTT.Controllers
         }
 
 
+        public void UpdateExpiredPromotion()
+        {
+            var expiredPromotions = _context.Promotions.Where(p => p.ExpiredDate <= DateTime.Now).ToList();
+            foreach(var item in expiredPromotions)
+            {
+                item.IsDeleted = true;
+                _context.Promotions.Update(item);
+                _context.SaveChanges(); 
+            }    
+        }
 
         public IActionResult Index()
         {
             var post = _context.Posts.ToList();
+            UpdateExpiredPromotion();
             return View(post);
         }
 

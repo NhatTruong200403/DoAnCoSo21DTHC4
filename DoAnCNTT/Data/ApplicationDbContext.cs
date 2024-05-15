@@ -39,5 +39,6 @@ namespace DoAnCNTT.Data
                 .WithMany(p => p.Favorites)
                 .HasForeignKey(f => f.PostId);
         }
+        public DbSet<DoAnCNTT.Models.Report> Report { get; set; } = default!;
     }
 }

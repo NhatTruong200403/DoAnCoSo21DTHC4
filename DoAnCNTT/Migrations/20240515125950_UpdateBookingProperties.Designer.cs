@@ -4,6 +4,7 @@ using DoAnCNTT.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240515125950_UpdateBookingProperties")]
+    partial class UpdateBookingProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,13 +153,16 @@ namespace DoAnCNTT.Migrations
                     b.Property<decimal>("FinalValue")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsConfirm")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPay")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRequest")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedById")
@@ -179,9 +185,6 @@ namespace DoAnCNTT.Migrations
 
                     b.Property<DateTime>("ReturnOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");

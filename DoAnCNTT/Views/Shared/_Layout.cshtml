@@ -28,10 +28,15 @@
             <a class="nav-normal" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             @if(User.IsInRole("Admin"))
             {
-                <a class="nav-normal" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Promotions</a>
-                <a class="nav-normal" asp-area="Admin" asp-controller="Amenities" asp-action="Index">Amenities</a>
-                <a class="nav-normal" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">CarTypes</a>
-                <a class="nav-normal" asp-area="Admin" asp-controller="Companies" asp-action="Index">Companies</a>
+                <a class="nav-normal" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Khuyến mãi</a>
+                <a class="nav-normal" asp-area="Admin" asp-controller="Amenities" asp-action="Index">Tiện nghi</a>
+                <a class="nav-normal" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">Loại xe</a>
+                <a class="nav-normal" asp-area="Admin" asp-controller="Companies" asp-action="Index">Hãng xe</a>
+            }
+            @if (User.IsInRole("Employee"))
+            {
+                <a class="nav-normal" asp-area="Employee" asp-controller="Reports" asp-action="Index">Vi phạm</a>
+                <a class="nav-normal" asp-area="Employee" asp-controller="Bookings" asp-action="Index">Yêu cầu hủy chuyến</a>
             }
            @*  @if (User.IsInRole("Customer"))
             {

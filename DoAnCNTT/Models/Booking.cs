@@ -10,6 +10,8 @@ namespace DoAnCNTT.Models
         public DateTime RecieveOn { get; set; }
         public DateTime ReturnOn { get; set; }
         public bool IsPay {  get; set; }
+        public string? Status {  get; set; }
+        public bool IsRequest { get; set; }
         public int PostId { get; set; }
         [ValidateNever]
         public Post Post { get; set; } = null!;

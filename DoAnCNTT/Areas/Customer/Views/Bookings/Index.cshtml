@@ -31,6 +31,9 @@
             <th>
                 Đặt cọc
             </th>
+            <th>
+                Trạng thái
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -54,6 +57,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PrePayment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
