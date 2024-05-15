@@ -49,7 +49,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
             return View(booking);
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult CalculateMiddleDate(string startDate, string endDate, decimal total)
         {
@@ -59,7 +59,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             int numberOfDays = (int)(end - start).TotalHours;
             return Json(numberOfDays*total);
         }
-
+        [AllowAnonymous]
         public IActionResult CalculateFinalValue(decimal total, int promotionId)
         { 
             // Lấy giá trị Promotion tương ứng từ CSDL
@@ -74,9 +74,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             }
         }
 
-        // POST: Customer/Bookings/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id,CreatedById,CreatedOn,ModifiedById,ModifiedOn,IsDeleted")] Booking booking)

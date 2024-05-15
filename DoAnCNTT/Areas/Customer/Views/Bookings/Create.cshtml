@@ -8,7 +8,6 @@
 
 <div class="">
     <div class="" style="padding:20px;">
-        @* style="border:1px solid;padding:10px;" *@
         <h3 style="font-size:30px;">@Model.Total/ngày</h3>
         <form asp-controller="Bookings" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -20,16 +19,16 @@
                 <label asp-for="UserId" class="control-label"></label>
                 <input asp-for="UserId" class="form-control"  />
             </div>
-                <div class="form-group">
-                    <label asp-for="RecieveOn" class="control-label">Nhận xe</label>
-                    <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
-                    <span asp-validation-for="RecieveOn" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="ReturnOn" class="control-label">Trả xe</label>
-                    <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
-                    <span asp-validation-for="ReturnOn" class="text-danger"></span>
-                </div>
+            <div class="form-group">
+               <label asp-for="RecieveOn" class="control-label">Nhận xe</label>
+               <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
+               <span asp-validation-for="RecieveOn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+               <label asp-for="ReturnOn" class="control-label">Trả xe</label>
+               <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
+               <span asp-validation-for="ReturnOn" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Total" class="control-label">Tổng cộng</label>
                 <input asp-for="Total" id="Total" class="form-control" readonly style="border:none;background-color:white;" />
@@ -136,9 +135,6 @@
                     type: 'POST',
                     data: { startDate: startDate, endDate: endDate, total: total },
                     success: function (result) {
-                        //var numberOfDays = parseInt(result);
-
-                        // $('#middleDate').text(numberOfDays);
                         $('#Total').val(result);
                         $('#finalValue').val(result);
                         $('#prePayment').val(result * 0.5);
