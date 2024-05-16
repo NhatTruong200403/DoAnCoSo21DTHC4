@@ -21,7 +21,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         {
             _context = context;
         }
-
+        
         public void UpdateBookingStatus(List<Booking> bookings)
         {
             //var bookings = _context.Booking.Where(p => p.RecieveOn <= DateTime.Now && p.ReturnOn).ToList();

@@ -4,6 +4,9 @@
     ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<p>
+    <a asp-area="Customer" asp-controller="Posts" asp-action="Create">Tạo bài đăng </a>
+</p>
 <section class="py-2">
     <div class="container ">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
@@ -12,15 +15,9 @@
             {
 
                 <div class="box" style="padding:3px;margin-left:20px;">
-                    @*
-                <div class="pta">
-                <img src="@item.Image" alt="">
-                </div> *@
-
                     <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
                         <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
                     </div>
-
                     <div class="ptb">
                         @if (item.Gear)
                         {
@@ -42,21 +39,27 @@
                     <hr>
                     <div class="pte">
                         <div class="pte_left">
+                           @*  Chưa xong *@
                             <div class="dgsao">
                                 <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
                                 <span class="text_saodanhgia">5.0</span>
                             </div>
-
-                            <div class="sochuyen">
-                                <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
-                                <div class="text_sochuyen">20 chuyến</div>
-                            </div>
-                            <!-- <div class="sochuyen">
-                                Chưa có chuyến.
-                            </div> -->
+                            @if(item.RideNumber > 0)
+                            {
+                                <div class="sochuyen">
+                                    <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
+                                    <div class="text_sochuyen">20 chuyến</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="sochuyen">
+                                    Chưa có chuyến.
+                                </div>
+                            }
+                            
                         </div>
                         <div class="pte_right">
-                            @* <div class="giagoc">100k</div> *@
                             <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
                         </div>
                     </div>

@@ -126,6 +126,12 @@
 
             <div>
                 <div style="font-weight:bold;" class="mar font">Mô tả</div>
+                @if (Model.HasDriver == true)
+                {
+                    <div>
+                        Xe có tài xế
+                    </div>
+                }
                 <div>
                     @Html.DisplayFor(model => model.Description)
                 </div>
@@ -182,20 +188,6 @@
                                 <img style="width:35px;margin-right:10px;" src="@Url.Content("~/images/logo/gplx_passport.png")" />
                                   GPLX(Đối chiếu) & Passport(Giữ lại)
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <div style="font-weight:bold;" class="font">
-                    Tài sản thế chấp ?
-                </div>
-                <div>
-                    <div class="flex-container mar">
-                        <div class="small-div"></div>
-                        <div class="large-div">
-                            <span> 15 triệu (tiền mặt/chuyển khoản cho chủ xe khi nhận xe) hoặc Xe máy (kèm cà vẹt gốc) giá trị 15 triệu</span>
                         </div>
                     </div>
                 </div>
@@ -304,6 +296,9 @@
                                     {
                                         <img width="24px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt="">
                                     }
+                                </p>
+                                <p>
+                                    Cmt: @comment.Comment
                                 </p>
                             </div>
                             @if (currentUser != null && currentUser!.Id == comment.UserId)

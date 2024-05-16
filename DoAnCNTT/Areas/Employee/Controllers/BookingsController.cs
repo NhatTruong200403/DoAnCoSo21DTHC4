@@ -58,11 +58,11 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             var refundValue = (double)invoice!.Total;
             var refundHours = (booking.RecieveOn - DateTime.Now).TotalHours;
             var createHours = (booking.CreatedOn - DateTime.Now).TotalHours;
-            if (refundHours > 168)
+            if (refundHours > 168 && createHours > 1)
             {
                 refundValue = refundValue * 0.7;
             }
-            else if(refundHours <= 168) 
+            else if(refundHours <= 168 && createHours > 1) 
             {
                 refundValue = 0;
             }
