@@ -39,7 +39,6 @@ var configuration = builder.Configuration;
         return Task.CompletedTask;
     };
 });*/
-//test commit
 
 var app = builder.Build();
 
