@@ -10,6 +10,7 @@ using DoAnCNTT.Data;
 
 namespace DoAnCNTT.Controllers
 {
+    //TestPush
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
