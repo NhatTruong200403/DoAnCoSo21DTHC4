@@ -41,7 +41,7 @@
             </td>
             <td>
                 <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">Details</a> 
-                <a asp-action="RemoveFromFavoriteList" asp-route-id="@item.Id" asp-route-userId="@item.UserId">Delete</a>
+                <a asp-action="RemoveFromFavoriteList" asp-route-id="@item.PostId" asp-route-userId="@item.UserId">Delete</a>
             </td>
         </tr>
 }
