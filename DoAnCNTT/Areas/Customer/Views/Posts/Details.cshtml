@@ -341,8 +341,8 @@
                     PostId = Model.Id,
                     UserId = currentUser == null ? null : currentUser!.Id,
                     CreatedOn = DateTime.Now,
-                    RecieveOn = DateTime.Today,
-                    ReturnOn = DateTime.Today.AddDays(1),
+                    RecieveOn = DateTime.Now,
+                    ReturnOn = DateTime.Now.AddDays(1),
                     Total = Model!.Price,
                     FinalValue = Model!.Price,
                     PrePayment = Model!.Price * (decimal)0.3,
@@ -365,6 +365,7 @@
             }
         }
     }
+    <a asp-area="Employee" asp-controller="Reports" asp-action="Create" asp-route-id="@Model?.Id">Báo cáo bài viết</a>
     <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
 
