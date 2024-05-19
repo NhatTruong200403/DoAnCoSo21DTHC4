@@ -97,7 +97,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id,IsComplete,IsConfirm")] Booking booking)
+        public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id")] Booking booking)
         {
             booking.CreatedOn = DateTime.Now;
             booking.Status = "Đang chờ";
