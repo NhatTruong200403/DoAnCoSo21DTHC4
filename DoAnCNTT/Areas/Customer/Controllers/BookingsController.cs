@@ -70,15 +70,15 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 return NotFound();
             }
             var post = _context.Posts.FirstOrDefault(p => p.Id == booking.PostId);
-            var user = await _userManager.FindByIdAsync(post.CreatedById);
-            var tiengoc = booking.Total;
+            var user = await _userManager.FindByIdAsync(post!.CreatedById);
+            var originValue = booking.Total;
             if (booking.PromotionId != null)
             {
-                tiengoc = (int)(booking.Total / (1 - booking.Promotion.DiscountValue));
+                originValue = (int)(booking.Total / (1 - booking.Promotion.DiscountValue));
             }
             ViewBag.User = user;
             ViewBag.Post = post;
-            ViewBag.Sum = tiengoc;
+            ViewBag.Sum = originValue;
             return View(booking);
         
         }
@@ -126,7 +126,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
             ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
-            return View(booking);
+            return  RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
         }
 
         // GET: Customer/Bookings/Delete/5
