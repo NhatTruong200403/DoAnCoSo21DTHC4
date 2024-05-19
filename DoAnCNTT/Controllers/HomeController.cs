@@ -7,10 +7,10 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using DoAnCNTT.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DoAnCNTT.Controllers
 {
-    //TestPush
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -37,12 +37,42 @@ namespace DoAnCNTT.Controllers
             }    
         }
 
-        public IActionResult Index()
+        public async Task<List<string?>> SearchSuggestions(string query)
         {
-            var post = _context.Posts.Where(p => p.IsDeleted == false).ToList();
-            UpdateExpiredPromotion();
-            return View(post);
+            return await _context.Posts
+
+            .Where(p => p.Name.Contains(query))
+            .Select(p => p.Name).Distinct()
+            .ToListAsync();
         }
+
+        public async Task<IActionResult> Index(string query, int pageNumber = 1)
+        {
+            int pageSize = 1;
+            IQueryable<Post> carsQuery;
+            if (query != null)
+            {
+                carsQuery = _context.Posts.Where(b => b.Name.Contains(query) && b.IsDeleted == false).Distinct();
+            }
+            else
+            {
+                carsQuery = _context.Posts.Where(b => b.IsDeleted == false).Distinct();
+            }
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery, pageNumber, pageSize);
+            ViewData["SearchString"] = query;
+            ViewData["Companies"] = _context.Posts.Select(f => f.Company).ToList();
+            ViewData["CarTypes"] = _context.Posts.Select(f => f.CarType).ToList();
+            UpdateExpiredPromotion();
+            return View(paginatedCar);
+        }
+
+        //public IActionResult Index()
+        //{
+
+        //    var post = _context.Posts.ToList();
+            
+        //    return View(post);
+        //}
 
         public IActionResult ChinhSach()
         {

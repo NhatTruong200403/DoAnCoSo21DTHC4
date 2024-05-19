@@ -11,7 +11,7 @@
     var currentUser = await UserManager.GetUserAsync(User);
 }
 
-<div>
+<div style="margin-top:20px;">
         <div class="cover-car-container">
             <div class="main-img">
                 <div class="cover-car-item">
@@ -282,32 +282,42 @@
                         var comments = ViewBag.Cmt as List<Rating>;
                         foreach (var comment in comments)
                         {
-                            <div class="comment-avatar">
-                                @{
-                                    var userComment = await UserManager.FindByIdAsync(comment.CreatedById);
-                                    if (userComment != null)
-                                    {
-                                        <img src="@userComment.Image" alt="hinhanh.jpg" />
-                                        <p>@userComment.Name</p>
+                            <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;background-color: #fef7f0;border-radius:5px;">
+
+                                <div class="comment-avatar">
+                                    @{
+                                        var userComment = await UserManager.FindByIdAsync(comment.CreatedById);
+                                        if (userComment != null)
+                                        {
+                                            <div style="display:flex;justify-content:space-between;">
+                                                <div style="display:flex;">
+                                                    <img src="@userComment.Image" alt="No Img" />
+                                                    <div style="margin-left:20px;">
+                                                        <p>@userComment.Name</p>
+                                                        <p style="margin-top:-20px;">
+                                                            @for (int i = 0; i < comment.Point; i++)
+                                                            {
+                                                                <img class="start" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt="">
+                                                            }
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                                <input style="border:none;padding:0px;margin-top:-10px;" value="@Model.CreatedOn" disabled/>
+                                            </div>
+                                        }
                                     }
+                                </div>
+                                <div>
+                                    <p style="font-size:20px;">
+                                        @comment.Comment
+                                    </p>
+                                </div>
+                                @if (currentUser != null && currentUser!.Id == comment.UserId)
+                                {
+                                    <a asp-action="Delete" style="background-color: cadetblue;border-radius:5px;color:white;padding:10px 20px;" asp-controller="Rating" asp-route-id="@comment.Id" asp-route-postId="@Model.Id">Xóa bình luận</a>
                                 }
                             </div>
-                            <div>
-                                <p>
-                                    Rating:
-                                    @for (int i = 0; i < comment.Point; i++)
-                                    {
-                                        <img width="24px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt="">
-                                    }
-                                </p>
-                                <p>
-                                    Cmt: @comment.Comment
-                                </p>
-                            </div>
-                            @if (currentUser != null && currentUser!.Id == comment.UserId)
-                            {
-                                <a asp-action="Delete" asp-controller="Rating" asp-route-id="@comment.Id" asp-route-postId="@Model.Id">Xóa Cmt</a>  
-                            }
                             
                         }
                     }
@@ -387,6 +397,11 @@
 
 
 <style>
+    .start{
+        width: 20px !important;
+        height: 20px !important;
+    }
+
     .font{
         font-size:25px;
     }

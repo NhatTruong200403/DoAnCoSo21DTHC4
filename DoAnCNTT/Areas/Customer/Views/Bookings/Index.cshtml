@@ -1,15 +1,60 @@
 ﻿@model IEnumerable<DoAnCNTT.Models.Booking>
-
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Lịch sử đặt xe";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <h1>Lịch sử đặt xe</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div>
+
+    @foreach (var a in ViewBag.Post)
+    {
+        foreach (var item in Model)
+        {
+            if (a.Id == item.PostId)
+            {
+                var currentUser = await UserManager.FindByIdAsync(a.User.Id);
+                <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;margin-bottom:20px;background-color:white;border-radius:5px;">
+                    
+                    <div class="tren">
+                        <div class="trai">Tên chủ xe : @currentUser.Name</div>
+                        <div class="phai" style="color:orange;font-size:20px;">@item.Status</div>
+                    </div>
+                    <hr />
+                    <div class="giua">
+                        <div class="trai" style="display:flex;">
+                            <img src="@Url.Content(a.Image)" style="height:150px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" />
+                            <span style="padding:10px 20px;font-size:23px;font-weight:bold;">@a.Name</span>
+                        </div>
+                        <div class="phai">
+                            <p>Số tiền gốc : @a.Price/giờ</p>
+                            <p>Thành tiền : @item.Total</p>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="duoi">
+                        <div class="trai">
+                            <a asp-action="Details" asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Xem chi tiết</a>
+                        </div>
+                        <div class="phai">
+                            <div>
+                                    Đã đặt cọc : @item.PrePayment
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                break;
+            }
+
+        }
+
+    }
+</div>
+@* 
 <table class="table">
     <thead>
         <tr>
@@ -69,3 +114,18 @@
 }
     </tbody>
 </table>
+ *@
+<style>
+    .tren,.giua,.duoi{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+
+</style>
+
+    @* .duoi {
+        display: flex;
+        justify-content: flex-end;
+    }  *@

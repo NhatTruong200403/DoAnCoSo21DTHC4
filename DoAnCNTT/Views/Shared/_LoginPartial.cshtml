@@ -5,7 +5,6 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-        <a class="nav-nohover">|</a>
         var user = await UserManager.GetUserAsync(User);
         var fullName = user.Name;
         <a class="nav-normal" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
@@ -22,11 +21,11 @@ else
 }
 
 <style>
-    .nav .user-img-home{
-        width: 30px;
-        height: 30px;
+   .user-img-home{
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
-        border: 2px solid black;
+        border: 1px solid black;
     }
 
     .nav .login-button{

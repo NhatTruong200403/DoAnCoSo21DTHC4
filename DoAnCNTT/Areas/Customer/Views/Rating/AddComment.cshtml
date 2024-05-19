@@ -16,25 +16,27 @@
             </div>
             <div class="form-group">
                 <label asp-for="Point" class="control-label">Point</label>
-                <div class="form-check">
-                    <input asp-for="Point" class="form-check-input" type="radio" id="point1" value="1">
-                    <label class="form-check-label" for="point1">1 sao</label>
-                </div>
-                <div class="form-check">
-                    <input asp-for="Point" class="form-check-input" type="radio" id="point2" value="2">
-                    <label class="form-check-label" for="point2">2 sao</label>
-                </div>
-                <div class="form-check">
-                    <input asp-for="Point" class="form-check-input" type="radio" id="point3" value="3">
-                    <label class="form-check-label" for="point3">3 sao</label>
-                </div>
-                <div class="form-check">
-                    <input asp-for="Point" class="form-check-input" type="radio" id="point4" value="4">
-                    <label class="form-check-label" for="point4">4 sao</label>
-                </div>
-                <div class="form-check">
-                    <input asp-for="Point" class="form-check-input" type="radio" id="point5" value="5">
-                    <label class="form-check-label" for="point5">5 sao</label>
+                <div style="display:flex;">
+                    <div class="form-check">
+                        <input asp-for="Point" class="form-check-input" type="radio" id="point1" value="1">
+                        <label class="form-check-label" for="point1">1 sao</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="Point" class="form-check-input" type="radio" id="point2" value="2">
+                        <label class="form-check-label" for="point2">2 sao</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="Point" class="form-check-input" type="radio" id="point3" value="3">
+                        <label class="form-check-label" for="point3">3 sao</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="Point" class="form-check-input" type="radio" id="point4" value="4">
+                        <label class="form-check-label" for="point4">4 sao</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="Point" class="form-check-input" type="radio" id="point5" value="5">
+                        <label class="form-check-label" for="point5">5 sao</label>
+                    </div>
                 </div>
                 <span asp-validation-for="Point" class="text-danger"></span>
             </div>

@@ -22,10 +22,10 @@
 </head>
 <body>
     <header>
-        <h2 class="logo">CarRent</h2>
+        <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+            <img class="logo" src="@Url.Content("~/images/logo/1.png")" alt="" />
+        </a>
         <nav class="nav">
-            <a class="nav-normal" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
-            <a class="nav-normal" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
             @if(User.IsInRole("Admin"))
             {
                 <a class="nav-normal" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Khuyến mãi</a>
@@ -38,18 +38,24 @@
                 <a class="nav-normal" asp-area="Employee" asp-controller="Reports" asp-action="Index">Vi phạm</a>
                 <a class="nav-normal" asp-area="Employee" asp-controller="Bookings" asp-action="Index">Yêu cầu hủy chuyến</a>
             }
-           @*  @if (User.IsInRole("Customer"))
-            {
-                <a class="nav-normal" asp-area="Customer" asp-controller="Posts" asp-action="Index">Posts</a>
-                <a class="nav-normal" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Invoices</a>
-                <a class="nav-normal" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Bookings</a>
-                <a class="nav-normal" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">FavoriteList</a>
-            } *@
-            <partial name="_LoginPartial" />
-        </nav>
-    </header>
-    <div class="container" style="min-height:765px;margin-bottom:10px;">
+            
+             <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
+                  <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
+                    <div id="search-results" class="dropdown-content">
+                    </div>
+                    <input class="ButtonSearch" type="submit" value="Search" />
+                </form>
+            
+            
+            
 
+
+
+
+        </nav>
+        <partial name="_LoginPartial" />
+    </header>
+    <div class="container" style="min-height:765px;margin-bottom:10px;margin-top:10px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -71,6 +77,60 @@
         </div>
     </footer>
     
+
+    <script>
+        document.onready
+        $(document).ready(function () {
+            $("#search-input").keyup(function () {
+                var query = $(this).val();
+                if (query !== '') {
+                    $.ajax({
+                        url: "/Home/SearchSuggestions",
+                        type: "GET",
+                        data: { query: query },
+                        dataType: "json",
+                        success: function (data) {
+                            $("#search-results").empty();
+                            $.each(data, function (index, suggestion) {
+                                $("#search-results").append("<div class='suggestion'>" + suggestion + "</div>");
+                            });
+                            debugger;
+                            // console.log($("#search-results"))
+                            if ($("#search-results").children().length == 0) {
+                                $(".dropdown-content").css("display", "none");
+                            } else {
+                                $(".dropdown-content").css("display", "block");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("Error:", error);
+                        }
+                    });
+                } else {
+                    $("#search-results").empty();
+                    $(".dropdown-content").css("display", "none");
+                }
+            });
+            $(document).on("click", ".suggestion", function () {
+                var selectedSuggestion = $(this).text();
+                $("#search-input").val(selectedSuggestion);
+                $("#search-results").empty();
+                $(".dropdown-content").css("display", "none");
+            });
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.dropdown').length) {
+                    $(".dropdown-content").css("display", "none");
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
@@ -80,6 +140,58 @@
 </html>
 
 <style>
+    .FormSearch {
+
+        display: flex;
+        align-items: center;
+        position: relative; 
+        border-radius: 15px;
+        border:2px solid black;
+        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    }
+
+    .InfoSearch {
+        padding: 13px;
+        border: none;
+        border-radius: 15px;
+        flex: 1;
+        font-size: 16px;
+        width:350px;
+    }
+    .ButtonSearch {
+        margin-left:10px;
+        padding: 15px 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 15px;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+        width: 100%;
+        box-sizing: border-box;
+        top: 100%;
+    }
+
+    .suggestion {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+        .suggestion:hover {
+            background-color: #f4f4f4;
+        }
+
+
     .logo{
         font-size: 2em;
         color: black;
