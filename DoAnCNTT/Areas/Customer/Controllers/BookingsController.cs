@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DoAnCNTT.Data;
 using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
@@ -16,10 +17,10 @@ namespace DoAnCNTT.Areas.Customer.Controllers
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public BookingsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
+            _context = context; _userManager = userManager;
         }
         
         public void UpdateBookingStatus(List<Booking> bookings)
@@ -46,6 +47,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         public async Task<IActionResult> Index()
         {
             var bookings = await _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User).Where(b => b.IsDeleted == false).ToListAsync();
+            ViewData["Post"] = _context.Posts.ToList();
             UpdateBookingStatus(bookings);
             return View(bookings);
         }
@@ -67,9 +69,22 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
-
+            var post = _context.Posts.FirstOrDefault(p => p.Id == booking.PostId);
+            var user = await _userManager.FindByIdAsync(post.CreatedById);
+            var tiengoc = booking.Total;
+            if (booking.PromotionId != null)
+            {
+                tiengoc = (int)(booking.Total / (1 - booking.Promotion.DiscountValue));
+            }
+            ViewBag.User = user;
+            ViewBag.Post = post;
+            ViewBag.Sum = tiengoc;
             return View(booking);
+        
         }
+
+
+
         [AllowAnonymous]
         [HttpPost]
         public ActionResult CalculateMiddleDate(string startDate, string endDate, decimal total)
