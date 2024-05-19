@@ -18,6 +18,7 @@ namespace DoAnCNTT.Models
         public string? Fuel { get; set; }
         public decimal FuelConsumed { get; set; }
         public int RideNumber { get; set; }
+        public float AvgRating { get; set; }
         public bool IsAvailable { get; set; }
         public int CarTypeId { get; set; }
         [ValidateNever]
