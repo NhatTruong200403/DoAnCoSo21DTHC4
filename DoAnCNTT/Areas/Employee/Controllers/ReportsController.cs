@@ -70,7 +70,7 @@ namespace DoAnCNTT.Areas.Employee.Controllers
                 user.ReportPoint++;
                 if(user.ReportPoint >= 3)
                 {
-                    user.IsLocked = true;
+                    user.LockoutEnd = DateTime.Now.AddYears(1000);
                 }    
             }
             var result = await _userManager.UpdateAsync(user!);
@@ -175,9 +175,13 @@ namespace DoAnCNTT.Areas.Employee.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var report = await _context.Report.FindAsync(id);
+            var user = await _userManager.GetUserAsync(User);
             if (report != null)
             {
-                _context.Report.Remove(report);
+                report.IsDeleted = true;
+                report.ModifiedOn = DateTime.Now;
+                report.ModifiedById = user!.Id;
+                _context.Report.Update(report);
                 var reportedPost = await _context.Posts.FirstOrDefaultAsync(p => p.Id == report.PostId);
                 if (reportedPost != null)
                 {

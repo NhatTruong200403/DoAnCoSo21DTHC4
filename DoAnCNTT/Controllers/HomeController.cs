@@ -39,7 +39,7 @@ namespace DoAnCNTT.Controllers
 
         public IActionResult Index()
         {
-            var post = _context.Posts.ToList();
+            var post = _context.Posts.Where(p => p.IsDeleted == false).ToList();
             UpdateExpiredPromotion();
             return View(post);
         }
