@@ -1,8 +1,11 @@
-﻿@model IEnumerable<DoAnCNTT.Models.Post>
-
+﻿@model PaginatedList<DoAnCNTT.Models.Post>
 @{
     ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 <p>
     <a asp-area="Customer" asp-controller="Posts" asp-action="Create">Tạo bài đăng </a>
@@ -69,10 +72,26 @@
         </div>
     </div>
 </section>
-
+<div class="nutchuyentrang">
+    <a asp-action="Index" asp-route-query="@ViewBag.SearchString"
+       asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default
+@prevDisabled">
+        <img src="@Url.Content("~/images/logo/back-arrow.png")" width="25px" /> Previous
+    </a>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-query="@ViewBag.SearchString"
+       class="btn btn-default @nextDisabled">
+        Next <img src="@Url.Content("~/images/logo/go-arrow.png")" width="25px" />
+    </a>
+</div>
 
  
 <style>
+    .nutchuyentrang {
+        margin-inline: 43%;
+        width: 300px;
+
+    }
     .box {
         width: 305px;
         height: 345px;
