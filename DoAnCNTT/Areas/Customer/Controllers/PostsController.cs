@@ -42,10 +42,10 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                         .FirstOrDefaultAsync();
             if (booking != null)
             {
-                if(booking.RecieveOn > DateTime.Now && booking.ReturnOn > DateTime.Now)
+                if (booking.RecieveOn > DateTime.Now && booking.ReturnOn > DateTime.Now)
                 {
                     post.IsAvailable = true;
-                }    
+                }
                 if (booking.RecieveOn <= DateTime.Now)
                 {
                     post.IsAvailable = false;
@@ -53,11 +53,11 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 if (booking.ReturnOn <= DateTime.Now)
                 {
                     post.IsAvailable = true;
-                }    
-                if(booking.IsDeleted == true)
+                }
+                if (booking.IsDeleted == true)
                 {
                     post.IsAvailable = true;
-                }    
+                }
             }
             else
             {
@@ -92,6 +92,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewData["Cmt"] = _context.Ratings.Where(p => p.PostId == id).ToList();
             var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
             ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
+            await UpdateAvgRating(post);
             return View(post);
         }
 
@@ -189,6 +190,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 post.IsDeleted = false;
                 post.IsAvailable = true;
                 post.RideNumber = 0;
+                post.AvgRating = 0;
                 if (Gear == "Số tự động")
                 {
                     post.Gear = true;
@@ -405,6 +407,21 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         {
             var commment = await _context.Ratings.Where(p => p.PostId == id).ToListAsync();
             return RedirectToAction(nameof(Details));
+        }
+
+        public async Task UpdateAvgRating(Post post)
+        {
+            var rating = await _context.Ratings.Where(p => p.PostId == post.Id).ToListAsync();
+            if(rating.Any())
+            {
+                post.AvgRating = (float)rating.Average(r => r.Point);
+            }
+            else
+            {
+                post.AvgRating = 0;
+            }
+            _context.Update(post);
+            await _context.SaveChangesAsync();
         }
 
     }
