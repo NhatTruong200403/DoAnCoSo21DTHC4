@@ -353,7 +353,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new { area = "Customer", id = id });
             }
             ViewData["CarTypeId"] = new SelectList(_context.CarTypes, "Id", "Name", post.CarTypeId);
             return View(post);

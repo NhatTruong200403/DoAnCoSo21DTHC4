@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = "Admin,Customer,Employee")]
+    [Authorize]
     public class RatingController : Controller
     {
         private readonly ApplicationDbContext _context;

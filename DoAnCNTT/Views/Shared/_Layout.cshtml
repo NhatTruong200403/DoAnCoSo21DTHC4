@@ -33,7 +33,7 @@
                 <a class="nav-normal" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">Loại xe</a>
                 <a class="nav-normal" asp-area="Admin" asp-controller="Companies" asp-action="Index">Hãng xe</a>
             }
-            @if (User.IsInRole("Employee"))
+            @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
             {
                 <a class="nav-normal" asp-area="Employee" asp-controller="Reports" asp-action="Index">Vi phạm</a>
                 <a class="nav-normal" asp-area="Employee" asp-controller="Bookings" asp-action="Index">Yêu cầu hủy chuyến</a>

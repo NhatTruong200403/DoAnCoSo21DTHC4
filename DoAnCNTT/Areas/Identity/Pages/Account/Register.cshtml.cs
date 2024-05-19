@@ -130,6 +130,7 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account
                 user.Name = Input.FullName;
                 user.PhoneNumber = Input.PhoneNumber;
                 user.Image = "~/images/ImageUser/user.png";
+                user.ReportPoint = 0;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

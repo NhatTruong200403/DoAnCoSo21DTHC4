@@ -81,6 +81,9 @@ namespace DoAnCNTT.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit");
+
                     b.Property<string>("License")
                         .HasColumnType("nvarchar(max)");
 
@@ -109,6 +112,9 @@ namespace DoAnCNTT.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("ReportPoint")
+                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -387,6 +393,9 @@ namespace DoAnCNTT.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("AvgRating")
+                        .HasColumnType("real");
 
                     b.Property<int>("CarTypeId")
                         .HasColumnType("int");

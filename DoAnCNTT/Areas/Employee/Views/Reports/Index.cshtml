@@ -14,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Content)
+                Nội dung
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post)
+                Bài đăng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedById)
+                Người báo cáo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedOn)
+                Ngày báo cáo
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModifiedById)
+                Người cập nhật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModifiedOn)
+                Ngày cập nhật
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsDeleted)
+                Trạng thái
             </th>
             <th></th>
         </tr>
@@ -44,7 +44,7 @@
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Post.Id)
+                <a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">@item.Post.Name</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedById)
@@ -59,12 +59,17 @@
                 @Html.DisplayFor(modelItem => item.ModifiedOn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
+                @if (item.IsDeleted)
+                {
+                    <text>Đã xử lí</text>
+                }
+                else
+                {
+                    <text>Chưa xử lí</text>
+                }
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Khóa bài đăng</a>
             </td>
         </tr>
 }

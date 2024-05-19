@@ -5,36 +5,35 @@
 namespace DoAnCNTT.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateBookingProperties : Migration
+    public partial class AddUserReportProps : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "IsComplete",
-                table: "Booking",
+                name: "IsLocked",
+                table: "AspNetUsers",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.AddColumn<bool>(
-                name: "IsConfirm",
-                table: "Booking",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
+            migrationBuilder.AddColumn<int>(
+                name: "ReportPoint",
+                table: "AspNetUsers",
+                type: "int",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsComplete",
-                table: "Booking");
+                name: "IsLocked",
+                table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "IsConfirm",
-                table: "Booking");
+                name: "ReportPoint",
+                table: "AspNetUsers");
         }
     }
 }

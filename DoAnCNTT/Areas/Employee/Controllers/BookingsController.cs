@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using DoAnCNTT.Data;
 using DoAnCNTT.Models;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DoAnCNTT.Areas.Employee.Controllers
 {
     [Area("Employee")]
+    [Authorize(Roles = "Admin,Employee")]
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
