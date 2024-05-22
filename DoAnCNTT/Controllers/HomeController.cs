@@ -1,11 +1,10 @@
 ﻿using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using DoAnCNTT.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,16 +14,31 @@ namespace DoAnCNTT.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
-        //private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context,UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
-            //_userManager = userManager;
+            _userManager = userManager;
             _context = context;
         }
 
+        public async Task<IActionResult> FindUser(string id, int idpost)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            //if (user == null)
+            //{
+            //    return NotFound(); // Handle the case where the user is not found
+            //}
+
+            var listpost = await _context.Posts
+                                         .Where(p => p.CreatedById == id && p.Id != idpost)
+                                         .ToListAsync();
+            ViewBag.listpost = listpost;
+
+            return PartialView(user);
+        }
 
         public void UpdateExpiredPromotion()
         {

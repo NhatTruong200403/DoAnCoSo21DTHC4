@@ -81,9 +81,6 @@ namespace DoAnCNTT.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsLocked")
-                        .HasColumnType("bit");
-
                     b.Property<string>("License")
                         .HasColumnType("nvarchar(max)");
 

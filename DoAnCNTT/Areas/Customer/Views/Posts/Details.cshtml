@@ -216,7 +216,8 @@
                 <div style="display:flex;">
                     <img src="@Url.Content(user.Image)" style="width:70px;height:70px;border-radius:50%;" />
                     <div style="margin-left:20px;">
-                        <span style="font-weight:bold;font-size:25px;">@user.Name</span>
+                        <a style="font-weight:bold;font-size:25px;" asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-id="@user.Id" asp-route-idpost="@Model.Id">@user.Name</a>
+                        @* <span style="font-weight:bold;font-size:25px;">@user.Name</span> *@
                         <div>
                             <i>
                                 @if (rideNumber > 0)
@@ -274,7 +275,6 @@
                 <h2>Đánh giá tổng: @Model.AvgRating.ToString("F1") <img width="36px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt=""</h2>
             </div>
             <div>
-                <h2>Bình luận chi tiết:</h2>
                 <div class="comment">
 
                     @if (ViewData["Cmt"] != null)
