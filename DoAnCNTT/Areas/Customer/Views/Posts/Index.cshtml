@@ -4,84 +4,14 @@
     ViewData["Title"] = "Danh sách bài đăng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@* 
-<h1>Danh sách bài đăng</h1>
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Tên
-            </th>
-            <th>
-                Hình ảnh
-            </th>
-            <th>
-                Mô tả
-            </th>
-            <th>
-                Địa chỉ nhận
-            </th>
-            <th>
-                Có tài xế
-            </th>
-            <th>
-                Giá
-            </th>
-            <th>
-                Hộp số
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <img src="@item.Image" alt="hinhanh.jpg" width="200px" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RentLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasDriver)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @if (item.Gear)
-                {
-                    <text>Số tự động</text>
-                }
-                else
-                {
-                    <text>Số sàn</text>
-                }
-            </td>
-            <td>
-                
-                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-
-*@
 <section class="py-2">
+    <p>
+        <a asp-area="Customer" asp-controller="Posts" asp-action="Create">Tạo bài đăng </a>
+    </p>
     <div class="container ">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
-
+            
             @foreach (var item in Model)
             {
 

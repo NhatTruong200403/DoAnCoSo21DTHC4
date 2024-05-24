@@ -62,7 +62,7 @@ namespace DoAnCNTT.Controllers
 
         public async Task<IActionResult> Index(string query, int pageNumber = 1)
         {
-            int pageSize = 1;
+            int pageSize = 8;
             IQueryable<Post> carsQuery;
             if (query != null)
             {
