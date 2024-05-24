@@ -216,8 +216,7 @@
                 <div style="display:flex;">
                     <img src="@Url.Content(user.Image)" style="width:70px;height:70px;border-radius:50%;" />
                     <div style="margin-left:20px;">
-                        <a style="font-weight:bold;font-size:25px;" asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-id="@user.Id" asp-route-idpost="@Model.Id">@user.Name</a>
-                        @* <span style="font-weight:bold;font-size:25px;">@user.Name</span> *@
+                        <span style="font-weight:bold;font-size:25px;">@user.Name</span>
                         <div>
                             <i>
                                 @if (rideNumber > 0)
@@ -272,9 +271,10 @@
                 </div>
             </div>
             <div>
-                <h2>Đánh giá tổng: @Model.AvgRating.ToString("F1") <img width="36px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt=""</h2>
+                <h2>Đánh giá tổng: @Model.AvgRating <img width="36px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt=""</h2>
             </div>
             <div>
+                <h2>Bình luận chi tiết:</h2>
                 <div class="comment">
 
                     @if (ViewData["Cmt"] != null)
@@ -354,8 +354,8 @@
                     PostId = Model.Id,
                     UserId = currentUser == null ? null : currentUser!.Id,
                     CreatedOn = DateTime.Now,
-                    RecieveOn = DateTime.Now,
-                    ReturnOn = DateTime.Now.AddDays(1),
+                    RecieveOn = DateTime.Today,
+                    ReturnOn = DateTime.Today.AddDays(1),
                     Total = Model!.Price,
                     FinalValue = Model!.Price,
                     PrePayment = Model!.Price * (decimal)0.3,
@@ -378,7 +378,6 @@
             }
         }
     }
-    <a asp-area="Employee" asp-controller="Reports" asp-action="Create" asp-route-id="@Model?.Id">Báo cáo bài viết</a>
     <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
 

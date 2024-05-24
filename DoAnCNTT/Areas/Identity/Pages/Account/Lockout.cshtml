@@ -1,10 +1,41 @@
 ﻿@page
 @model LockoutModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Locked out";
+    var currentUser = await UserManager.GetUserAsync(User);
 }
+<style>
+    .lockout-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border: 1px solid #dc3545;
+        border-radius: 10px;
+        background-color: #f8d7da;
+    }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">This account has been locked out, please try again later.</p>
-</header>
+    .lockout-header {
+        color: #721c24;
+    }
+
+    .lockout-message {
+        color: #721c24;
+    }
+</style>
+<body>
+    <div class="container lockout-container">
+        <header class="lockout-header text-center">
+            <h1>@ViewData["Title"]</h1>
+            <p class="lockout-message">Tài khoản của bạn đã bị khóa đến <strong>@currentUser?.LockoutEnd?.ToString("dd/MM/yyyy HH:mm:ss")</strong>.</p>
+        </header>
+        <div class="text-center">
+            <p class="mb-0">Nếu bạn cần hỗ trợ, vui lòng liên hệ với quản trị viên của hệ thống.</p>
+            <a href="https://www.facebook.com/profile.php?id=100009953740724" class="btn btn-danger mt-3">Liên hệ hỗ trợ</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>

@@ -8,9 +8,9 @@ namespace DoAnCNTT.Models
         public decimal PrePayment { get; set; }
         public decimal Total { get; set; } 
         public decimal FinalValue { get; set; }
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime RecieveOn { get; set; }
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime ReturnOn { get; set; }
         public bool IsPay {  get; set; }
         public string? Status {  get; set; }

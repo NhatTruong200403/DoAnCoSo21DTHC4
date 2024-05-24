@@ -33,7 +33,7 @@ namespace DoAnCNTT.Controllers
             //}
 
             var listpost = await _context.Posts
-                                         .Where(p => p.CreatedById == id && p.Id != idpost)
+                                         .Where(p => p.CreatedById == id)
                                          .ToListAsync();
             ViewBag.listpost = listpost;
 
