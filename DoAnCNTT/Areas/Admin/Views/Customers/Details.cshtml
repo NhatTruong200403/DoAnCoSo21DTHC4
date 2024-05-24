@@ -4,7 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "Thông tin chủ xe";
+    ViewData["Title"] = "Thông tin khách hàng";
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 @{
@@ -17,7 +17,7 @@
     <div style="display:flex;justify-content:space-between;">
         <div>
             <h3>
-                Tên chủ xe : @Model.Name
+                Tên khách hàng : @Model.Name
             </h3>
             <img style="border-radius:50%;" src="@Url.Content(Model.Image)" alt="User Image" />
         </div>
@@ -26,10 +26,10 @@
 
             }
             <h3>Thông tin liên hệ </h3>
-            <p>Tên của chủ xe : @Model.Name</p>
+            <p>Tên của khách hàng : @Model.Name</p>
             <p>Số điện thoại: @Model.PhoneNumber</p>
             <p>
-                Liên hệ chủ xe qua:
+                Liên hệ khách hàng qua:
                 <a href="zalos://@Model.PhoneNumber">
                     <img style="width:30px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" src="@Url.Content("~/images/logo/zalo.png")" alt="Zalo" />
                 </a>
@@ -39,7 +39,7 @@
     </div>
     <hr style="width:100%;" />
     <div>
-        <h3>Các bài viết khác của chủ xe</h3>
+        <h3>Các bài viết khác của khách hàng</h3>
         <section class="py-2">
             <div class="container ">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
@@ -101,7 +101,7 @@
                     else
                     {
                         <span>
-                            Chủ xe không có bài viết khác
+                            Không có bài viết khác
                         </span>
                     }
                 </div>
