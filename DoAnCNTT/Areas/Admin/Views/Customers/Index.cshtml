@@ -10,10 +10,7 @@
     <thead>
         <tr>
             <th>
-                Id
-            </th>
-            <th>
-                Tên KH
+                Khách hàng
             </th>
             <th>
                 Email
@@ -38,10 +35,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)

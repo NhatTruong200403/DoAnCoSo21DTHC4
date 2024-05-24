@@ -184,7 +184,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 _context.Booking.Update(booking);
                 _context.SaveChanges();
                 await UpdatePostInfo(booking, true, -1);
-                return RedirectToAction("Index", "Bookings");
+                return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
             }
             else
             {

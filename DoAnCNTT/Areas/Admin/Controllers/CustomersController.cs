@@ -1,7 +1,10 @@
-﻿using DoAnCNTT.Models;
+﻿using DoAnCNTT.Data;
+using DoAnCNTT.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace DoAnCNTT.Areas.Admin.Controllers
 {
@@ -9,10 +12,12 @@ namespace DoAnCNTT.Areas.Admin.Controllers
     public class CustomersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public CustomersController(UserManager<ApplicationUser> userManager)
+        public CustomersController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         // GET: CustomerController
@@ -23,9 +28,15 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: CustomerController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(string id)
         {
-            return View();
+            var user = await _userManager.FindByIdAsync(id);
+            var listpost = await _context.Posts
+                                         .Where(p => p.CreatedById == id)
+                                         .ToListAsync();
+            ViewBag.listpost = listpost;
+
+            return View(user);
         }
 
         // GET: CustomerController/Create
