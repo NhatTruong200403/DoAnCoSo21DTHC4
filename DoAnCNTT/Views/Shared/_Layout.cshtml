@@ -22,22 +22,53 @@
 </head>
 <body>
     <header>
-        <a class="" asp-area="" asp-controller="Home" asp-action="Index">
-            <img class="logo" src="@Url.Content("~/images/logo/1.png")" alt="" />
-        </a>
+        @if (User.IsInRole("Admin"))
+        {
+            <div style="height:70px;padding:20px;">
+                <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                    Trang của Admin
+                </a>
+            </div>
+
+        }
+        else if (User.IsInRole("Employee"))
+        {
+            <div style="height:70px;padding:20px;">
+                <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                    Trang của Employee
+                </a>
+            </div>
+        }
+        else
+        {
+            <a class="" asp-area="" asp-controller="Home" asp-action="Index">
+                <img class="logo" src="@Url.Content("~/images/logo/1.png")" alt="" />
+
+            </a>
+        }
+        
         <nav class="nav">
-            @if(User.IsInRole("Admin"))
+            @* @if(User.IsInRole("Admin"))
             {
-                <a class="nav-normal" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Khuyến mãi</a>
-                <a class="nav-normal" asp-area="Admin" asp-controller="Amenities" asp-action="Index">Tiện nghi</a>
-                <a class="nav-normal" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">Loại xe</a>
-                <a class="nav-normal" asp-area="Admin" asp-controller="Companies" asp-action="Index">Hãng xe</a>
-            }
-            @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
+                <ul class="sidebar">
+                    <li>
+                        <a class="sidebar" asp-area="Admin" asp-controller="Promotions" asp-action="Create">Thêm mới khuyến mãi</a>
+                    </li>
+                    <li>
+                        <a class="sidebar" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Danh sách khuyến mãi</a>
+                    </li>
+
+                </ul>
+                <a class="sidebar" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Khuyến mãi</a>
+                <a class="sidebar" asp-area="Admin" asp-controller="Amenities" asp-action="Index">Tiện nghi</a>
+                <a class="sidebar" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">Loại xe</a>
+                <a class="sidebar" asp-area="Admin" asp-controller="Companies" asp-action="Index">Hãng xe</a>
+            } *@
+            @* @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
             {
                 <a class="nav-normal" asp-area="Employee" asp-controller="Reports" asp-action="Index">Vi phạm</a>
                 <a class="nav-normal" asp-area="Employee" asp-controller="Bookings" asp-action="Index">Yêu cầu hủy chuyến</a>
-            }
+            } *@
              <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
                   <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
                     <div id="search-results" class="dropdown-content">
@@ -54,11 +85,108 @@
         </nav>
         <partial name="_LoginPartial" />
     </header>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
+    {
+        <div class="container9" style="min-height:765px;margin-bottom:10px;margin-top:10px;display:flex;width:100%;">
+            <div style="width:20%;background-color:white;border-radius:5px;">
+                @if (User.IsInRole("Admin"))
+                {
+                    <details style="border:1px solid black;">
+                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                            <a style="margin-left:0px;" asp-area="" asp-controller="Home" asp-action="Index">
+                                <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý bài đăng
+                            </a>
+                            
+                        </summary>
+                    </details>
+                    <details style="border:1px solid black;">
+                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                            <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý đối tượng
+                            </summary>
+                        <details>
+                            <summary>
+                                <img style="width:20px;" src="@Url.Content("~/images/logo/%.png")" alt="" />
+                                Quản lý khuyến mãi
+                             </summary>
+                            <p><a class="" asp-area="Admin" asp-controller="Promotions" asp-action="Create"><img style="width:18px;" src="@Url.Content("~/images/logo/add.png")" alt="" />  Thêm mới khuyến mãi</a></p>
+                            <p><a class="" asp-area="Admin" asp-controller="Promotions" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" />  Danh sách khuyến mãi</a></p>
+                        </details>
+                        <details>
+                            <summary>
+                                <img style="width:20px;" src="@Url.Content("~/images/logo/tiennghi.png")" alt="" />
+                                Quản lý tiện nghi
+                            </summary>
+                            <p><a class="" asp-area="Admin" asp-controller="Amenities" asp-action="Create"><img style="width:18px;" src="@Url.Content("~/images/logo/add.png")" alt="" />  Thêm mới tiện nghi</a></p>
+                            <p><a class="" asp-area="Admin" asp-controller="Amenities" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" />  Danh sách tiện nghi</a></p>
+                        </details>
+                        <details>
+                            <summary>
+                                <img style="width:20px;" src="@Url.Content("~/images/logo/car.png")" alt="" />
+                                Quản lý loại xe
+                            </summary>
+                            <p><a class="" asp-area="Admin" asp-controller="CarTypes" asp-action="Create"><img style="width:18px;" src="@Url.Content("~/images/logo/add.png")" alt="" />  Thêm mới loại xe</a></p>
+                            <p><a class="" asp-area="Admin" asp-controller="CarTypes" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" />  Danh sách loại xe</a></p>
+                        </details>
+                        <details>
+                            
+                            <summary>
+                                <img style="width:20px;" src="@Url.Content("~/images/logo/bmw.png")" alt="" />
+                                Quản lý hãng xe
+                                </summary>
+                            <p><a class="" asp-area="Admin" asp-controller="Companies" asp-action="Create"><img style="width:18px;" src="@Url.Content("~/images/logo/add.png")" alt="" />  Thêm mới hãng xe</a></p>
+                            <p><a class="" asp-area="Admin" asp-controller="Companies" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" />  Danh sách hãng xe</a></p>
+                        </details>
+                    </details>
+                    
+                }
+                else
+                {
+                    <details>
+                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                            <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Xử lý yêu cầu
+                        </summary>
+                        <details>
+                            <summary>
+                                <img style="width:20px;" src="@Url.Content("~/images/logo/!.png")" alt="" />
+                                Quản lý vi phạm
+                            </summary>
+                            <p><a class="nav-normal" asp-area="Employee" asp-controller="Reports" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/delete.png")" alt="" />  Bài viết vi phạm</a></p>
+                        </details>
+                        <details>
+                            <summary>
+                                <img style="width:20px;" src="@Url.Content("~/images/logo/cencel.png")" alt="" />
+                                Quản lý hủy chuyến
+                            </summary>
+                            <p><a class="nav-normal" asp-area="Employee" asp-controller="Bookings" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/delete.png")" alt="" />  Hủy chuyến</a></p>
+                        </details>
+                        
+                    </details>
+                    
+                }
+            </div>
+            <main style="width:90%;background-color:white;padding:20px;margin-left:10px;border-radius:5px;" role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
+    else
+    {
+        <div class="container" style="min-height:765px;margin-bottom:10px;margin-top:10px;">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
+
+
+@* 
+
     <div class="container" style="min-height:765px;margin-bottom:10px;margin-top:10px;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
+    </div> *@
     <footer class="footer" style="margin-bottom:-200px;">
         <div class="container">
             <div class="logo_Small"><img src="@Url.Content("~/images/logo/bcd_preview_rev_1.png")" alt=""></div>
@@ -121,13 +249,14 @@
                     $(".dropdown-content").css("display", "none");
                 }
             });
+            $(document).ready(function () {
+                $(".header").click(function () {
+                    $(this).siblings(".item").slideToggle();
+                });
+            });
         });
+
     </script>
-
-
-
-
-
 
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -138,97 +267,3 @@
 
 </html>
 
-<style>
-    .FormSearch {
-
-        display: flex;
-        align-items: center;
-        position: relative; 
-        border-radius: 15px;
-        border:2px solid black;
-        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    }
-
-    .InfoSearch {
-        padding: 13px;
-        border: none;
-        border-radius: 15px;
-        flex: 1;
-        font-size: 16px;
-        width:350px;
-    }
-    .ButtonSearch {
-        margin-left:10px;
-        padding: 15px 20px;
-        background-color: #333;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        border-radius: 15px;
-    }
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        max-height: 300px;
-        overflow-y: auto;
-        width: 100%;
-        box-sizing: border-box;
-        top: 100%;
-    }
-
-    .suggestion {
-        padding: 10px;
-        cursor: pointer;
-    }
-
-        .suggestion:hover {
-            background-color: #f4f4f4;
-        }
-
-
-    .logo{
-        font-size: 2em;
-        color: black;
-        user-select: none;
-    }
-
-    .nav .nav-nohover{
-        position: relative;
-        font-size: 1.1em;
-        color: black;
-        text-decoration: none;
-        font-weight: 500;
-        margin-left: 40px;
-    }
-
-    .nav .nav-normal{
-        position: relative;
-        font-size: 1.1em;
-        color: black;
-        text-decoration: none;
-        font-weight: 500;
-        margin-left: 40px;
-    }
-    .nav .nav-normal::after{
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -6px;
-            width: 100%;
-            height: 3px;
-            background: black;
-            border-radius: 5px;
-            transform-origin: right;
-            transform: scaleX(0);
-            transition: transform .5s;
-    }
-    .nav .nav-normal:hover::after{
-            transform-origin: left;
-            transform: scaleX(1);
-    }
-</style>

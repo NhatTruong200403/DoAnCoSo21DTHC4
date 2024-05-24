@@ -4,10 +4,11 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div style="margin-bottom:20px;">
+    <a href="javascript:history.go(-1);">Quay lại</a>
+</div>
 
-<h1>Create</h1>
-
-<h4>Promotion</h4>
+<h1>Thêm mới khuyến mãi</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -28,22 +29,14 @@
                 <input asp-for="ExpiredDate" class="form-control" required/>
                 <span asp-validation-for="ExpiredDate" class="text-danger"></span>
             </div>
-            Trạng thái
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> Ẩn
-                </label>
-            </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Thêm mới" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a href="javascript:history.go(-1);">Quay lại</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

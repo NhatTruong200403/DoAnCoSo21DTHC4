@@ -146,3 +146,129 @@ a {
     border-radius:50%;
 }
 
+
+
+.FormSearch {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-radius: 15px;
+    border: 2px solid black;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
+
+.InfoSearch {
+    padding: 13px;
+    border: none;
+    border-radius: 15px;
+    flex: 1;
+    font-size: 16px;
+    width: 350px;
+}
+
+.ButtonSearch {
+    margin-left: 10px;
+    padding: 15px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    top: 100%;
+}
+
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+    .suggestion:hover {
+        background-color: #f4f4f4;
+    }
+
+
+.logo {
+    font-size: 2em;
+    color: black;
+    user-select: none;
+}
+
+.nav .nav-nohover {
+    position: relative;
+    font-size: 1.1em;
+    color: black;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 40px;
+}
+
+.nav .nav-normal {
+    position: relative;
+    font-size: 1.1em;
+    color: black;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 40px;
+}
+
+    .nav .nav-normal::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 100%;
+        height: 3px;
+        background: black;
+        border-radius: 5px;
+        transform-origin: right;
+        transform: scaleX(0);
+        transition: transform .5s;
+    }
+
+    .nav .nav-normal:hover::after {
+        transform-origin: left;
+        transform: scaleX(1);
+    }
+.item {
+    display: none;
+}
+
+.header{
+    
+}
+    .header:hover {
+        cursor: pointer;
+    }
+details summary {
+    background-color: rgb(255, 200, 208);
+    list-style:none;
+    padding: 15px 20px;
+    /*border:1px solid black;*/
+}
+details p {
+    padding: 10px 10px;
+    margin-bottom: 0px;
+    background-color: rgb(255, 219, 224);
+}
+
+.form-group{
+    margin:10px;
+}
+.form-group .btn{
+    padding:10px 20px;
+    margin-top:20px;
+}

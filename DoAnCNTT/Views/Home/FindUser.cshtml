@@ -11,21 +11,28 @@
     var listpost = ViewBag.listpost as List<DoAnCNTT.Models.Post>;
 }
 
-<a href="javascript:history.go(-1);">Quay lại</a>
+
 
 <div class="bigContai">
-    <div style="display:flex;justify-content:space-between;">
-        <div>
+    <div style="display:flex;justify-content:space-between;background-color:antiquewhite;padding:15px 20px;">
+        <div style="display:flex;">
+            <a href="javascript:history.go(-1);" style="margin-right:0px;">
+                <img style="width:30px;margin-top:2px;" src="@Url.Content("~/images/logo/muiten.png")" alt="" /><a>
             <h3>
-                Tên chủ xe : @Model.Name
+                 @Model.Name
             </h3>
+        </div>
+        </div>
+    <div style="display:flex;">
+       @*  justify-content:space-between; *@
+        <div>
             <img style="border-radius:50%;" src="@Url.Content(Model.Image)" alt="User Image" />
         </div>
-        <div>
-            <h3>Thông tin liên hệ </h3>
-            <p>Tên của chủ xe : @Model.Name</p>
+        <div style="margin-left:20px;">
+            <h2>Tên của chủ xe : @Model.Name</h2>
+            <h4>Thông tin liên hệ </h4>    
             <p>Số điện thoại: @Model.PhoneNumber</p>
-            <p>Liên hệ chủ xe qua: 
+            <p hidden>Liên hệ chủ xe qua: 
                 <a href="zalos://@Model.PhoneNumber">
                     <img style="width:30px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" src="@Url.Content("~/images/logo/zalo.png")" alt="Zalo" />
                 </a>
@@ -34,8 +41,8 @@
         </div>
     </div>
     <hr style="width:100%;"/>
-    <div>
-        <h3>Các bài viết khác của chủ xe</h3>
+    <div style="margin-left:10px;" >
+        <h3 style="margin-left:10px;">Các bài viết khác của chủ xe</h3>
         <section class="py-2">
             <div class="container ">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
@@ -109,10 +116,11 @@
 
 <style>
     .bigContai {
+        border-radius:5px;
         width: 85%;
         background-color: white;
         margin: auto;
-        padding: 25px;
+        @* padding: 25px; *@
     }
 
     .box {

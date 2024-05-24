@@ -20,12 +20,12 @@
                 <input asp-for="UserId" class="form-control"  />
             </div>
             <div class="form-group">
-               <label asp-for="RecieveOn" class="control-label">Nhận xe</label>
+               <label asp-for="RecieveOn" class="control-label">Ngày nhận xe</label>
                 <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
                <span asp-validation-for="RecieveOn" class="text-danger"></span>
             </div>
             <div class="form-group">
-               <label asp-for="ReturnOn" class="control-label">Trả xe</label>
+               <label asp-for="ReturnOn" class="control-label">Ngày trả xe</label>
                 <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
                <span asp-validation-for="ReturnOn" class="text-danger"></span>
             </div>
@@ -38,35 +38,31 @@
                 <label asp-for="PromotionId" class="control-label">Khuyến mãi: </label>
                 <select asp-for="PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions"></select>
             </div>
-            <div style="display:flex;justify-content: space-between;align-items: center; padding:10px;">
-                <div>Thành tiền </div>
                 <div class="form-group">
-                    <input asp-for="FinalValue" id="finalValue" readonly style="border:none;background-color:white;" />
+                    <label asp-for="Total" class="control-label">Thành tiền</label>
+                    <input asp-for="FinalValue" class="form-control" id="finalValue" readonly style="border:none;background-color:white;" />
                     <span asp-validation-for="FinalValue" class="text-danger"></span>
                 </div>
-            </div>
-            <div style="display:flex;justify-content: space-between;align-items: center; padding:10px;">
-                <div>Đặt cọc</div>
                 <div class="form-group">
-                    <input asp-for="PrePayment" id="prePayment" readonly style="border:none;background-color:white;" />
+                    <label asp-for="Total" class="control-label">Đặt cọc</label>
+                    <input asp-for="PrePayment" class="form-control" id="prePayment" readonly style="border:none;background-color:white;" />
                     <span asp-validation-for="PrePayment" class="text-danger"></span>
                 </div>
-            </div>
           @*   <div class="form-group">
                 <label asp-for="PrePayment" class="control-label">Đặt cọc</label>
                 <input asp-for="PrePayment" id="prePayment" class="form-control" readonly style="border:none;background-color:white;" />
                 <span asp-validation-for="PrePayment" class="text-danger"></span>
             </div>
- *@
+            *@
             <div class="form-group">
                 @{
                     if (@ViewBag.IsAvailable == false)
                     {
-                        <input type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
+                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
                     }
                     else
                     {
-                        <input type="submit" value="Thuê xe" class="btn btn-primary w" />
+                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
                     }
                 }
             </div>

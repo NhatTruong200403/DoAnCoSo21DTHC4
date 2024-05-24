@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Danh sách khuyến mãi</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -20,22 +17,13 @@
                 Giá trị khuyến mãi
             </th>
             <th>
-                Ngày kết thúc
-            </th>
-            <th>
-                Mã người tạo
+                Ngày kết thúc khuyến mãi
             </th>
             <th>
                 Ngày tạo
             </th>
             <th>
-                Mã người cập nhật 
-            </th>
-            <th>
                 Ngày cập nhật
-            </th>
-            <th>
-                Ẩn
             </th>
             <th></th>
         </tr>
@@ -44,7 +32,8 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
+                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Content)</a>
+                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DiscountValue)
@@ -53,25 +42,23 @@
                 @Html.DisplayFor(modelItem => item.ExpiredDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedById)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedById)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ModifiedOn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> 
-                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> 
+                <a class="a" asp-action="Edit" asp-route-id="@item.Id">Sửa</a> 
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+                <style>
+                    td .a{
+                        padding:10px 15px;
+                        border-radius:5px;
+                        background-color:olivedrab;
+                    }
+                </style>
