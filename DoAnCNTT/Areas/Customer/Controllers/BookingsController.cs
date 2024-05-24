@@ -47,7 +47,12 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // GET: Customer/Bookings
         public async Task<IActionResult> Index()
         {
-            var bookings = await _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User).Where(b => b.IsDeleted == false).ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+            var bookings = await _context.Booking.
+                                    Include(b => b.Post).
+                                    Include(b => b.Promotion).
+                                    Include(b => b.User)
+                                    .Where(b => b.IsDeleted == false && b.UserId == user!.Id).ToListAsync();
             ViewData["Post"] = _context.Posts.ToList();
             UpdateBookingStatus(bookings);
             return View(bookings);
