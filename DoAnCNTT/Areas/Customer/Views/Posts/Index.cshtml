@@ -5,6 +5,80 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@*
+<h1>Danh sách bài đăng</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tên
+            </th>
+            <th>
+                Hình ảnh
+            </th>
+            <th>
+                Mô tả
+            </th>
+            <th>
+                Địa chỉ nhận
+            </th>
+            <th>
+                Có tài xế
+            </th>
+            <th>
+                Giá
+            </th>
+            <th>
+                Hộp số
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <img src="@item.Image" alt="hinhanh.jpg" width="200px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasDriver)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @if (item.Gear)
+                {
+                    <text>Số tự động</text>
+                }
+                else
+                {
+                    <text>Số sàn</text>
+                }
+            </td>
+            <td>
+
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+*@
 <section class="py-2">
     <p>
         <a asp-area="Customer" asp-controller="Posts" asp-action="Create">Tạo bài đăng </a>
@@ -73,18 +147,17 @@
         height: 345px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         border-radius: 15px;
-
     }
 
     .pta {
-        padding:0px;
+        padding: 0px;
         margin: 10px;
     }
 
         .pta img {
             border-radius: 15px;
             width: 280px;
-            height:180px;
+            height: 180px;
         }
 
     .ptb {
@@ -126,7 +199,6 @@
         padding: 0px;
         margin-inline: 10px;
         display: flex;
-       
     }
 
         .ptd .icon_map {
@@ -139,9 +211,9 @@
 
     hr {
         width: 275px;
-        margin-top:10px;
-        margin-bottom:5px;
-@*         margin:5px; *@
+        margin-top: 10px;
+        margin-bottom: 5px;
+    @* margin:5px; *@
     }
 
     .pte {

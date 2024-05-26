@@ -10,12 +10,19 @@
 }
 <ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link den @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Thông tin cá nhân</a></li>
-    @if (User.IsInRole("Customer"))
-    {
-        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe cho thuê của bạn</a></li
-        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Lịch sử đặt cọc</a></li
-        <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Lịch sử đặt xe</a></li
-        <li class="nav-item"> <a class="nav-link den" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">Danh sách yêu thích</a></li>
+    @{
+        if (User.IsInRole("Customer"))
+        {
+            var lockoutEnd = currentUser!.LockoutEnd;
+            if(lockoutEnd == null || lockoutEnd < DateTime.Now)
+            {
+                <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe cho thuê của bạn</a></li
+            <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Lịch sử đặt cọc</a></li
+            <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Lịch sử đặt xe</a></li
+            <li class="nav-item"> <a class="nav-link den" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">Danh sách yêu thích</a></li> 
+            }        
+        }
+        
     }
     
     <li class="nav-item"><a class="nav-link den @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Thay đổi Email</a></li>

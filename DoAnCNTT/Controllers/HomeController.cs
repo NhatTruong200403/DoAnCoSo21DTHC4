@@ -26,16 +26,16 @@ namespace DoAnCNTT.Controllers
 
         public async Task<IActionResult> FindUser(string id, int idpost)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
             var user = await _userManager.FindByIdAsync(id);
-            //if (user == null)
-            //{
-            //    return NotFound(); // Handle the case where the user is not found
-            //}
+            var userBooking = await _context.Booking.Where(b => b.UserId == currentUser!.Id && b.PostId == idpost).ToListAsync();
+
 
             var listpost = await _context.Posts
-                                         .Where(p => p.CreatedById == id && p.Id != idpost)
+                                         .Where(p => p.CreatedById == id)
                                          .ToListAsync();
             ViewBag.listpost = listpost;
+            ViewBag.userBooking = userBooking;
 
             return PartialView(user);
         }
@@ -62,7 +62,7 @@ namespace DoAnCNTT.Controllers
 
         public async Task<IActionResult> Index(string query, int pageNumber = 1)
         {
-            int pageSize = 8;
+            int pageSize = 6;
             IQueryable<Post> carsQuery;
             if (query != null)
             {

@@ -20,19 +20,20 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         public BookingsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            _context = context; _userManager = userManager;
+            _context = context;
+            _userManager = userManager;
         }
-        
+
         public void UpdateBookingStatus(List<Booking> bookings)
         {
             //var bookings = _context.Booking.Where(p => p.RecieveOn <= DateTime.Now && p.ReturnOn).ToList();
             foreach (var item in bookings)
             {
-                if(item.RecieveOn <= DateTime.Now && item.ReturnOn >= DateTime.Now)
+                if (item.RecieveOn <= DateTime.Now && item.ReturnOn >= DateTime.Now)
                 {
                     item.Status = "Đang thuê";
-                }    
-                if(item.ReturnOn < DateTime.Now)
+                }
+                if (item.ReturnOn < DateTime.Now)
                 {
                     item.Status = "Hoàn tất";
                 }
@@ -40,13 +41,18 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 _context.SaveChanges();
             }
 
-            
+
         }
 
         // GET: Customer/Bookings
         public async Task<IActionResult> Index()
         {
-            var bookings = await _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User).Where(b => b.IsDeleted == false).ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+            var bookings = await _context.Booking.
+                                    Include(b => b.Post).
+                                    Include(b => b.Promotion).
+                                    Include(b => b.User)
+                                    .Where(b => b.IsDeleted == false && b.UserId == user!.Id).ToListAsync();
             ViewData["Post"] = _context.Posts.ToList();
             UpdateBookingStatus(bookings);
             return View(bookings);
@@ -80,7 +86,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewBag.Post = post;
             ViewBag.Sum = originValue;
             return View(booking);
-        
+
         }
 
 
@@ -93,11 +99,11 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             DateTime start = DateTime.Parse(startDate);
             DateTime end = DateTime.Parse(endDate);
             int numberOfDays = (int)(end - start).TotalHours;
-            return Json(numberOfDays*total);
+            return Json(numberOfDays * total);
         }
         [AllowAnonymous]
         public IActionResult CalculateFinalValue(decimal total, int promotionId)
-        { 
+        {
             // Lấy giá trị Promotion tương ứng từ CSDL
             var promotion = _context.Promotions.FirstOrDefault(p => p.Id == promotionId);
             if (promotion == null)
@@ -110,13 +116,37 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             }
         }
 
+        public async Task<bool> IsValidDate(Booking booking)
+        {
+            var existingBooking = await _context.Booking.
+                                    OrderByDescending(b => b.Id).
+                                    FirstOrDefaultAsync(b => b.PostId == booking.PostId);
+            if (existingBooking == null)
+            {
+                return true;
+            }
+            if (booking.RecieveOn > existingBooking.ReturnOn || booking.ReturnOn < existingBooking.RecieveOn)
+            {
+                return true;
+            }
+            return false;
+
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id")] Booking booking)
         {
+            var user = await _userManager.GetUserAsync(User);
             booking.CreatedOn = DateTime.Now;
             booking.Status = "Đang chờ";
+            booking.UserId = user!.Id;
             booking.IsRequest = false;
+            var isValidDate = await IsValidDate(booking);
+            if (!isValidDate)
+            {
+                return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(booking);
@@ -126,7 +156,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
             ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
-            return  RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
+            return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
         }
 
         // GET: Customer/Bookings/Delete/5

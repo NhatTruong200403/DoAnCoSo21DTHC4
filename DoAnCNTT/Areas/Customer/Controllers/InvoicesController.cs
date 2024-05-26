@@ -184,7 +184,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 _context.Booking.Update(booking);
                 _context.SaveChanges();
                 await UpdatePostInfo(booking, true, -1);
-                return RedirectToAction("Index", "Bookings");
+                return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
             }
             else
             {
@@ -195,11 +195,17 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                     {
                         Total = -booking.PrePayment,
                         ReturnOn = booking.RecieveOn.AddDays(2),
-                        BookingId = booking.Id
+                        BookingId = booking.Id,
+                        CreatedOn = booking.CreatedOn,
                     };
                     _context.Invoices.Add(invoice);
                     _context.SaveChanges();
-                    await UpdatePostInfo(booking, false, 1);
+                    var isAvailable = false;
+                    if (booking.RecieveOn > DateTime.Now)
+                    {
+                        isAvailable = true;
+                    }
+                    await UpdatePostInfo(booking, isAvailable, 1);
 
                 }
 
@@ -215,14 +221,14 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             if (post != null)
             {
                 post.IsAvailable = isAvailable;
-                if(post.RideNumber == 0 && rideNumber < 0)
+                if (post.RideNumber == 0 && rideNumber < 0)
                 {
                     post.RideNumber = 0;
-                }    
+                }
                 else
                 {
                     post.RideNumber += rideNumber;
-                }    
+                }
             }
             _context.SaveChanges();
         }

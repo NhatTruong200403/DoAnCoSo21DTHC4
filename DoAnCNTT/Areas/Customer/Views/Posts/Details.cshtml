@@ -1,4 +1,3 @@
-
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
 @model DoAnCNTT.Models.Post
 @using Microsoft.AspNetCore.Identity
@@ -12,29 +11,29 @@
 }
 
 <div style="margin-top:20px;">
-        <div class="cover-car-container">
-            <div class="main-img">
-                <div class="cover-car-item">
-                    <img loading="lazy" alt=""
-                         src="@Model.Image">
-                </div>
-            </div>
-            <div class="sub-img">
-                @foreach (var image in @ViewBag.PostImages)
-                {
-                    <div class="cover-car-item">
-                        <img loading="lazy"
-                             src="@image"
-                             alt="">
-                    </div>
-                }
+    <div class="cover-car-container">
+        <div class="main-img">
+            <div class="cover-car-item">
+                <img loading="lazy" alt=""
+                     src="@Model.Image">
             </div>
         </div>
+        <div class="sub-img">
+            @foreach (var image in @ViewBag.PostImages)
+            {
+                <div class="cover-car-item">
+                    <img loading="lazy"
+                         src="@image"
+                         alt="">
+                </div>
+            }
+        </div>
+    </div>
     <div class="cover-car-container" style="margin-top:20px;">
         <div class="main-img">
             <div style="display:flex;justify-content: space-between;align-items: center;">
                 <div>
-                
+
                     <span style="font-size:35px;font-weight:bold;">@Html.DisplayFor(model => model.Name)</span>
                     <ul style="display:flex;">
                         @{
@@ -67,9 +66,9 @@
 
                 <div>
                     @{
-                        if(currentUser == null)
+                        if (currentUser == null)
                         {
-                            <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id"  asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+                            <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
 
                         }
                         else
@@ -182,11 +181,11 @@
                             <span> ! Chọn 1 trong 2 hình thức</span>
                             <div style="margin-left:10px;margin-block:5px;font-weight:600;">
                                 <img style="width:35px;margin-right:10px;" src="@Url.Content("~/images/logo/driving-license.png")" />
-                                   GPLX & CCCD gắn chip(Đối chiếu)
+                                GPLX & CCCD gắn chip(Đối chiếu)
                             </div>
                             <div style="margin-left:10px;font-weight:600;">
                                 <img style="width:35px;margin-right:10px;" src="@Url.Content("~/images/logo/gplx_passport.png")" />
-                                  GPLX(Đối chiếu) & Passport(Giữ lại)
+                                GPLX(Đối chiếu) & Passport(Giữ lại)
                             </div>
                         </div>
                     </div>
@@ -208,7 +207,7 @@
 
 
             <hr style="opacity:0.3;" />
-             <div>
+            <div>
                 @{
                     var user = await UserManager.FindByIdAsync(Model.CreatedById);
                 }
@@ -240,7 +239,7 @@
                             </i>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div>
                     <ul class="grid-li">
@@ -303,7 +302,7 @@
 
                                                     </div>
                                                 </div>
-                                                <input style="border:none;padding:0px;margin-top:-10px;" value="@Model.CreatedOn" disabled/>
+                                                <input style="border:none;padding:0px;margin-top:-10px;" value="@Model.CreatedOn" disabled />
                                             </div>
                                         }
                                     }
@@ -318,7 +317,7 @@
                                     <a asp-action="Delete" style="background-color: cadetblue;border-radius:5px;color:white;padding:10px 20px;" asp-controller="Rating" asp-route-id="@comment.Id" asp-route-postId="@Model.Id">Xóa bình luận</a>
                                 }
                             </div>
-                            
+
                         }
                     }
                     else
@@ -328,179 +327,184 @@
                     <div>
                         @{
                             var newRating = new Rating()
-                            {
-                                PostId = Model.Id,
-                                CreatedById = currentUser == null ? null : currentUser!.Id,
-                                CreatedOn = DateTime.Now,
-                                UserId = currentUser == null ? null : currentUser!.Id
-                            };
+            {
+                PostId = Model.Id,
+                CreatedById = currentUser == null ? null : currentUser!.Id,
+                CreatedOn = DateTime.Now,
+                UserId = currentUser == null ? null : currentUser!.Id
+            };
                             <partial name="../Rating/AddComment.cshtml" model="newRating" />
-                    }   
-                            
+                        }
+
                     </div>
-                    
 
-            </div>
 
-            </<div>
+                </div>
 
-            </div>
+                </<div>
+                </div>
 
             </div>
             <div class="sub-img">
-            @{
-                var booking = new Booking()
-                {
-                    PostId = Model.Id,
-                    UserId = currentUser == null ? null : currentUser!.Id,
-                    CreatedOn = DateTime.Now,
-                    RecieveOn = DateTime.Now,
-                    ReturnOn = DateTime.Now.AddDays(1),
-                    Total = Model!.Price,
-                    FinalValue = Model!.Price,
-                    PrePayment = Model!.Price * (decimal)0.3,
-                };
-                ViewBag.IsAvailable = Model.IsAvailable;
-                <partial name="../Bookings/Create.cshtml" model="booking" />
-            }
-        </div>
-        
-</div>
-    
-
-<div>
-    @{
-        if(SignInManager.IsSignedIn(User))
-        {
-            if (currentUser!.Id == Model.UserId)
+                @{
+                    var booking = new Booking()
             {
-                    <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
+                PostId = Model.Id,
+                UserId = currentUser == null ? null : currentUser!.Id,
+                CreatedOn = DateTime.Now,
+                RecieveOn = DateTime.Now,
+                ReturnOn = DateTime.Now.AddDays(1),
+                Total = Model!.Price,
+                FinalValue = Model!.Price,
+                PrePayment = Model!.Price * (decimal)0.3,
+            };
+                    ViewBag.IsAvailable = Model.IsAvailable;
+                    <partial name="../Bookings/Create.cshtml" model="booking" />
+                }
+            </div>
+
+        </div>
+
+
+        <div>
+            @{
+                if (SignInManager.IsSignedIn(User))
+                {
+                    if (currentUser!.Id == Model.UserId)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
+                    }
+                }
             }
-        }
-    }
-    <a asp-area="Employee" asp-controller="Reports" asp-action="Create" asp-route-id="@Model?.Id">Báo cáo bài viết</a>
-    <a href="javascript:history.go(-1);">Quay lại</a>
-</div>
+            <a asp-area="Employee" asp-controller="Reports" asp-action="Create" asp-route-id="@Model?.Id">Báo cáo bài viết</a>
+            <a href="javascript:history.go(-1);">Quay lại</a>
+        </div>
 
 
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var createButton = document.getElementById("createButton");
-        if (@Model.IsAvailable == false) 
-                createButton.hidden = true;
-    });
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var createButton = document.getElementById("createButton");
+                if (@Model.IsAvailable == false)
+                    createButton.hidden = true;
+            });
 
-</script>
+        </script>
 
 
 
-<style>
-    .start{
-        width: 20px !important;
-        height: 20px !important;
-    }
-
-    .font{
-        font-size:25px;
-    }
-    .mar{
-        margin-block:20px;
-    }
-    .flex-container {
-        display: flex;
-    }
-
-    .small-div {
-        flex: 0 0 1%;
-        background-color: #f26a2b; /* Màu nền của div đầu tiên */
-        border-top-left-radius: 10px; /* Độ cong góc trái trên */
-        border-bottom-left-radius: 10px; /* Độ cong góc trái dưới */
-    }
-
-    .large-div {
-        flex: 0 0 99%;
-        background-color: #fef7f0;
-    }
-    .grid-li {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 cột bằng nhau */
-        gap: 10px; /* Khoảng cách giữa các cột */
-    }
-    .cover-car-container {
-        display: flex;
-        position: relative;
-        grid-gap: 16px;
-        gap: 16px;
-        width: 100%;
-    }
-
-        .cover-car-container .main-img {
-            position: relative;
-            width: calc(68% - 16px);
-            height: 100%;
-        }
-
-        .cover-car-container .sub-img {
-            width: 32%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            grid-gap: 16px;
-            gap: 16px;
-        }
-
-            .cover-car-container .sub-img img {
-                height: 176px;
+        <style>
+            .start {
+                width: 20px !important;
+                height: 20px !important;
             }
-    .cover-car-item {
-        cursor: pointer;
-    }
 
-    .cover-car-item img {
-    width: 100%;
-    height: 560px;
-    border-radius: 16px;
-    object-fit: cover;
-}
-    .comment-item {
-        display: flex;
-        margin-bottom: 20px;
-    }
+            .font {
+                font-size: 25px;
+            }
 
-    .comment-avatar img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-    }
+            .mar {
+                margin-block: 20px;
+            }
 
-    .comment-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        margin-left: 10px;
-    }
+            .flex-container {
+                display: flex;
+            }
 
-        .comment-content .rating {
-            font-size: 20px;
-        }
+            .small-div {
+                flex: 0 0 1%;
+                background-color: #f26a2b; /* Màu nền của div đầu tiên */
+                border-top-left-radius: 10px; /* Độ cong góc trái trên */
+                border-bottom-left-radius: 10px; /* Độ cong góc trái dưới */
+            }
 
-        .comment-content .star {
-            color: #FFD700;
-            display: inline-block;
-        }
+            .large-div {
+                flex: 0 0 99%;
+                background-color: #fef7f0;
+            }
 
-        .comment-content .star-none{
-            color: none;
-            display: inline-block;
-        }
+            .grid-li {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr); /* 4 cột bằng nhau */
+                gap: 10px; /* Khoảng cách giữa các cột */
+            }
 
-        .comment-content .comment-text {
-            margin-top: 5px;
-            font-size: 14px;
-        }
-</style>
+            .cover-car-container {
+                display: flex;
+                position: relative;
+                grid-gap: 16px;
+                gap: 16px;
+                width: 100%;
+            }
+
+                .cover-car-container .main-img {
+                    position: relative;
+                    width: calc(68% - 16px);
+                    height: 100%;
+                }
+
+                .cover-car-container .sub-img {
+                    width: 32%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    grid-gap: 16px;
+                    gap: 16px;
+                }
+
+                    .cover-car-container .sub-img img {
+                        height: 176px;
+                    }
+
+            .cover-car-item {
+                cursor: pointer;
+            }
+
+                .cover-car-item img {
+                    width: 100%;
+                    height: 560px;
+                    border-radius: 16px;
+                    object-fit: cover;
+                }
+
+            .comment-item {
+                display: flex;
+                margin-bottom: 20px;
+            }
+
+            .comment-avatar img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+
+            .comment-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                margin-left: 10px;
+            }
+
+                .comment-content .rating {
+                    font-size: 20px;
+                }
+
+                .comment-content .star {
+                    color: #FFD700;
+                    display: inline-block;
+                }
+
+                .comment-content .star-none {
+                    color: none;
+                    display: inline-block;
+                }
+
+                .comment-content .comment-text {
+                    margin-top: 5px;
+                    font-size: 14px;
+                }
+        </style>
 
 
 
