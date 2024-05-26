@@ -7,8 +7,8 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-@if (User.IsInRole("Customer"))
-{
+@* @if (User.IsInRole("Customer"))
+{ *@
 <section class="py-2">
     <div class="container ">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
@@ -70,8 +70,8 @@
         </div>
     </div>
     </section>
-}
-else if (User.IsInRole("Admin") )
+@* } *@
+@if (User.IsInRole("Admin") )
 {
     
 <h1>Danh sách bài đăng</h1>
