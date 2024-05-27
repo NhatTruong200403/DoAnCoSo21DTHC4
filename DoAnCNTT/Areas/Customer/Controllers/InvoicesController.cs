@@ -172,12 +172,13 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             //string serectkey = _configuration.GetValue<string>("MomoAPI:Serectkey");
             string serectkey = _configuration.GetValue<string>("MomoAPI:Serectkey") ?? ""; // Providing an empty string as default
             string signature = crypto.signSHA256(param, serectkey);
+
             if (signature != Request.Query["signature"].ToString())
             {
                 ViewBag.message = "Thông tin Request không hợp lệ";
                 return View();
             }
-            if (!Request.Query["errorCode"].Equals("0"))
+            if (!Request.Query["errorCode"].Equals("0") || Request.Query["errorCode"].Equals("1006") || Request.Query["message"].ToString().Contains("Transaction denied by user"))
             {
                 ViewBag.message = "Thanh toán thất bại";
                 booking!.IsDeleted = true;

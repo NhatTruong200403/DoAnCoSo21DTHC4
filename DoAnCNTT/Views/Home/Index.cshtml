@@ -7,8 +7,8 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-@if (User.IsInRole("Customer"))
-{
+@* @if (User.IsInRole("Customer"))
+{ *@
 <section class="py-2">
     <div class="container ">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
@@ -29,7 +29,7 @@
                         {
                             <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
                         }
-                      
+
                     </div>
 
                     <div class="ptc"><a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
@@ -40,12 +40,12 @@
                     <hr>
                     <div class="pte">
                         <div class="pte_left">
-                           @*  Chưa xong *@
+                            @*  Chưa xong *@
                             <div class="dgsao">
                                 <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
                                 <span class="text_saodanhgia">5.0</span>
                             </div>
-                            @if(item.RideNumber > 0)
+                            @if (item.RideNumber > 0)
                             {
                                 <div class="sochuyen">
                                     <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
@@ -58,7 +58,7 @@
                                     Chưa có chuyến.
                                 </div>
                             }
-                            
+
                         </div>
                         <div class="pte_right">
                             <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
@@ -69,74 +69,75 @@
             }
         </div>
     </div>
-    </section>
-}
-@if (User.IsInRole("Admin") )
+</section>
+@* } *@
+@if (User.IsInRole("Admin"))
 {
-    
-<h1>Danh sách bài đăng</h1>
+
+    <h1>Danh sách bài đăng</h1>
 
 
-<table style="min-height:500px;" class="table">
-    <thead>
-        <tr>
-            <th>
-                Tên
-            </th>
-            <th>
-                Hình ảnh
-            </th>
-            <th>
-                Mô tả
-            </th>
-            <th>
-                Địa chỉ nhận
-            </th>
-            <th>
-                Có tài xế
-            </th>
-            <th>
-                Giá
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
+    <table style="min-height:500px;" class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tên
+                </th>
+                <th>
+                    Hình ảnh
+                </th>
+                <th>
+                    Mô tả
+                </th>
+                <th>
+                    Địa chỉ nhận
+                </th>
+                <th>
+                    Có tài xế
+                </th>
+                <th>
+                    Giá
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
                         <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-                
-            </td>
-            <td>
-                <img src="@item.Image" alt="hinhanh.jpg" width="200px" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RentLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasDriver)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+                    </td>
+                    <td>
+                        <img src="@item.Image" alt="hinhanh.jpg" width="200px" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RentLocation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HasDriver)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
 
 }
 
-@if(User.IsInRole("Admin"))
+@if (User.IsInRole("Admin"))
 {
     <div class="nutchuyentrang1">
         <a asp-action="Index" asp-route-query="@ViewBag.SearchString"
@@ -168,18 +169,18 @@ else if (User.IsInRole("Customer"))
 }
 
 
- 
+
 <style>
     .nutchuyentrang {
         margin-inline: 43%;
         width: 300px;
-
     }
 
     .nutchuyentrang1 {
         margin-left: 75%;
         width: 300px;
     }
+
     .box {
         width: 305px;
         height: 345px;
@@ -251,8 +252,7 @@ else if (User.IsInRole("Customer"))
         width: 275px;
         margin-top: 10px;
         margin-bottom: 5px;
-        }
-    @* margin:5px;
+    @* margin:5px; *@
     }
 
     .pte {
@@ -292,4 +292,4 @@ else if (User.IsInRole("Customer"))
                 margin-right: 10px;
             }
 
-</style> *@
+</style>
