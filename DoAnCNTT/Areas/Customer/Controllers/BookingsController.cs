@@ -137,6 +137,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id")] Booking booking)
         {
+
             var user = await _userManager.GetUserAsync(User);
             booking.CreatedOn = DateTime.Now;
             booking.Status = "Đang chờ";

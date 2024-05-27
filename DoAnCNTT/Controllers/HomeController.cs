@@ -66,7 +66,7 @@ namespace DoAnCNTT.Controllers
             IQueryable<Post> carsQuery;
             if (query != null)
             {
-                carsQuery = _context.Posts.Where(b => b.Name.Contains(query) && b.IsDeleted == false).Distinct();
+                carsQuery = _context.Posts.Where(b => b.Name!.Contains(query) && b.IsDeleted == false).Distinct();
             }
             else
             {
