@@ -9,6 +9,7 @@ using DoAnCNTT.Data;
 using DoAnCNTT.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Globalization;
 
 namespace DoAnCNTT.Areas.Admin.Controllers
 {
@@ -23,17 +24,35 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: Admin/Revenues
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var date = DateTime.Now.Date;
-            var totalRevenue = await _context.Invoices.Where(p => p.CreatedOn.Date == date).SumAsync(i => i.Total);
-            ViewBag.TotalRevenue = totalRevenue;
-            var allRevenue = await _context.Invoices.SumAsync(i=> i.Total);
-            ViewBag.AllRevenue = allRevenue;
-            var month = DateTime.Now.Month;
-            var monthRevenues = await _context.Invoices.Where(p=>p.CreatedOn.Month == month).SumAsync(i=> i.Total);
-            ViewBag.MonthRevenue = monthRevenues;
             return View();
+        }
+
+        public async Task<IActionResult> CalculateRevenues(int day, int month)
+        {
+            var invoices = await _context.Invoices
+                        .Where(i => i.CreatedOn.Day == DateTime.Now.Day && i.CreatedOn.Month == DateTime.Now.Month)
+                        .Select(i => i.Total)
+                        .ToListAsync();
+            if (day > 0 && month > 0)
+            {
+                invoices = await _context.Invoices
+                             .Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == month)
+                             .Select(i => i.Total)
+                             .ToListAsync();
+            }
+            if(day == 0 && month > 0)
+            {
+                invoices = await _context.Invoices
+                     .Where(i => i.CreatedOn.Month == month)
+                     .Select(i => i.Total)
+                     .ToListAsync();
+            }
+
+            var revenues = invoices.Any() ? invoices.Average() : 0;
+
+            return View("Index", revenues);
         }
     }
 }
