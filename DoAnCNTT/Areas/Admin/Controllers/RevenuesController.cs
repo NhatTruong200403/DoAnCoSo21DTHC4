@@ -24,35 +24,48 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: Admin/Revenues
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync(int day, int month)
         {
-            return View();
+            var invoices = await CalculateRevenues(day, month);
+            var revenues = invoices.Any() ? invoices.Sum(i => i.Total) : 0;
+            ViewData["revenues"] = revenues;
+            return View(invoices);
         }
 
-        public async Task<IActionResult> CalculateRevenues(int day, int month)
+
+        public async Task<List<Invoice>> CalculateRevenues(int day, int month)
         {
             var invoices = await _context.Invoices
-                        .Where(i => i.CreatedOn.Day == DateTime.Now.Day && i.CreatedOn.Month == DateTime.Now.Month)
-                        .Select(i => i.Total)
-                        .ToListAsync();
+                            .Include(i => i.Booking)
+                            .ThenInclude(b => b.User)
+                            .Where(i => i.CreatedOn.Day == DateTime.Now.Day && i.CreatedOn.Month == DateTime.Now.Month)
+                            .ToListAsync();
+
             if (day > 0 && month > 0)
             {
                 invoices = await _context.Invoices
-                             .Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == month)
-                             .Select(i => i.Total)
-                             .ToListAsync();
+                            .Include(i => i.Booking)
+                            .ThenInclude(b => b.User)
+                            .Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == month)
+                            .ToListAsync();
             }
             if(day == 0 && month > 0)
             {
                 invoices = await _context.Invoices
-                     .Where(i => i.CreatedOn.Month == month)
-                     .Select(i => i.Total)
-                     .ToListAsync();
+                        .Include(i => i.Booking)
+                        .ThenInclude(b => b.User)
+                        .Where(i => i.CreatedOn.Month == month)
+                        .ToListAsync();
             }
-
-            var revenues = invoices.Any() ? invoices.Average() : 0;
-
-            return View("Index", revenues);
+            if (day > 0 && month == 0)
+            {
+                invoices = await _context.Invoices
+                        .Include(i => i.Booking)
+                        .ThenInclude(b => b.User)
+                        .Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == DateTime.Now.Month)
+                        .ToListAsync();
+            }
+            return invoices;
         }
     }
 }
