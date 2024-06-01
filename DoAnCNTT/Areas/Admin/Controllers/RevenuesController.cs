@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DoAnCNTT.Data;
 using DoAnCNTT.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Globalization;
+using DoAnCNTT.Models.ViewModel;
 
 namespace DoAnCNTT.Areas.Admin.Controllers
 {
@@ -24,47 +21,49 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: Admin/Revenues
-        public async Task<IActionResult> IndexAsync(int day, int month)
+        public async Task<IActionResult> Index(int day, int month)
         {
             var invoices = await CalculateRevenues(day, month);
             var revenues = invoices.Any() ? invoices.Sum(i => i.Total) : 0;
-            ViewData["revenues"] = revenues;
-            return View(invoices);
+
+            var revenuesVM = new RevenuesViewModel
+            {
+                Invoices = invoices,
+                SelectedDay = day,
+                SelectedMonth = month,
+                Revenues = revenues
+            };
+
+            return View(revenuesVM);
         }
 
+        // POST: Admin/Revenues
+        [HttpPost]
+        public IActionResult Index(RevenuesViewModel model)
+        {
+            return RedirectToAction("Index", new { day = model.SelectedDay, month = model.SelectedMonth });
+        }
 
-        public async Task<List<Invoice>> CalculateRevenues(int day, int month)
+        private async Task<List<Invoice>> CalculateRevenues(int day, int month)
         {
             var invoices = await _context.Invoices
                             .Include(i => i.Booking)
                             .ThenInclude(b => b.User)
-                            .Where(i => i.CreatedOn.Day == DateTime.Now.Day && i.CreatedOn.Month == DateTime.Now.Month)
                             .ToListAsync();
 
             if (day > 0 && month > 0)
             {
-                invoices = await _context.Invoices
-                            .Include(i => i.Booking)
-                            .ThenInclude(b => b.User)
-                            .Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == month)
-                            .ToListAsync();
+                invoices = invoices.Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == month).ToList();
             }
-            if(day == 0 && month > 0)
+            else if (day == 0 && month > 0)
             {
-                invoices = await _context.Invoices
-                        .Include(i => i.Booking)
-                        .ThenInclude(b => b.User)
-                        .Where(i => i.CreatedOn.Month == month)
-                        .ToListAsync();
+                invoices = invoices.Where(i => i.CreatedOn.Month == month).ToList();
             }
-            if (day > 0 && month == 0)
+            else if (day > 0 && month == 0)
             {
-                invoices = await _context.Invoices
-                        .Include(i => i.Booking)
-                        .ThenInclude(b => b.User)
-                        .Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == DateTime.Now.Month)
-                        .ToListAsync();
+                invoices = invoices.Where(i => i.CreatedOn.Day == day && i.CreatedOn.Month == DateTime.Now.Month).ToList();
             }
+
             return invoices;
         }
     }
