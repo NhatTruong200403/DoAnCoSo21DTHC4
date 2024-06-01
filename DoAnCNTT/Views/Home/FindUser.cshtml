@@ -38,7 +38,13 @@
                 <a href="zalos://@Model.PhoneNumber">
                     <img style="width:30px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" src="@Url.Content("~/images/logo/zalo.png")" alt="Zalo" />
                 </a>
-
+            </p>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="nav-link den" asp-area="Admin" asp-controller="Customers" asp-action="GetBookingHistory" asp-route-userId="@Model.Id">Lịch sử đặt xe</a>
+                <a class="nav-link den" asp-area="Admin" asp-controller="Customers" asp-action="GetPaymentHistory" asp-route-userId="@Model.Id">Lịch sử giao dịch</a>
+            }
+          
         </div>
     </div>
     <hr style="width:100%;"/>

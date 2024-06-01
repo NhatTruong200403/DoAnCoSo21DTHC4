@@ -39,6 +39,25 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return View(user);
         }
 
+        public async Task<IActionResult> GetBookingHistory(string userId)
+        {
+            var bookings = await _context.Booking.
+                                    Include(b => b.Post).
+                                    Include(b => b.Promotion).
+                                    Include(b => b.User)
+                                    .Where(b => b.IsDeleted == false && b.UserId == userId).ToListAsync();
+            ViewData["Post"] = _context.Posts.ToList();
+            return View("~/Areas/Customer/Views/Bookings/Index.cshtml", bookings);
+        }
+
+        public async Task<IActionResult> GetPaymentHistory(string userId)
+        {
+            var invoices = await _context.Invoices
+                                .Include(i => i.Booking)
+                                .Where(i => i.Booking.UserId == userId).ToListAsync();
+            return View("~/Areas/Customer/Views/Invoices/Index.cshtml", invoices);
+        }
+
         // GET: CustomerController/Create
         public ActionResult Create()
         {
