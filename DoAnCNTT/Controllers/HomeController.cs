@@ -24,19 +24,21 @@ namespace DoAnCNTT.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> FindUser(string id, int idpost)
+        public async Task<IActionResult> FindUser(string id)
         {
             var currentUser = await _userManager.GetUserAsync(User);
             var user = await _userManager.FindByIdAsync(id);
-            var userBooking = await _context.Booking.Where(b => b.UserId == currentUser!.Id && b.PostId == idpost).ToListAsync();
-
-
+            if(currentUser !=  null)
+            {
+                var userBooking = await _context.Booking.
+                                    Where(b => b.UserId == currentUser!.Id && b.Post.UserId == user!.Id).
+                                    ToListAsync();
+                ViewBag.userBooking = userBooking;
+            }
             var listpost = await _context.Posts
                                          .Where(p => p.CreatedById == id)
                                          .ToListAsync();
             ViewBag.listpost = listpost;
-            ViewBag.userBooking = userBooking;
-
             return PartialView(user);
         }
 

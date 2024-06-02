@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<DoAnCNTT.Models.Report>
-
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -44,13 +46,27 @@
                 <a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">@item.Post.Name</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedById)
+                @{
+                    var createdUser = await UserManager.FindByIdAsync(item.CreatedById!);
+                }
+                <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.CreatedById">@createdUser.Name</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ModifiedById)
+                @{
+                    if(item.ModifiedById != null)
+                    {
+                        var modifiedUser = await UserManager.FindByIdAsync(item.ModifiedById!);
+                        <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.ModifiedById">@modifiedUser!.Name</a>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.ModifiedById)
+                    }
+                }
+                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ModifiedOn)
