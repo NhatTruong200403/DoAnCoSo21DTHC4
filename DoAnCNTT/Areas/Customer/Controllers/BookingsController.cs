@@ -137,22 +137,25 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id")] Booking booking)
         {
-
             var user = await _userManager.GetUserAsync(User);
             booking.CreatedOn = DateTime.Now;
             booking.Status = "Đang chờ";
             booking.UserId = user!.Id;
             booking.IsRequest = false;
             var isValidDate = await IsValidDate(booking);
-            if (isValidDate)
+            if (!isValidDate)
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(booking);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("MomoPayment", "Invoices", new { bookingId = booking.Id });
-                }
+                return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
             }
+            if (ModelState.IsValid)
+            {
+                _context.Add(booking);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("MomoPayment", "Invoices", new { bookingId = booking.Id });
+            }
+            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
+            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
             return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
         }
 
@@ -188,9 +191,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 booking.IsRequest = true;
                 booking.Status = "Đang xử lí";
                 _context.Booking.Update(booking);
-                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == booking!.PostId);
-                post!.RideNumber--;
-                _context.Posts.Update(post);
             }
 
             await _context.SaveChangesAsync();
