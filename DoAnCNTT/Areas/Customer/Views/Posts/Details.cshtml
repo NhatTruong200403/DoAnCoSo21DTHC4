@@ -209,13 +209,23 @@
             <hr style="opacity:0.3;" />
             <div>
                 @{
-                    var user = await UserManager.FindByIdAsync(Model.CreatedById);
+                    var user = await UserManager.FindByIdAsync(Model.CreatedById!);
                 }
                 <span>Chủ xe</span>
                 <div style="display:flex;">
-                    <img src="@Url.Content(user.Image)" style="width:70px;height:70px;border-radius:50%;" />
+                    <img src="@Url.Content(user!.Image)" style="width:70px;height:70px;border-radius:50%;" />
                     <div style="margin-left:20px;">
-                        <a style="font-weight:bold;font-size:25px;" asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-id="@user.Id" asp-route-idpost="@Model.Id">@user.Name</a>
+                        @{
+                            if(User.IsInRole("Admin"))
+                            {
+                                <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@user.Id">@user.Name</a>
+                            }
+                            else
+                            {
+                                <a style="font-weight:bold;font-size:25px;" asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-id="@user.Id">@user.Name</a>
+                            }
+
+                        }
                         @* <span style="font-weight:bold;font-size:25px;">@user.Name</span> *@
                         <div>
                             <i>

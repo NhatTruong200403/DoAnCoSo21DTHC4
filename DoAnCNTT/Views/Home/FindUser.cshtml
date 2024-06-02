@@ -32,13 +32,21 @@
         </div>
         <div style="margin-left:20px;">
             <h2>Tên của chủ xe : @Model.Name</h2>
-            <h4>Thông tin liên hệ </h4>    
-            <p>Số điện thoại: @Model.PhoneNumber</p>
-            <p hidden>Liên hệ chủ xe qua: 
-                <a href="zalos://@Model.PhoneNumber">
-                    <img style="width:30px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" src="@Url.Content("~/images/logo/zalo.png")" alt="Zalo" />
-                </a>
-
+            @{
+                if(userBooking != null)
+                {
+                    if(userBooking!.Count != 0)
+                    {
+                        <h4>Thông tin liên hệ </h4>    
+                        <p>Số điện thoại: @Model.PhoneNumber</p>
+                        <p hidden>Liên hệ chủ xe qua: 
+                            <a href="zalos://@Model.PhoneNumber">
+                                <img style="width:30px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" src="@Url.Content("~/images/logo/zalo.png")" alt="Zalo" />
+                            </a>
+                        </p> 
+                    }
+                }
+            }
         </div>
     </div>
     <hr style="width:100%;"/>
@@ -52,54 +60,58 @@
                     {
                         @foreach (var item in listpost)
                         {
+                            if(item.IsDeleted == false)
+                            {
+                                <div class="box" style="padding:3px;margin-left:20px;background-color:white;">
 
-                            <div class="box" style="padding:3px;margin-left:20px;background-color:white;">
+                                    <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
+                                        <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
+                                    </div>
 
-                                <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
-                                    <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
-                                </div>
+                                    <div class="ptb">
+                                        @if (item.Gear)
+                                        {
+                                            <div class="ptb1 apt" style="padding:2px 4px;">Số tự động</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
+                                        }
+                                        <div class="ptb1 bpt" style="padding:2px 4px;">Giao xe tận nơi</div>
+                                        <div class="ptb1 cpt" style="padding:2px 4px;">Giảm 20%</div>
+                                    </div>
 
-                                <div class="ptb">
-                                    @if (item.Gear)
-                                    {
-                                        <div class="ptb1 apt" style="padding:2px 4px;">Số tự động</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
-                                    }
-                                    <div class="ptb1 bpt" style="padding:2px 4px;">Giao xe tận nơi</div>
-                                    <div class="ptb1 cpt" style="padding:2px 4px;">Giảm 20%</div>
-                                </div>
+                                    <div class="ptc">
+                                        <a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                                    </div>
+                                    <div class="ptd">
+                                        <img src="@Url.Content("~/images/logo/road-map-line.svg")" class="icon_map" alt="">
+                                        <span class="text_map">@Html.DisplayFor(modelItem => item.RentLocation)</span>
+                                    </div>
+                                    <hr>
+                                    <div class="pte">
+                                        <div class="pte_left">
+                                            <div class="dgsao">
+                                                <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
+                                                <span class="text_saodanhgia">@Html.DisplayFor(modelItem => item.AvgRating)</span>
+                                            </div>
 
-                        <div class="ptc"><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
-                        <div class="ptd">
-                            <img src="@Url.Content("~/images/logo/road-map-line.svg")" class="icon_map" alt="">
-                            <span class="text_map">@Html.DisplayFor(modelItem => item.RentLocation)</span>
-                        </div>
-                        <hr>
-                        <div class="pte">
-                            <div class="pte_left">
-                                <div class="dgsao">
-                                    <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
-                                    <span class="text_saodanhgia">@Html.DisplayFor(modelItem => item.AvgRating)</span>
-                                </div>
-
-                                        <div class="sochuyen">
-                                            <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
-                                            <div class="text_sochuyen">20 chuyến</div>
+                                            <div class="sochuyen">
+                                                <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
+                                                <div class="text_sochuyen">20 chuyến</div>
+                                            </div>
+                                                    <!-- <div class="sochuyen">
+                                                        Chưa có chuyến.
+                                                    </div> -->
                                         </div>
-                                        <!-- <div class="sochuyen">
-                                            Chưa có chuyến.
-                                        </div> -->
+                                        <div class="pte_right">
+                                            @* <div class="giagoc">100k</div> *@
+                                            <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
+                                        </div>
                                     </div>
-                                    <div class="pte_right">
-                                        @* <div class="giagoc">100k</div> *@
-                                        <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
-                                    </div>
-                                </div>
 
-                            </div>
+                                </div>
+                            }
                         }
                     }
                     else

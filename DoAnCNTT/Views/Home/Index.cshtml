@@ -7,11 +7,7 @@
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
-@* @if (User.IsInRole("Customer"))
-{ *@
-
-@* } *@
-@if (User.IsInRole("Admin") )
+@if (User.IsInRole("Admin"))
 {
 
         <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
@@ -24,35 +20,37 @@
 <h1>Danh sách bài đăng</h1>
 
 
-<table style="min-height:500px;" class="table">
-    <thead>
-        <tr>
-            <th>
-                Tên
-            </th>
-            <th>
-                Hình ảnh
-            </th>
-            <th>
-                Mô tả
-            </th>
-            <th>
-                Địa chỉ nhận
-            </th>
-            <th>
-                Có tài xế
-            </th>
-            <th>
-                Giá
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
+
+    <table style="min-height:500px;" class="table">
+        <thead>
+            <tr>
+                <th>
+                    Tên
+                </th>
+                <th>
+                    Hình ảnh
+                </th>
+                <th>
+                    Mô tả
+                </th>
+                <th>
+                    Địa chỉ nhận
+                </th>
+                <th>
+                    Có tài xế
+                </th>
+                <th>
+                    Giá
+                </th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
                         <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
                 
             </td>
@@ -78,6 +76,7 @@
         </tr>
 }
     </tbody>
+
     </table>
 
 
@@ -150,7 +149,7 @@ else
     </section>
 }
 
-@if(User.IsInRole("Admin"))
+@if (User.IsInRole("Admin"))
 {
     <div class="nutchuyentrang1">
         <a asp-action="Index" asp-route-query="@ViewBag.SearchString"
@@ -253,19 +252,17 @@ else @* if (User.IsInRole("Customer")) *@
 
 
 
-
- 
 <style>
     .nutchuyentrang {
         margin-inline: 43%;
         width: 300px;
-
     }
 
     .nutchuyentrang1 {
         margin-left: 75%;
         width: 300px;
     }
+
     .box {
         width: 305px;
         height: 345px;

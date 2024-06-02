@@ -26,7 +26,11 @@ namespace DoAnCNTT.Areas.Employee.Controllers
         // GET: Employee/Bookings
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Booking.Include(b => b.Post).Include(b => b.Promotion).Include(b => b.User).Where(b => b.IsRequest == true);
+            var applicationDbContext = _context.Booking
+                                            .Include(b => b.Post)
+                                            .Include(b => b.Promotion)
+                                            .Include(b => b.User)
+                                            .Where(b => b.IsRequest == true);
             return View(await applicationDbContext.ToListAsync());
         }
 

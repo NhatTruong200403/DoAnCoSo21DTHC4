@@ -120,7 +120,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         {
             var existingBooking = await _context.Booking.
                                     OrderByDescending(b => b.Id).
-                                    FirstOrDefaultAsync(b => b.PostId == booking.PostId);
+                                    FirstOrDefaultAsync(b => b.PostId == booking.PostId && b.IsDeleted == false);
             if (existingBooking == null)
             {
                 return true;
@@ -137,25 +137,22 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id")] Booking booking)
         {
+
             var user = await _userManager.GetUserAsync(User);
             booking.CreatedOn = DateTime.Now;
             booking.Status = "Đang chờ";
             booking.UserId = user!.Id;
             booking.IsRequest = false;
             var isValidDate = await IsValidDate(booking);
-            if (!isValidDate)
+            if (isValidDate)
             {
-                return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
+                if (ModelState.IsValid)
+                {
+                    _context.Add(booking);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("MomoPayment", "Invoices", new { bookingId = booking.Id });
+                }
             }
-            if (ModelState.IsValid)
-            {
-                _context.Add(booking);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("MomoPayment", "Invoices", new { bookingId = booking.Id });
-            }
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
             return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
         }
 
