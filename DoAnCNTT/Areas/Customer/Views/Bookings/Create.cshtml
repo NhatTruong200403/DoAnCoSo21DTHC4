@@ -19,7 +19,7 @@
                 <label asp-for="UserId" class="control-label"></label>
                 <input asp-for="UserId" class="form-control"  />
             </div>
-            <div class="form-group">
+            @* <div class="form-group">
                <label asp-for="RecieveOn" class="control-label">Ngày nhận xe</label>
                 <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
                <span asp-validation-for="RecieveOn" class="text-danger"></span>
@@ -28,7 +28,65 @@
                <label asp-for="ReturnOn" class="control-label">Ngày trả xe</label>
                 <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
                <span asp-validation-for="ReturnOn" class="text-danger"></span>
+            </div> *@
+
+
+            <div class="date-time-form ">
+                <div class="form-item">
+                    <label>Nhận xe </label>
+                    <div class="wrap-date-time" id="start">
+                        <div class="wrap-date"><span class="value">
+                                <input asp-for="RecieveOn" type="datetime" id="startDate1" class="form-control" onchange="validateDate()" style="border:none;background-color:white;margin-top:-5px;" />
+                            </span></div>
+                        <div class="wrap-time"><span class="value">21:00</span></div>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="form-item">
+                    <label>Trả xe</label>
+                    <div class="wrap-date-time" id="end">
+                        <div class="wrap-date"><span class="value"><input asp-for="ReturnOn" type="datetime" id="endDate1" class="form-control" onchange="validateDate()" style="border:none;background-color:white;margin-top:-5px; " /></span></div>
+                        <div class="wrap-time"><span class="value">20:00</span></div>
+                    </div>
+                </div>
             </div>
+
+
+
+      
+                <div class="calendar block">
+                <label style="border-radius:15px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);width:10px;height:10px;" id="x">X</label>
+                    <div class="header">
+                        <div class="month"></div>
+                        <div class="btns">
+                            <div class="btn today-btn">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="btn prev-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </div>
+                            <div class="btn next-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weekdays">
+                        <div class="day">Cn</div>
+                        <div class="day">T2</div>
+                        <div class="day">T3</div>
+                        <div class="day">T4</div>
+                        <div class="day">T5</div>
+                        <div class="day">T6</div>
+                        <div class="day">T7</div>
+                    </div>
+                    <div class="days">
+                        <!-- Days will be added dynamically using jQuery -->
+                    </div>
+                </div>
+            @* </div> *@
+
+
+
             <div class="form-group">
                 <label asp-for="Total" class="control-label">Tổng cộng</label>
                 <input asp-for="Total" id="Total" class="form-control" readonly style="border:none;background-color:white;" />
@@ -48,12 +106,8 @@
                     <input asp-for="PrePayment" class="form-control" id="prePayment" readonly style="border:none;background-color:white;" />
                     <span asp-validation-for="PrePayment" class="text-danger"></span>
                 </div>
-          @*   <div class="form-group">
-                <label asp-for="PrePayment" class="control-label">Đặt cọc</label>
-                <input asp-for="PrePayment" id="prePayment" class="form-control" readonly style="border:none;background-color:white;" />
-                <span asp-validation-for="PrePayment" class="text-danger"></span>
-            </div>
-            *@
+      
+            
             <div class="form-group">
                 @{
                     if (@ViewBag.IsAvailable == false)
@@ -71,28 +125,12 @@
 </div>
 
 
-<style>
-    .w{
-        width:100%;
-    }
-    .date-time-form {
-        position: relative;
-        display: flex;
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        background: #fff;
-        margin-bottom: 12px;
-    }
 
-    .date-time-form .form-item {
-        width: 100%;
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        grid-gap: 8px;
-        gap: 8px;
-        cursor: pointer;
-    }
+<style>
+
+
+
+    
 </style>
 
 
@@ -102,24 +140,25 @@
     }
 }
 <script>
-    function validateDate() {
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
+        function validateDate() {
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
 
-        // Chuyển đổi các chuỗi ngày thành đối tượng Date để so sánh
-        var start = new Date(startDate);
-        var end = new Date(endDate);
+            // Chuyển đổi các chuỗi ngày thành đối tượng Date để so sánh
+            var start = new Date(startDate);
+            var end = new Date(endDate);
 
-        // Kiểm tra nếu RecieveOn lớn hơn ReturnOn
-        if (start > end) {
-            // Hiển thị thông báo lỗi
-            alert("Thời gian nhận xe phải trước thời gian trả");
-            // Thiết lập giá trị của RecieveOn là ngày hiện tại
-            document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
-            // Thiết lập giá trị của ReturnOn là ngày kế tiếp của RecieveOn
-            document.getElementById("endDate").value = new Date(start.getTime() + 86400000).toISOString().split('T')[0];
+            // Kiểm tra nếu RecieveOn lớn hơn ReturnOn
+            if (start > end) {
+                // Hiển thị thông báo lỗi
+                alert("Thời gian nhận xe phải trước thời gian trả");
+                // Thiết lập giá trị của RecieveOn là ngày hiện tại
+                document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
+                // Thiết lập giá trị của ReturnOn là ngày kế tiếp của RecieveOn
+                document.getElementById("endDate").value = new Date(start.getTime() + 86400000).toISOString().split('T')[0];
+            }
         }
-    }
+
     $(document).ready(function () {
         $('#startDate, #endDate').change(function () {
             var startDate = $('#startDate').val();
@@ -138,6 +177,7 @@
                 });
             }
         });
+
         $('#Total, #promotionSelect').change(function () {
             var promotionId = $('#promotionSelect').val();
             var total = $('#Total').val();
@@ -155,5 +195,143 @@
                 }
             });
         });
+
+        let selectingPickup = true;
+        const $daysContainer = $(".days"),
+            $nextBtn = $(".next-btn"),
+            $prevBtn = $(".prev-btn"),
+            $month = $(".month"),
+            $todayBtn = $(".today-btn");
+
+        const months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        let currentDate = new Date(),
+            currentMonth = currentDate.getMonth(),
+            currentYear = currentDate.getFullYear(),
+            pickupDate = null,
+            returnDate = null;
+
+        function renderCalendar() {
+            currentDate.setDate(1);
+            const firstDay = new Date(currentYear, currentMonth, 1),
+                lastDay = new Date(currentYear, currentMonth + 1, 0),
+                lastDayIndex = lastDay.getDay(),
+                lastDayDate = lastDay.getDate(),
+                prevLastDay = new Date(currentYear, currentMonth, 0),
+                prevLastDayDate = prevLastDay.getDate(),
+                nextDays = 7 - lastDayIndex - 1;
+
+            $month.text(`${months[currentMonth]} ${currentYear}`);
+
+            let daysHtml = "";
+            for (let x = firstDay.getDay(); x > 0; x--) {
+                daysHtml += `<div class="day prev">${prevLastDayDate - x + 1}</div>`;
+            }
+            for (let i = 1; i <= lastDayDate; i++) {
+                if (
+                    i === new Date().getDate() &&
+                    currentMonth === new Date().getMonth() &&
+                    currentYear === new Date().getFullYear()
+                ) {
+                    daysHtml += `<div class="day today">${i}</div>`;
+                } else if (pickupDate && i === pickupDate.getDate() && currentMonth === pickupDate.getMonth() && currentYear === pickupDate.getFullYear()) {
+                    daysHtml += `<div class="day pickup">${i}</div>`;
+                } else if (returnDate && i === returnDate.getDate() && currentMonth === returnDate.getMonth() && currentYear === returnDate.getFullYear()) {
+                    daysHtml += `<div class="day return">${i}</div>`;
+                } else {
+                    daysHtml += `<div class="day">${i}</div>`;
+                }
+            }
+            for (let j = 1; j <= nextDays; j++) {
+                daysHtml += `<div class="day next">${j}</div>`;
+            }
+
+            hideTodayBtn();
+            $daysContainer.html(daysHtml);
+        }
+
+        renderCalendar();
+
+        $nextBtn.on("click", function () {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        });
+
+        $prevBtn.on("click", function () {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        });
+
+        $todayBtn.on("click", function () {
+            currentMonth = currentDate.getMonth();
+            currentYear = currentDate.getFullYear();
+            renderCalendar();
+        });
+
+        function hideTodayBtn() {
+            if (
+                currentMonth === new Date().getMonth() &&
+                currentYear === new Date().getFullYear()
+            ) {
+                $todayBtn.css("display", "none");
+            } else {
+                $todayBtn.css("display", "flex");
+            }
+        }
+
+        $(document).on("click", ".day", function () {
+            const day = $(this).text();
+            const selectedDate = new Date(currentYear, currentMonth, day);
+
+            // So sánh ngày được chọn với ngày nhận xe và ngày trả xe
+            if (!pickupDate || selectedDate < pickupDate) {
+                pickupDate = selectedDate;
+                $('#startDate1').val(formatDate(selectedDate));
+            } else if (!returnDate || selectedDate > returnDate) {
+                returnDate = selectedDate;
+                $('#endDate1').val(formatDate(selectedDate));
+            }
+
+            // Cập nhật hiển thị các ngày đã chọn
+            renderCalendar();
+        });
+
+        function formatDate(date) {
+            var month = '' + (date.getMonth() + 1);
+            var day = '' + date.getDate();
+            var year = date.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        $('#startDate1, #endDate1').focus(function () {
+            $('.calendar').removeClass('block');
+        });
+        $('#start, #end').on("click", function () {
+            $('.calendar').removeClass('block');
+        });
+        $('#x').click(function () {
+            $('.calendar').addClass('block');
+        });
+      
     });
 </script>
+
+
+
