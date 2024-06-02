@@ -27,10 +27,34 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: Admin/Companies
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Companies.ToListAsync());
+        //}
+        public async Task<List<string?>> SearchSuggestions(string query)
         {
-            return View(await _context.Companies.ToListAsync());
+            return await _context.Companies
+
+            .Where(p => p.Name.Contains(query))
+            .Select(p => p.Name).Distinct()
+            .ToListAsync();
         }
+        public async Task<IActionResult> Index(string query, int pageNumber = 1)
+        {
+            int pageSize = 6;
+            IQueryable<Company> Query;
+            if (query != null)
+            {
+                Query = _context.Companies.Where(b => b.Name.Contains(query) && b.IsDeleted == false).Distinct();
+            }
+            else
+            {
+                Query = _context.Companies.Where(b => b.IsDeleted == false).Distinct();
+            }
+            var paginatedAmenities = await PaginatedList<Company>.CreateAsync(Query, pageNumber, pageSize);
+            return View(paginatedAmenities);
+        }
+
 
         // GET: Admin/Companies/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Security.Claims;
 using DoAnCNTT.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DoAnCNTT.Controllers
 {
@@ -60,33 +61,66 @@ namespace DoAnCNTT.Controllers
             .ToListAsync();
         }
 
-        public async Task<IActionResult> Index(string query, int pageNumber = 1)
+
+
+        public async Task<IActionResult> Index(string query, string company, int seat, int pageNumber = 1)
         {
             int pageSize = 6;
-            IQueryable<Post> carsQuery;
-            if (query != null)
+            IQueryable<Post> carsQuery = _context.Posts.Where(b => b.IsDeleted == false);
+            if (!string.IsNullOrEmpty(query))
             {
-                carsQuery = _context.Posts.Where(b => b.Name.Contains(query) && b.IsDeleted == false).Distinct();
+                carsQuery = carsQuery.Where(b => b.Name.Contains(query));
             }
-            else
+            if (!string.IsNullOrEmpty(company))
             {
-                carsQuery = _context.Posts.Where(b => b.IsDeleted == false).Distinct();
+                carsQuery = carsQuery.Where(b => b.Company.Name == company);
             }
-            var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery, pageNumber, pageSize);
+            if (seat>0)
+            {
+                carsQuery = carsQuery.Where(b => b.Seat == seat);
+            }
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery.Distinct(), pageNumber, pageSize);
             ViewData["SearchString"] = query;
-            ViewData["Companies"] = _context.Posts.Select(f => f.Company).ToList();
-            ViewData["CarTypes"] = _context.Posts.Select(f => f.CarType).ToList();
+            ViewData["Companies"] = await _context.Companies.Select(c => c.Name).Distinct().ToListAsync();
+            ViewData["Seats"] = await _context.Posts.Select(p => p.Seat.ToString()).Distinct().ToListAsync();
+
+            // Call UpdateExpiredPromotion method (assuming it's a void method)
             UpdateExpiredPromotion();
+
+            // Return the view with paginated results
             return View(paginatedCar);
         }
 
-        //public IActionResult Index()
-        //{
 
-        //    var post = _context.Posts.ToList();
-            
-        //    return View(post);
-        //}
+
+        [HttpGet]
+        public async Task<IActionResult> GetCompanies()
+        {
+            var companies = await _context.Companies.Select(c => c.Name).Distinct().ToListAsync();
+            return Json(companies);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSeats()
+        {
+            var seats = await _context.Posts.Select(p => p.Seat).Distinct().ToListAsync();
+            return Json(seats);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public IActionResult ChinhSach()
         {
@@ -113,3 +147,24 @@ namespace DoAnCNTT.Controllers
         }
     }
 }
+
+
+//public async Task<IActionResult> Index(string query, int pageNumber = 1)
+//{
+//    int pageSize = 6;
+//    IQueryable<Post> carsQuery;
+//    if (query != null)
+//    {
+//        carsQuery = _context.Posts.Where(b => b.Name.Contains(query) && b.IsDeleted == false).Distinct();
+//    }
+//    else
+//    {
+//        carsQuery = _context.Posts.Where(b => b.IsDeleted == false).Distinct();
+//    }
+//    var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery, pageNumber, pageSize);
+//    ViewData["SearchString"] = query;
+//    ViewData["Companies"] = _context.Posts.Select(f => f.Company).ToList();
+//    ViewData["CarTypes"] = _context.Posts.Select(f => f.CarType).ToList();
+//    UpdateExpiredPromotion();
+//    return View(paginatedCar);
+//}

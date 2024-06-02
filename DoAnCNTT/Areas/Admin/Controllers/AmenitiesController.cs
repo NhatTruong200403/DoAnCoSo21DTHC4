@@ -24,10 +24,41 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             _context = context;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index()
+
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Amenities.ToListAsync());
+        //}
+
+        public async Task<List<string?>> SearchSuggestions(string query)
         {
-            return View(await _context.Amenities.ToListAsync());
+            return await _context.Amenities
+
+            .Where(p => p.Name.Contains(query))
+            .Select(p => p.Name).Distinct()
+            .ToListAsync();
         }
+
+        
+        public async Task<IActionResult> Index(string query, int pageNumber = 1)
+        {
+            int pageSize = 6;
+            IQueryable<Amenity> Query;
+            if (query != null)
+            {
+                Query = _context.Amenities.Where(b => b.Name.Contains(query) && b.IsDeleted == false).Distinct();
+            }
+            else
+            {
+                Query = _context.Amenities.Where(b => b.IsDeleted == false).Distinct();
+            }
+            var paginatedAmenities = await PaginatedList<Amenity>.CreateAsync(Query, pageNumber, pageSize);
+            return View(paginatedAmenities);
+        }
+
+
+
+
 
         public async Task<IActionResult> Details(int? id)
         {

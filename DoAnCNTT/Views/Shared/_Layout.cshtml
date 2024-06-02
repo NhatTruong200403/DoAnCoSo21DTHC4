@@ -15,6 +15,7 @@
     <link href="~/css/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DoAnCNTT.styles.css" asp-append-version="true" />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -48,38 +49,24 @@
         }
         
         <nav class="nav">
-            @* @if(User.IsInRole("Admin"))
+            
+            @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
             {
-                <ul class="sidebar">
-                    <li>
-                        <a class="sidebar" asp-area="Admin" asp-controller="Promotions" asp-action="Create">Thêm mới khuyến mãi</a>
-                    </li>
-                    <li>
-                        <a class="sidebar" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Danh sách khuyến mãi</a>
-                    </li>
-
-                </ul>
-                <a class="sidebar" asp-area="Admin" asp-controller="Promotions" asp-action="Index">Khuyến mãi</a>
-                <a class="sidebar" asp-area="Admin" asp-controller="Amenities" asp-action="Index">Tiện nghi</a>
-                <a class="sidebar" asp-area="Admin" asp-controller="CarTypes" asp-action="Index">Loại xe</a>
-                <a class="sidebar" asp-area="Admin" asp-controller="Companies" asp-action="Index">Hãng xe</a>
-            } *@
-            @* @if (User.IsInRole("Employee") || User.IsInRole("Admin"))
-            {
-                <a class="nav-normal" asp-area="Employee" asp-controller="Reports" asp-action="Index">Vi phạm</a>
-                <a class="nav-normal" asp-area="Employee" asp-controller="Bookings" asp-action="Index">Yêu cầu hủy chuyến</a>
-            } *@
-             <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
-                  <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
-                    <div id="search-results" class="dropdown-content">
-                    </div>
+                
+                <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
+                    <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm sản phẩm" />
+                    <select id="company-input" name="company" style="border:none;">
+                        <option value="">Chọn hãng xe</option>
+                        <!-- Các hãng xe sẽ được load từ backend -->
+                    </select>
+                    <select id="seat-input" name="seat" style="border:none;">
+                        <option value="0">Chọn số chỗ ngồi</option>
+                        <!-- Các số chỗ ngồi sẽ được load từ backend -->
+                    </select>
+                    <div id="search-results" class="dropdown-content"></div>
                     <input class="ButtonSearch" type="submit" value="Search" />
                 </form>
-            
-            
-            
-
-
+            }
 
 
         </nav>
@@ -128,8 +115,7 @@
                             <p><a class="" asp-area="Admin" asp-controller="CarTypes" asp-action="Create"><img style="width:18px;" src="@Url.Content("~/images/logo/add.png")" alt="" />  Thêm mới loại xe</a></p>
                             <p><a class="" asp-area="Admin" asp-controller="CarTypes" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" />  Danh sách loại xe</a></p>
                         </details>
-                        <details>
-                            
+                        <details> 
                             <summary>
                                 <img style="width:20px;" src="@Url.Content("~/images/logo/bmw.png")" alt="" />
                                 Quản lý hãng xe
@@ -204,9 +190,7 @@
         </div>
     </footer>
     
-
     <script>
-        document.onready
         $(document).ready(function () {
             $("#search-input").keyup(function () {
                 var query = $(this).val();
@@ -221,8 +205,6 @@
                             $.each(data, function (index, suggestion) {
                                 $("#search-results").append("<div class='suggestion'>" + suggestion + "</div>");
                             });
-                            debugger;
-                            // console.log($("#search-results"))
                             if ($("#search-results").children().length == 0) {
                                 $(".dropdown-content").css("display", "none");
                             } else {
@@ -238,25 +220,53 @@
                     $(".dropdown-content").css("display", "none");
                 }
             });
+
             $(document).on("click", ".suggestion", function () {
                 var selectedSuggestion = $(this).text();
                 $("#search-input").val(selectedSuggestion);
                 $("#search-results").empty();
                 $(".dropdown-content").css("display", "none");
             });
+
             $(document).click(function (event) {
                 if (!$(event.target).closest('.dropdown').length) {
                     $(".dropdown-content").css("display", "none");
                 }
             });
-            $(document).ready(function () {
-                $(".header").click(function () {
-                    $(this).siblings(".item").slideToggle();
-                });
+
+            // Load options for companies (hãng xe)
+            $.ajax({
+                url: "/Home/GetCompanies",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (index, company) {
+                        $("#company-input").append("<option value='" + company + "'>" + company + "</option>");
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                }
+            });
+
+            // Load options for seats (số chỗ ngồi)
+            $.ajax({
+                url: "/Home/GetSeats",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data, function (index, seat) {
+                        $("#seat-input").append("<option value='" + parseInt(seat) + "'>" + seat + "</option>");
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error:", error);
+                }
             });
         });
-
     </script>
+
+
 
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

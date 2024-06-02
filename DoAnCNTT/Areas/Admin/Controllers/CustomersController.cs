@@ -27,6 +27,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return View(customers);
         }
 
+
         // GET: CustomerController/Details/5
         public async Task<ActionResult> Details(string id)
         {

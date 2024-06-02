@@ -118,6 +118,9 @@ namespace DoAnCNTT.Areas.Employee.Controllers
                 booking.IsDeleted = true;
                 booking.Status = "Đã trả cọc"; 
                 _context.Booking.Update(booking);
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == booking!.PostId);
+                post!.RideNumber--;
+                _context.Posts.Update(post);
             }
             await _context.SaveChangesAsync();
             await Refund(booking!);

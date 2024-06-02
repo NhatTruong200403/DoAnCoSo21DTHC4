@@ -27,10 +27,35 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: Admin/Promotions
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var promotions = await _context.Promotions.ToListAsync();
+        //    return View(promotions);
+        //}
+
+        public async Task<List<string?>> SearchSuggestions(string query)
         {
-            var promotions = await _context.Promotions.ToListAsync();
-            return View(promotions);
+            return await _context.Promotions
+
+            .Where(p => p.Content.Contains(query))
+            .Select(p => p.Content).Distinct()
+            .ToListAsync();
+        }
+
+        public async Task<IActionResult> Index(string query, int pageNumber = 1)
+        {
+            int pageSize = 6;
+            IQueryable<Promotion> Query;
+            if (query != null)
+            {
+                Query = _context.Promotions.Where(b => b.Content!.Contains(query) && b.IsDeleted == false).Distinct();
+            }
+            else
+            {
+                Query = _context.Promotions.Where(b => b.IsDeleted == false).Distinct();
+            }
+            var paginatedAmenities = await PaginatedList<Promotion>.CreateAsync(Query, pageNumber, pageSize);
+            return View(paginatedAmenities);
         }
 
         // GET: Admin/Promotions/Details/5

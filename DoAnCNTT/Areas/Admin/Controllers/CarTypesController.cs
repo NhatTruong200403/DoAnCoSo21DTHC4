@@ -27,9 +27,33 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: Admin/CarTypes
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.CarTypes.ToListAsync());
+        //}
+        public async Task<List<string?>> SearchSuggestions(string query)
         {
-            return View(await _context.CarTypes.ToListAsync());
+            return await _context.CarTypes
+
+            .Where(p => p.Name.Contains(query))
+            .Select(p => p.Name).Distinct()
+            .ToListAsync();
+        }
+
+        public async Task<IActionResult> Index(string query, int pageNumber = 1)
+        {
+            int pageSize = 6;
+            IQueryable<CarType> Query;
+            if (query != null)
+            {
+                Query = _context.CarTypes.Where(b => b.Name.Contains(query) && b.IsDeleted == false).Distinct();
+            }
+            else
+            {
+                Query = _context.CarTypes.Where(b => b.IsDeleted == false).Distinct();
+            }
+            var paginatedAmenities = await PaginatedList<CarType>.CreateAsync(Query, pageNumber, pageSize);
+            return View(paginatedAmenities);
         }
 
         // GET: Admin/CarTypes/Details/5

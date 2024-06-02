@@ -16,7 +16,7 @@
             var lockoutEnd = currentUser!.LockoutEnd;
             if(lockoutEnd == null || lockoutEnd < DateTime.Now)
             {
-                <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe cho thuê của bạn</a></li
+               <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe cho thuê của bạn</a></li
             <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Lịch sử đặt cọc</a></li
             <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Lịch sử đặt xe</a></li
             <li class="nav-item"> <a class="nav-link den" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">Danh sách yêu thích</a></li> 
@@ -32,7 +32,7 @@
         <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link den @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">Liên kết tài khoản</a></li>
     }
     <li class="nav-item"><a class="nav-link den @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Xác thực hai lớp</a></li>
-    <li class="nav-item"><a class="nav-link den @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Quản lý tài khoản</a></li
+    <li class="nav-item"><a class="nav-link den @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Quản lý tài khoản</a></li>
     <li class="margintop" >
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button style="margin-left:15px;" type="submit" class="nav-link btn btn-link text-dark">Đăng xuất </button>
@@ -43,4 +43,8 @@
     .den{
         color:black;
     }
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #fff;
+    background-color: #1ee156;
+}
 </style>

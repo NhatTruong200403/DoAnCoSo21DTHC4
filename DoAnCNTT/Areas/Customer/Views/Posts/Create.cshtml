@@ -17,7 +17,9 @@
                         $.each(data, function (index, company) {
                             $('#companyId').append($('<option>', {
                                 value: company.id, 
-                                text: company.name
+                                text: company.name,
+                                
+                                class:'op'
                             }));
                         });
                     },

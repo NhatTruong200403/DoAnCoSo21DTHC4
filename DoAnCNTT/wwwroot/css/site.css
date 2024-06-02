@@ -165,15 +165,19 @@ a {
     font-size: 16px;
     width: 350px;
 }
+    .InfoSearch:focus {
+        outline: none; /* Đảm bảo không có viền khi focus */
+    }
+
 
 .ButtonSearch {
-    margin-left: 10px;
-    padding: 15px 20px;
-    background-color: #333;
+    /*margin-right: 10px;*/
+    padding: 15px;
+    background-color: #1ee156;
     color: #fff;
     border: none;
     cursor: pointer;
-    border-radius: 15px;
+    border-radius: 12px;
 }
 
 .dropdown-content {
@@ -271,4 +275,15 @@ details p {
 .form-group .btn{
     padding:10px 20px;
     margin-top:20px;
+}
+.btn {
+    background-color: #1ee156;
+    border:none;
+}
+option{
+    padding:5px 10px;
+}
+.op {
+    padding: 10px 15px!important;
+
 }

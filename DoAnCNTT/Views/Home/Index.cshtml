@@ -9,71 +9,18 @@
 }
 @* @if (User.IsInRole("Customer"))
 { *@
-<section class="py-2">
-    <div class="container ">
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
 
-            @foreach (var item in Model)
-            {
-
-                <div class="box" style="padding:3px;margin-left:20px;background-color:white;border:0.5px solid black;">
-                    <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
-                        <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
-                    </div>
-                    <div class="ptb">
-                        @if (item.Gear)
-                        {
-                            <div class="ptb1 apt" style="padding:2px 4px;">Số tự động</div>
-                        }
-                        else
-                        {
-                            <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
-                        }
-                      
-                    </div>
-
-                    <div class="ptc"><a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
-                    <div class="ptd">
-                        <img src="@Url.Content("~/images/logo/road-map-line.svg")" class="icon_map" alt="">
-                        <span class="text_map">@Html.DisplayFor(modelItem => item.RentLocation)</span>
-                    </div>
-                    <hr>
-                    <div class="pte">
-                        <div class="pte_left">
-                           @*  Chưa xong *@
-                            <div class="dgsao">
-                                <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
-                                <span class="text_saodanhgia">5.0</span>
-                            </div>
-                            @if(item.RideNumber > 0)
-                            {
-                                <div class="sochuyen">
-                                    <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
-                                    <div class="text_sochuyen">20 chuyến</div>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="sochuyen">
-                                    Chưa có chuyến.
-                                </div>
-                            }
-                            
-                        </div>
-                        <div class="pte_right">
-                            <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
-                        </div>
-                    </div>
-
-                </div>
-            }
-        </div>
-    </div>
-    </section>
 @* } *@
 @if (User.IsInRole("Admin") )
 {
-    
+
+        <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
+            <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
+            <div id="search-results" class="dropdown-content">
+            </div>
+            <input class="ButtonSearch" type="submit" value="Search" />
+        </form>
+
 <h1>Danh sách bài đăng</h1>
 
 
@@ -131,9 +78,76 @@
         </tr>
 }
     </tbody>
-</table>
+    </table>
 
 
+}
+else
+{
+    @* <div>
+        layout
+    </div> *@
+    <section class="py-2" style="min-height:600px;">
+        <div class="container ">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
+
+                @foreach (var item in Model)
+                {
+
+                    <div class="box" style="padding:3px;margin-left:20px;background-color:white;border:0.5px solid black;">
+                        <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
+                            <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
+                        </div>
+                        <div class="ptb">
+                            @if (item.Gear)
+                            {
+                                <div class="ptb1 apt" style="padding:2px 4px;">Số tự động</div>
+                            }
+                            else
+                            {
+                                <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
+                            }
+
+                        </div>
+
+                        <div class="ptc"><a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
+                        <div class="ptd">
+                            <img src="@Url.Content("~/images/logo/road-map-line.svg")" class="icon_map" alt="">
+                            <span class="text_map">@Html.DisplayFor(modelItem => item.RentLocation)</span>
+                        </div>
+                        <hr>
+                        <div class="pte">
+                            <div class="pte_left">
+                                @*  Chưa xong *@
+                                <div class="dgsao">
+                                    <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
+                                    <span class="text_saodanhgia">@item.AvgRating</span>
+                                </div>
+                                @if (item.RideNumber > 0)
+                                {
+                                    <div class="sochuyen">
+                                        <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
+                                        <div class="text_sochuyen">@item.RideNumber chuyến</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="sochuyen">
+                                        Chưa có chuyến
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="pte_right">
+                                <div class="giagiam">@item.Price/giờ</div>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
 }
 
 @if(User.IsInRole("Admin"))
@@ -151,7 +165,7 @@
         </a>
     </div>
 }
-else if (User.IsInRole("Customer"))
+else @* if (User.IsInRole("Customer")) *@
 {
     <div class="nutchuyentrang">
         <a asp-action="Index" asp-route-query="@ViewBag.SearchString"
@@ -166,6 +180,78 @@ else if (User.IsInRole("Customer"))
         </a>
     </div>
 }
+
+
+
+<script>
+    document.onready
+    $(document).ready(function () {
+        $("#search-input").keyup(function () {
+            var query = $(this).val();
+            if (query !== '') {
+                $.ajax({
+                    url: "/Home/SearchSuggestions",
+                    type: "GET",
+                    data: { query: query },
+                    dataType: "json",
+                    success: function (data) {
+                        $("#search-results").empty();
+                        $.each(data, function (index, suggestion) {
+                            $("#search-results").append("<div class='suggestion'>" + suggestion + "</div>");
+                        });
+                        debugger;
+                        // console.log($("#search-results"))
+                        if ($("#search-results").children().length == 0) {
+                            $(".dropdown-content").css("display", "none");
+                        } else {
+                            $(".dropdown-content").css("display", "block");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Error:", error);
+                    }
+                });
+            } else {
+                $("#search-results").empty();
+                $(".dropdown-content").css("display", "none");
+            }
+        });
+        $(document).on("click", ".suggestion", function () {
+            var selectedSuggestion = $(this).text();
+            $("#search-input").val(selectedSuggestion);
+            $("#search-results").empty();
+            $(".dropdown-content").css("display", "none");
+        });
+        $(document).click(function (event) {
+            if (!$(event.target).closest('.dropdown').length) {
+                $(".dropdown-content").css("display", "none");
+            }
+        });
+        $(document).ready(function () {
+            $(".header").click(function () {
+                $(this).siblings(".item").slideToggle();
+            });
+        });
+    });
+    function formatPrice(price) {
+        if (price >= 1000) {
+            return (price / 1000) + 'k';
+        }
+        return price;
+    }
+
+    $(document).ready(function () {
+        // Định dạng tất cả các phần tử có class 'giagiam'
+        $('.giagiam').each(function () {
+            var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
+            $(this).text(formatPrice(price) + '/giờ');
+        });
+    });
+
+
+</script>
+
+
 
 
  

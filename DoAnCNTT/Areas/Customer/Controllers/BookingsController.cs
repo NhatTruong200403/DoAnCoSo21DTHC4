@@ -191,6 +191,9 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 booking.IsRequest = true;
                 booking.Status = "Đang xử lí";
                 _context.Booking.Update(booking);
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == booking!.PostId);
+                post!.RideNumber--;
+                _context.Posts.Update(post);
             }
 
             await _context.SaveChangesAsync();
