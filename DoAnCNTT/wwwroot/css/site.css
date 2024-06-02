@@ -295,18 +295,57 @@ details p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 /*create booking*/
+
+.labeldate {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+    .labeldate.active {
+        background-color: #fff;
+        box-shadow: none;
+        transform: translate(0, 0);
+    }
+
+    .labeldate:not(.active) {
+        background-color: #ddd;
+        box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.3);
+        transform: translate(-4px, -4px);
+    }
+
+    .labeldate:hover:not(.active) {
+        box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.3);
+        transform: translate(-4px, -4px);
+    }
+
+.day.disabled {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.day.selected {
+    background-color: yellow;
+}
+
+.day.doimaudate {
+    background-color: lightblue;
+}
+
+
+
+.inputcreate {
+    border: none;
+    background-color: white;
+    margin-top: -5px;
+    margin-left:-7px;
+}
+
 
 
 .date-time-form {
@@ -376,13 +415,17 @@ details p {
     }
 /* CSS styles here */
 .pickup,
-.return {
+.return{
     background-color: #f90a39;
     /* Màu nền cho ngày nhận và ngày trả */
     color: white;
     /* Màu chữ cho ngày nhận và ngày trả */
 }
 
+.doimaudate {
+    color: #fff;
+    background-color: var(--primary-color);
+}
 
 .block {
     display: none;

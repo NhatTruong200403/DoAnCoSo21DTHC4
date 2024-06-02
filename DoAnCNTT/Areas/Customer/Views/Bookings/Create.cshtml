@@ -29,60 +29,70 @@
                 <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
                <span asp-validation-for="ReturnOn" class="text-danger"></span>
             </div> *@
-
-
-            <div class="date-time-form ">
+            
+            <div class="date-time-form">
                 <div class="form-item">
-                    <label>Nhận xe </label>
+                    <label>Nhận xe</label>
                     <div class="wrap-date-time" id="start">
-                        <div class="wrap-date"><span class="value">
-                                <input asp-for="RecieveOn" type="datetime" id="startDate1" class="form-control" onchange="validateDate()" style="border:none;background-color:white;margin-top:-5px;" />
-                            </span></div>
-                        <div class="wrap-time"><span class="value">21:00</span></div>
+                        <div class="wrap-date">
+                            <span class="value">
+                                <input asp-for="RecieveOn" type="datetime" id="startDate1" class="form-control inputcreate" onchange="validateDate()" />
+                            </span>
+                        </div>
+                        <div class="wrap-time">
+                            <span class="value">21:00</span>
+                        </div>
                     </div>
                 </div>
                 <div class="line"></div>
                 <div class="form-item">
                     <label>Trả xe</label>
                     <div class="wrap-date-time" id="end">
-                        <div class="wrap-date"><span class="value"><input asp-for="ReturnOn" type="datetime" id="endDate1" class="form-control" onchange="validateDate()" style="border:none;background-color:white;margin-top:-5px; " /></span></div>
-                        <div class="wrap-time"><span class="value">20:00</span></div>
+                        <div class="wrap-date">
+                            <span class="value">
+                                <input asp-for="ReturnOn" type="datetime" id="endDate1" class="form-control inputcreate" />
+                            </span>
+                        </div>
+                        <div class="wrap-time">
+                            <span class="value">20:00</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-
-      
-                <div class="calendar block">
-                <label style="border-radius:15px;box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);width:10px;height:10px;" id="x">X</label>
-                    <div class="header">
-                        <div class="month"></div>
-                        <div class="btns">
-                            <div class="btn today-btn">
-                                <i class="fas fa-calendar-day"></i>
-                            </div>
-                            <div class="btn prev-btn">
-                                <i class="fas fa-chevron-left"></i>
-                            </div>
-                            <div class="btn next-btn">
-                                <i class="fas fa-chevron-right"></i>
-                            </div>
+            <div class="calendar block">
+                <label id="x" style="border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 10px; height: 10px;">X</label>
+                <div class="header">
+                    <div class="month"></div>
+                    <div class="btns">
+                        <div class="btn today-btn">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="btn prev-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div class="btn next-btn">
+                            <i class="fas fa-chevron-right"></i>
                         </div>
                     </div>
-                    <div class="weekdays">
-                        <div class="day">Cn</div>
-                        <div class="day">T2</div>
-                        <div class="day">T3</div>
-                        <div class="day">T4</div>
-                        <div class="day">T5</div>
-                        <div class="day">T6</div>
-                        <div class="day">T7</div>
-                    </div>
-                    <div class="days">
-                        <!-- Days will be added dynamically using jQuery -->
-                    </div>
                 </div>
+                <div class="weekdays">
+                    <div class="day">Cn</div>
+                    <div class="day">T2</div>
+                    <div class="day">T3</div>
+                    <div class="day">T4</div>
+                    <div class="day">T5</div>
+                    <div class="day">T6</div>
+                    <div class="day">T7</div>
+                </div>
+                <div class="days">
+                    <!-- Days will be added dynamically using jQuery -->
+                </div>
+                <div>
+                    <label class="labeldate active" id="startDateBtn">Ngày nhận</label>
+                    <label class="labeldate" id="endDateBtn">Ngày trả</label>
+                </div>
+            </div>
+
             @* </div> *@
 
 
@@ -196,141 +206,164 @@
             });
         });
 
-        let selectingPickup = true;
-        const $daysContainer = $(".days"),
-            $nextBtn = $(".next-btn"),
-            $prevBtn = $(".prev-btn"),
-            $month = $(".month"),
-            $todayBtn = $(".today-btn");
+            let selectingPickup = true;
+            const $daysContainer = $(".days"),
+                $nextBtn = $(".next-btn"),
+                $prevBtn = $(".prev-btn"),
+                $month = $(".month"),
+                $todayBtn = $(".today-btn");
 
-        const months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ];
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
 
-        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-        let currentDate = new Date(),
-            currentMonth = currentDate.getMonth(),
-            currentYear = currentDate.getFullYear(),
-            pickupDate = null,
-            returnDate = null;
+            let currentDate = new Date(),
+                currentMonth = currentDate.getMonth(),
+                currentYear = currentDate.getFullYear(),
+                pickupDate = null,
+                returnDate = null;
 
-        function renderCalendar() {
-            currentDate.setDate(1);
-            const firstDay = new Date(currentYear, currentMonth, 1),
-                lastDay = new Date(currentYear, currentMonth + 1, 0),
-                lastDayIndex = lastDay.getDay(),
-                lastDayDate = lastDay.getDate(),
-                prevLastDay = new Date(currentYear, currentMonth, 0),
-                prevLastDayDate = prevLastDay.getDate(),
-                nextDays = 7 - lastDayIndex - 1;
+            function renderCalendar() {
+                currentDate.setDate(1);
+                const firstDay = new Date(currentYear, currentMonth, 1),
+                    lastDay = new Date(currentYear, currentMonth + 1, 0),
+                    lastDayIndex = lastDay.getDay(),
+                    lastDayDate = lastDay.getDate(),
+                    prevLastDay = new Date(currentYear, currentMonth, 0),
+                    prevLastDayDate = prevLastDay.getDate(),
+                    nextDays = 7 - lastDayIndex - 1;
 
-            $month.text(`${months[currentMonth]} ${currentYear}`);
+                $month.text(`${months[currentMonth]} ${currentYear}`);
 
-            let daysHtml = "";
-            for (let x = firstDay.getDay(); x > 0; x--) {
-                daysHtml += `<div class="day prev">${prevLastDayDate - x + 1}</div>`;
+                let daysHtml = "";
+                for (let x = firstDay.getDay(); x > 0; x--) {
+                    daysHtml += `<div class="day prev">${prevLastDayDate - x + 1}</div>`;
+                }
+                for (let i = 1; i <= lastDayDate; i++) {
+                    const date = new Date(currentYear, currentMonth, i);
+                    let classNames = "day";
+                    if (date.toDateString() === new Date().toDateString()) {
+                        classNames += " today";
+                    }
+                    if (pickupDate && date.toDateString() === pickupDate.toDateString()) {
+                        classNames += " pickup";
+                    }
+                    if (returnDate && date.toDateString() === returnDate.toDateString()) {
+                        classNames += " return";
+                    }
+                    if (selectingPickup) {
+                        if (returnDate && date >= returnDate) {
+                            classNames += " disabled";
+                        }
+                    } else {
+                        if (pickupDate && date <= pickupDate) {
+                            classNames += " disabled";
+                        }
+                    }
+                    daysHtml += `<div class="${classNames}">${i}</div>`;
+                }
+                for (let j = 1; j <= nextDays; j++) {
+                    daysHtml += `<div class="day next">${j}</div>`;
+                }
+
+                hideTodayBtn();
+                $daysContainer.html(daysHtml);
             }
-            for (let i = 1; i <= lastDayDate; i++) {
+
+            renderCalendar();
+
+            $nextBtn.on("click", function () {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar();
+            });
+
+            $prevBtn.on("click", function () {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar();
+            });
+
+            $todayBtn.on("click", function () {
+                currentMonth = currentDate.getMonth();
+                currentYear = currentDate.getFullYear();
+                renderCalendar();
+            });
+
+            function hideTodayBtn() {
                 if (
-                    i === new Date().getDate() &&
                     currentMonth === new Date().getMonth() &&
                     currentYear === new Date().getFullYear()
                 ) {
-                    daysHtml += `<div class="day today">${i}</div>`;
-                } else if (pickupDate && i === pickupDate.getDate() && currentMonth === pickupDate.getMonth() && currentYear === pickupDate.getFullYear()) {
-                    daysHtml += `<div class="day pickup">${i}</div>`;
-                } else if (returnDate && i === returnDate.getDate() && currentMonth === returnDate.getMonth() && currentYear === returnDate.getFullYear()) {
-                    daysHtml += `<div class="day return">${i}</div>`;
+                    $todayBtn.css("display", "none");
                 } else {
-                    daysHtml += `<div class="day">${i}</div>`;
+                    $todayBtn.css("display", "flex");
                 }
             }
-            for (let j = 1; j <= nextDays; j++) {
-                daysHtml += `<div class="day next">${j}</div>`;
+
+            $('.labeldate').click(function () {
+                $('.labeldate').removeClass('active');
+                $(this).addClass('active');
+                selectingPickup = $(this).is('#startDateBtn');
+                renderCalendar();
+            });
+
+            $(document).on("click", ".day", function () {
+                if ($(this).hasClass("disabled")) return;
+
+                const day = $(this).text();
+                const selectedDate = new Date(currentYear, currentMonth, day);
+
+                if (selectingPickup) {
+                    pickupDate = selectedDate;
+                    $('#startDate1').val(formatDate(selectedDate));
+                    $('#startDate1').trigger('change');
+                } else {
+                    returnDate = selectedDate;
+                    $('#endDate1').val(formatDate(selectedDate));
+                }
+
+                // Xóa class 'today' và thêm class 'doimaudate' cho ngày được nhấn
+                $('.day').removeClass('today');
+                $('.day').removeClass('doimaudate');
+                $(this).addClass('doimaudate');
+
+                renderCalendar();
+            });
+
+            function formatDate(date) {
+                var month = '' + (date.getMonth() + 1);
+                var day = '' + date.getDate();
+                var year = date.getFullYear();
+
+                if (month.length < 2) month = '0' + month;
+                if (day.length < 2) day = '0' + day;
+
+                return [year, month, day].join('-');
             }
 
-            hideTodayBtn();
-            $daysContainer.html(daysHtml);
-        }
+            $('#startDate1, #endDate1').focus(function () {
+                $('.calendar').removeClass('block');
+            });
 
-        renderCalendar();
+            $('#start, #end').on("click", function () {
+                $('.calendar').removeClass('block');
+            });
 
-        $nextBtn.on("click", function () {
-            currentMonth++;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            renderCalendar();
+            $('#x').click(function () {
+                $('.calendar').addClass('block');
+            });
         });
 
-        $prevBtn.on("click", function () {
-            currentMonth--;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
-            renderCalendar();
-        });
-
-        $todayBtn.on("click", function () {
-            currentMonth = currentDate.getMonth();
-            currentYear = currentDate.getFullYear();
-            renderCalendar();
-        });
-
-        function hideTodayBtn() {
-            if (
-                currentMonth === new Date().getMonth() &&
-                currentYear === new Date().getFullYear()
-            ) {
-                $todayBtn.css("display", "none");
-            } else {
-                $todayBtn.css("display", "flex");
-            }
-        }
-
-        $(document).on("click", ".day", function () {
-            const day = $(this).text();
-            const selectedDate = new Date(currentYear, currentMonth, day);
-
-            // So sánh ngày được chọn với ngày nhận xe và ngày trả xe
-            if (!pickupDate || selectedDate < pickupDate) {
-                pickupDate = selectedDate;
-                $('#startDate1').val(formatDate(selectedDate));
-            } else if (!returnDate || selectedDate > returnDate) {
-                returnDate = selectedDate;
-                $('#endDate1').val(formatDate(selectedDate));
-            }
-
-            // Cập nhật hiển thị các ngày đã chọn
-            renderCalendar();
-        });
-
-        function formatDate(date) {
-            var month = '' + (date.getMonth() + 1);
-            var day = '' + date.getDate();
-            var year = date.getFullYear();
-
-            if (month.length < 2) month = '0' + month;
-            if (day.length < 2) day = '0' + day;
-
-            return [year, month, day].join('-');
-        }
-
-        $('#startDate1, #endDate1').focus(function () {
-            $('.calendar').removeClass('block');
-        });
-        $('#start, #end').on("click", function () {
-            $('.calendar').removeClass('block');
-        });
-        $('#x').click(function () {
-            $('.calendar').addClass('block');
-        });
-      
-    });
 </script>
 
 
