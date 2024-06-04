@@ -1,16 +1,16 @@
 ﻿@model IList<DoAnCNTT.Models.ApplicationUser>
 
 @{
-    ViewData["Title"] = "Danh sách khách hàng";
+    ViewData["Title"] = "Danh sách nhân viên";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Danh sách khách hàng</h1>
+<h1>Danh sách nhân viên</h1>
 <table class="table">
     <thead>
         <tr>
             <th>
-                Khách hàng
+                Nhân viên
             </th>
             <th>
                 Email
@@ -19,13 +19,7 @@
                 SĐT
             </th>
             <th>
-                Báo cáo
-            </th>
-            <th>
                 Ngày sinh
-            </th>
-            <th>
-                Thời gian khóa
             </th>
             <th>
                 Khóa tài khoản
@@ -37,7 +31,7 @@
         {
             <tr>
                 <td>
-                    <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                    <a asp-area="Admin" asp-controller="Employees" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
@@ -46,25 +40,10 @@
                     @Html.DisplayFor(modelItem => item.PhoneNumber)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReportPoint)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Birthday)
                 </td>
                 <td>
-                    @{
-                        if (item.LockoutEnd != null)
-                        {
-                            @item.LockoutEnd.Value.ToString("dd/MM/yyyy HH:mm")
-                        }
-                        else
-                        {
-                            @item.LockoutEnd
-                        }
-                    }
-                </td>
-                <td>
-                    <a asp-area="Admin" asp-controller="Customers" asp-action="LockAcount" asp-route-userId="@item.Id">Khóa tài khoản</a>
+                    <a asp-area="Admin" asp-controller="Employees" asp-action="LockAcount" asp-route-userId="@item.Id">Khóa tài khoản</a>
                 </td>
             </tr>
         }
