@@ -27,7 +27,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
 var configuration = builder.Configuration;
-
+/*
 builder.Services.AddAuthentication().AddGoogle(options =>
 {
     options.ClientId = configuration["Authentication:Google:ClientId"];
@@ -39,7 +39,7 @@ builder.Services.AddAuthentication().AddGoogle(options =>
         return Task.CompletedTask;
     };
 });
-
+*/
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

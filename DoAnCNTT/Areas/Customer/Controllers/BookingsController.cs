@@ -52,8 +52,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                                     Include(b => b.Post).
                                     Include(b => b.Promotion).
                                     Include(b => b.User)
-                                    .Where(b => b.IsDeleted == false && b.UserId == user!.Id).ToListAsync();
-            ViewData["Post"] = _context.Posts.ToList();
+                                    .Where(b => b.IsDeleted == false && b.UserId == user!.Id).OrderByDescending(b => b.Id).ToListAsync();
             UpdateBookingStatus(bookings);
             return View(bookings);
         }
@@ -76,7 +75,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 return NotFound();
             }
             var post = _context.Posts.FirstOrDefault(p => p.Id == booking.PostId);
-            var user = await _userManager.FindByIdAsync(post!.CreatedById);
+            var user = await _userManager.FindByIdAsync(post.CreatedById!);
             var originValue = booking.Total;
             if (booking.PromotionId != null)
             {

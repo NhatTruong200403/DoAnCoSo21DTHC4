@@ -16,11 +16,9 @@
             var lockoutEnd = currentUser!.LockoutEnd;
             if(lockoutEnd == null || lockoutEnd < DateTime.Now)
             {
-               <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe cho thuê của bạn</a></li>
-            <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Lịch sử đặt cọc</a></li>
+                <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Lịch sử giao dịch</a></li>
+                <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Lịch sử đặt xe</a></li>
                 <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Posts" asp-action="Index">Xe cho thuê của bạn</a></li>
-            <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Invoices" asp-action="Index">Lịch sử giao dịch</a></li>
-            <li class="nav-item"><a class="nav-link den" asp-area="Customer" asp-controller="Bookings" asp-action="Index">Lịch sử đặt xe</a></li>
             <li class="nav-item"> <a class="nav-link den" asp-area="Customer" asp-controller="Favorites" asp-action="FavoriteList" asp-route-userId="@currentUser.Id">Danh sách yêu thích</a></li> 
             }        
         }

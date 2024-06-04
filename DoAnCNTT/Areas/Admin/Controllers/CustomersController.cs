@@ -60,7 +60,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: CustomerController/Create
-        public async Task LockAcount(string userId)
+        public async Task<IActionResult> LockAcount(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             if(user != null)
@@ -68,8 +68,11 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                 if (user.LockoutEnd < DateTime.Now || user.LockoutEnd == null)
                 {
                     user.LockoutEnd = DateTime.Now.AddDays(7);
+                    user.LockoutEnabled = false;
                 }
+                var result = await _userManager.UpdateAsync(user!);
             }
+            return RedirectToAction("Index", "Customers", new { area = "Admin"});
         }
     }
 }

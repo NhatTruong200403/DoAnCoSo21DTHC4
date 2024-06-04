@@ -59,12 +59,12 @@
                         }
                         else
                         {
-                             @item.LockoutEnd
+                            @item.LockoutEnd
                         }
                     }
                 </td>
                 <td>
-                    <a  asp-area="Admin" asp-controller="Customers" asp-action="LockAcount" asp-route-userId="@item.Id">Khóa tài khoản</a>
+                    <a asp-area="Admin" asp-controller="Customers" asp-action="LockAcount" asp-route-userId="@item.Id">Khóa tài khoản</a>
                 </td>
             </tr>
         }
