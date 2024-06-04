@@ -51,7 +51,7 @@
             {
                 <tr>
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                        <a asp-controller="Posts"asp-area="Customer" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
                 
             </td>
             <td>
@@ -93,7 +93,7 @@ else
                 @foreach (var item in Model)
                 {
 
-                    <div class="box" style="padding:3px;margin-left:20px;background-color:white;border:0.5px solid black;">
+                    <div class="box" style="padding:3px;margin-left:20px;background-color:white;border:0.5px solid black;margin-bottom:15px;">
                         <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
                             <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
                         </div>

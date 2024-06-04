@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Xe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label,
+        input,
+        select {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+
+
+
+
+
+
+.date-time-form {
+    position: relative;
+    display: flex;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background: #fff;
+    margin-bottom: 12px;
+}
+.form-item {
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 8px;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.form-item label {
+    font-size: .875rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+}
+.wrap-date-time {
+    display: flex;
+    justify-content: space-between;
+    color: #000;
+    font-weight: 600;
+}
+.wrap-date {
+    cursor: pointer;
+}
+.date-time-form .line {
+    border-right: 1px solid #e0e0e0;
+}
+
+
+
+    </style>
+</head>
+
+<body>
+
+    <form action="#">
+        <label for="pickup-date">Ngày nhận xe:</label>
+        <input type="date" id="pickup-date" name="pickup-date" required>
+
+        <label for="pickup-time">Giờ nhận xe:</label>
+        <input type="time" id="pickup-time" name="pickup-time" required>
+
+        <label for="return-date">Ngày trả xe:</label>
+        <input type="date" id="return-date" name="return-date" required>
+
+        <label for="return-time">Giờ trả xe:</label>
+        <input type="time" id="return-time" name="return-time" required>
+
+        <input type="submit" value="Đặt Xe">
+    </form>
+
+    <div class="date-time-form ">
+        <div class="form-item"><label>Nhận xe </label>
+            <div class="wrap-date-time">
+                <div class="wrap-date"><span class="value">05/06/2024</span></div>
+                <div class="wrap-time"><span class="value">21:00</span></div>
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="form-item"><label>Trả xe</label>
+            <div class="wrap-date-time">
+                <div class="wrap-date"><span class="value">14/06/2024</span></div>
+                <div class="wrap-time"><span class="value">20:00</span></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
