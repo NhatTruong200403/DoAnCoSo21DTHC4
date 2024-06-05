@@ -8,6 +8,8 @@ namespace DoAnCNTT.Models
         public string? Name { get; set; }
         public string? License { get; set; }
         public string? Image {  get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Birthday { get; set; }
         public int? ReportPoint { get; set; } = 0;
         public ICollection<Post> Posts { get; set; } = new List<Post>();    

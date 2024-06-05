@@ -25,16 +25,31 @@
     }
 </style>
 <body>
-    <div class="container lockout-container">
-        <header class="lockout-header text-center">
-            <h1>@ViewData["Title"]</h1>
-            <p class="lockout-message">Tài khoản của bạn đã bị khóa đến <strong>@currentUser?.LockoutEnd?.ToString("dd/MM/yyyy HH:mm:ss")</strong>.</p>
-        </header>
-        <div class="text-center">
-            <p class="mb-0">Nếu bạn cần hỗ trợ, vui lòng liên hệ với quản trị viên của hệ thống.</p>
-            <a href="https://www.facebook.com/profile.php?id=100009953740724" class="btn btn-danger mt-3">Liên hệ hỗ trợ</a>
-        </div>
-    </div>
+    @{
+        if(User.IsInRole("Customer"))
+        {
+            <div class="container lockout-container">
+                <header class="lockout-header text-center">
+                    <h1>@ViewData["Title"]</h1>
+                    <p class="lockout-message">Tài khoản của bạn đã bị khóa đến <strong>@currentUser?.LockoutEnd?.ToString("dd/MM/yyyy HH:mm")</strong>.</p>
+                </header>
+                <div class="text-center">
+                    <p class="mb-0">Nếu bạn cần hỗ trợ, vui lòng liên hệ với quản trị viên của hệ thống.</p>
+                    <a href="https://www.facebook.com/profile.php?id=100009953740724" class="btn btn-danger mt-3">Liên hệ hỗ trợ</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="container lockout-container">
+                <header class="lockout-header text-center">
+                    <h1>@ViewData["Title"]</h1>
+                    <p class="lockout-message">Tài khoản của bạn đã bị vô hiệu hóa</p>
+                </header>
+            </div>
+        }
+    }
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

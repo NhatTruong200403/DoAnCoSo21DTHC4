@@ -11,13 +11,9 @@
 
 <div>
 
-    @foreach (var post in ViewBag.Post)
-    {
-        foreach (var item in Model)
+        @foreach (var item in Model)
         {
-            if (post.Id == item.PostId)
-            {
-                var currentUser = await UserManager.FindByIdAsync(post.UserId);
+                var currentUser = await UserManager.FindByIdAsync(item.Post.UserId!);
                 <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;margin-bottom:20px;background-color:white;border-radius:5px;">
                     
                     <div class="tren">
@@ -27,11 +23,11 @@
                     <hr />
                     <div class="giua">
                         <div class="trai" style="display:flex;">
-                            <img src="@Url.Content(post.Image)" style="height:150px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" />
-                            <span style="padding:10px 20px;font-size:23px;font-weight:bold;">@post.Name</span>
+                            <img src="@Url.Content(item.Post.Image)" style="height:150px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" />
+                            <span style="padding:10px 20px;font-size:23px;font-weight:bold;">@item.Post.Name</span>
                         </div>
                         <div class="phai">
-                            <p>Số tiền gốc : @post.Price/giờ</p>
+                            <p>Số tiền gốc : @item.Post.Price/giờ</p>
                             <p>Thành tiền : @item.Total</p>
                         </div>
                     </div>
@@ -55,12 +51,7 @@
                             </div>
                     </div>
                 </div>
-                break;
-            }
-
         }
-
-    }
 </div>
 @* 
 <table class="table">

@@ -14,7 +14,6 @@ var connectionString = builder.Configuration.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -27,7 +26,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
 var configuration = builder.Configuration;
-
+/*
 builder.Services.AddAuthentication().AddGoogle(options =>
 {
     options.ClientId = configuration["Authentication:Google:ClientId"];
@@ -39,7 +38,7 @@ builder.Services.AddAuthentication().AddGoogle(options =>
         return Task.CompletedTask;
     };
 });
-
+*/
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
