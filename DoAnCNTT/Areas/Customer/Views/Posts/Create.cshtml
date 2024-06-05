@@ -33,34 +33,42 @@
         });
     });
 </script>
-<h1>Tạo bài đăng</h1>
 
-<h4>Điền thông tin</h4>
+<div style="font-size:20px;background-color:#1ee156;padding:20px 30px;border-radius:15px;">
+    <div style="font-size:20px;color:white;">
+        <h1>Tạo bài đăng</h1>
+        <h4>Vui lòng điền đầy đủ thông tin</h4>
+    </div>
+
+
+</div>
+
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="divv">
+    <div class="">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label">Tên</label>
+                <label asp-for="Name" class="control-label to">Tên</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CarTypeId" class="control-label">Loại Xe</label>
+                <label asp-for="CarTypeId" class="control-label to">Loại Xe</label>
                 <select id="carTypeId" class="form-control" asp-for="CarTypeId" asp-items="ViewBag.CarTypeId">
                     <option value="">-- Chọn loại xe --</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label asp-for="CompanyId" class="control-label">Hãng Xe</label>
+                <label asp-for="CompanyId" class="control-label to">Hãng Xe</label>
                 <select id="companyId" class="form-control" asp-for="CompanyId" asp-items="ViewBag.CompanyId">
                     <option value="">-- Chọn hãng xe --</option>
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label">Hình ảnh</label>
+                <label asp-for="Image" class="control-label to">Hình ảnh</label>
                 <input asp-for="Image" type="file" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
@@ -70,28 +78,28 @@
                 <span asp-validation-for="Images" class="text-danger"></span>
             </div> *@
             <div class="form-group">
-                <label asp-for="Images" class="control-label">Danh sách ảnh (tối đa 3 ảnh)</label>
+                <label asp-for="Images" class="control-label to">Danh sách ảnh (tối đa 3 ảnh)</label>
                 <input type="file" asp-for="Images" class="form-control" multiple accept="image/*" onchange="limitFiles(this, 3)" />
                 <span asp-validation-for="Images" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Description" class="control-label">Mô tả</label>
+                <label asp-for="Description" class="control-label to">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Seat" class="control-label">Chỗ ngồi</label>
+                <label asp-for="Seat" class="control-label to">Chỗ ngồi</label>
                 <input asp-for="Seat" class="form-control" />
                 <span asp-validation-for="Seat" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RentLocation" class="control-label">Địa chỉ nhận xe</label>
+                <label asp-for="RentLocation" class="control-label to">Địa chỉ nhận xe</label>
                 <input asp-for="RentLocation" class="form-control" />
                 <span asp-validation-for="RentLocation" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label class="control-label">Các tiện ích:</label>
+            <div class="form-group to">
+                <label class="control-label to">Các tiện ích:</label>
                 <br />
                 @foreach (var amenity in ViewBag.Amenities)
                 {
@@ -101,19 +109,22 @@
                     </div>
                 }
             </div>
-            Tài Xế Riêng:
-            <div class="form-group form-check">
+            
+            
+            <div class="form-group to">
+                <label class="control-label to"> Tài Xế Riêng:</label>
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="HasDriver" />
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label">Giá thuê (đồng/giờ)</label>
+                <label asp-for="Price" class="control-label to">Giá thuê (đồng/giờ)</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <label asp-for="Gear" class="control-label">Động cơ</label>
-            <div class="form-group">
+           
+            <div class="form-group to">
+                <label asp-for="Gear" class="control-label to">Động cơ</label>
                 <div class="form-check">
                     <input type="radio" class="form-check-input" id="automaticRadio" name="Gear" value="Số tự động" checked />
                     <label class="form-check-label" for="automaticRadio">Số tự động</label>
@@ -124,7 +135,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="Fuel" class="control-label">Nhiên liệu</label>
+                <label asp-for="Fuel" class="control-label to">Nhiên liệu</label>
                 <select asp-for="Fuel" class="form-control">
                     <option value="Xăng">Xăng</option>
                     <option value="Dầu">Dầu</option>
@@ -132,7 +143,7 @@
                 <span asp-validation-for="Fuel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FuelConsumed" class="control-label">Nhiên liệu tiêu thụ (lít/100km)</label>
+                <label asp-for="FuelConsumed" class="control-label to">Nhiên liệu tiêu thụ (lít/100km)</label>
                 <input asp-for="FuelConsumed" class="form-control" />
                 <span asp-validation-for="FuelConsumed" class="text-danger"></span>
             </div>
@@ -147,6 +158,16 @@
     <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
 
+<style>
+    .to{
+        padding:10px 20px;
+        font-size:25px;
+        background-color: #ccffcc;
+        /* border-radius: 30px 30px 0 0; */
+        width:100%;
+        color:#333;
+    }
+</style>
 
 <script>
     function limitFiles(input, maxFiles) {

@@ -8,7 +8,7 @@
 
 <div class="">
     <div class="" style="padding:20px;">
-        <h3 style="font-size:30px;">@Model.Total/Giờ</h3>
+        <h3 style="font-size:30px;" class="giagiam">@Model.Total/Giờ</h3>
         <form asp-controller="Bookings" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" hidden>
@@ -32,71 +32,34 @@
             
             <div class="date-time-form">
                 <div class="form-item">
-                    <label>Nhận xe</label>
+                    <label for="startDate1">Ngày nhận xe:</label>
                     <div class="wrap-date-time" id="start">
                         <div class="wrap-date">
                             <span class="value">
-                                <input asp-for="RecieveOn" type="datetime" id="startDate1" class="form-control inputcreate" onchange="validateDate()" />
+                                <input asp-for="RecieveOn" style="background-color:white;" type="datetime" id="startDate1" class="form-control inputcreate" readonly />
                             </span>
                         </div>
-                        <div class="wrap-time">
+                        @* <div class="wrap-time">
                             <span class="value">21:00</span>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
                 <div class="line"></div>
                 <div class="form-item">
-                    <label>Trả xe</label>
+                    <label for="endDate1">Ngày trả xe:</label>
                     <div class="wrap-date-time" id="end">
                         <div class="wrap-date">
                             <span class="value">
-                                <input asp-for="ReturnOn" type="datetime" id="endDate1" class="form-control inputcreate" />
+                                <input asp-for="ReturnOn" style="background-color:white;" type="datetime" id="endDate1" class="form-control inputcreate" readonly />
                             </span>
                         </div>
-                        <div class="wrap-time">
+                        @* <div class="wrap-time">
                             <span class="value">20:00</span>
-                        </div>
+                        </div> *@
                     </div>
                 </div>
             </div>
-            <div class="calendar block">
-                <label id="x" style="border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 10px; height: 10px;">X</label>
-                <div class="header">
-                    <div class="month"></div>
-                    <div class="btns">
-                        <div class="btn today-btn">
-                            <i class="fas fa-calendar-day"></i>
-                        </div>
-                        <div class="btn prev-btn">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="btn next-btn">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="weekdays">
-                    <div class="day">Cn</div>
-                    <div class="day">T2</div>
-                    <div class="day">T3</div>
-                    <div class="day">T4</div>
-                    <div class="day">T5</div>
-                    <div class="day">T6</div>
-                    <div class="day">T7</div>
-                </div>
-                <div class="days">
-                    <!-- Days will be added dynamically using jQuery -->
-                </div>
-                <div>
-                    <label class="labeldate active" id="startDateBtn">Ngày nhận</label>
-                    <label class="labeldate" id="endDateBtn">Ngày trả</label>
-                </div>
-            </div>
-
-            @* </div> *@
-
-
-
+            <div id="datepicker-container"></div>
             <div class="form-group">
                 <label asp-for="Total" class="control-label">Tổng cộng</label>
                 <input asp-for="Total" id="Total" class="form-control" readonly style="border:none;background-color:white;" />
@@ -122,11 +85,11 @@
                 @{
                     if (@ViewBag.IsAvailable == false)
                     {
-                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
+                                    <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
                     }
                     else
                     {
-                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
+                                    <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
                     }
                 }
             </div>
@@ -135,44 +98,28 @@
 </div>
 
 
-
-<style>
-
-
-
-    
-</style>
-
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
 <script>
-        function validateDate() {
-            var startDate = document.getElementById("startDate").value;
-            var endDate = document.getElementById("endDate").value;
-
-            // Chuyển đổi các chuỗi ngày thành đối tượng Date để so sánh
-            var start = new Date(startDate);
-            var end = new Date(endDate);
-
-            // Kiểm tra nếu RecieveOn lớn hơn ReturnOn
-            if (start > end) {
-                // Hiển thị thông báo lỗi
-                alert("Thời gian nhận xe phải trước thời gian trả");
-                // Thiết lập giá trị của RecieveOn là ngày hiện tại
-                document.getElementById("startDate").value = new Date().toISOString().split('T')[0];
-                // Thiết lập giá trị của ReturnOn là ngày kế tiếp của RecieveOn
-                document.getElementById("endDate").value = new Date(start.getTime() + 86400000).toISOString().split('T')[0];
+    $(document).ready(function () {
+        
+        $('.giagiam').each(function () {
+            var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
+            $(this).text(formatPrice(price) + '/giờ');
+        });
+        function formatPrice(price) {
+            if (price >= 1000) {
+                return (price / 1000) + 'k';
             }
+            return price;
         }
 
-    $(document).ready(function () {
-        $('#startDate, #endDate').change(function () {
-            var startDate = $('#startDate').val();
-            var endDate = $('#endDate').val();
+        $(document).on('click', function (e) {
+            var startDate = $('#startDate1').val();
+            var endDate = $('#endDate1').val();
             var total = @Model!.Total;
             if (startDate && endDate) {
                 $.ajax({
@@ -188,7 +135,9 @@
             }
         });
 
-        $('#Total, #promotionSelect').change(function () {
+
+        // Function to calculate the final value when promotion changes
+        $('#Total, #promotionSelect').on('change blur', function () {
             var promotionId = $('#promotionSelect').val();
             var total = $('#Total').val();
 
@@ -206,163 +155,78 @@
             });
         });
 
-            let selectingPickup = true;
-            const $daysContainer = $(".days"),
-                $nextBtn = $(".next-btn"),
-                $prevBtn = $(".prev-btn"),
-                $month = $(".month"),
-                $todayBtn = $(".today-btn");
 
-            const months = [
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-            ];
+        let pickUpDate = null;
+        let dropOffDate = null;
+        let selectingPickUp = true;  // Biến để xác định chọn ngày nhận hay ngày trả
 
-            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const pickUpInput = $('#startDate1');
+        const dropOffInput = $('#endDate1');
+        const datePickerContainer = $('#datepicker-container');
 
-            let currentDate = new Date(),
-                currentMonth = currentDate.getMonth(),
-                currentYear = currentDate.getFullYear(),
-                pickupDate = null,
-                returnDate = null;
-
-            function renderCalendar() {
-                currentDate.setDate(1);
-                const firstDay = new Date(currentYear, currentMonth, 1),
-                    lastDay = new Date(currentYear, currentMonth + 1, 0),
-                    lastDayIndex = lastDay.getDay(),
-                    lastDayDate = lastDay.getDate(),
-                    prevLastDay = new Date(currentYear, currentMonth, 0),
-                    prevLastDayDate = prevLastDay.getDate(),
-                    nextDays = 7 - lastDayIndex - 1;
-
-                $month.text(`${months[currentMonth]} ${currentYear}`);
-
-                let daysHtml = "";
-                for (let x = firstDay.getDay(); x > 0; x--) {
-                    daysHtml += `<div class="day prev">${prevLastDayDate - x + 1}</div>`;
-                }
-                for (let i = 1; i <= lastDayDate; i++) {
-                    const date = new Date(currentYear, currentMonth, i);
-                    let classNames = "day";
-                    if (date.toDateString() === new Date().toDateString()) {
-                        classNames += " today";
-                    }
-                    if (pickupDate && date.toDateString() === pickupDate.toDateString()) {
-                        classNames += " pickup";
-                    }
-                    if (returnDate && date.toDateString() === returnDate.toDateString()) {
-                        classNames += " return";
-                    }
-                    if (selectingPickup) {
-                        if (returnDate && date >= returnDate) {
-                            classNames += " disabled";
-                        }
+        const flatpickrInstance = flatpickr(datePickerContainer[0], {
+            mode: "range",
+            enableTime: true,
+            dateFormat: "m/d/Y H:i", // Sửa định dạng ngày giờ ở đây
+            time_24hr: true,
+            minDate: "today",
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    pickUpDate = selectedDates[0];
+                    dropOffDate = selectedDates[1];
+                    pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+                    dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
+                } else if (selectedDates.length === 1) {
+                    if (selectingPickUp) {
+                        pickUpDate = selectedDates[0];
+                        pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+                        dropOffInput.val(""); // Xóa ngày trả nếu chỉ chọn ngày nhận
+                        dropOffDate = null;
                     } else {
-                        if (pickupDate && date <= pickupDate) {
-                            classNames += " disabled";
-                        }
+                        dropOffDate = selectedDates[0];
+                        dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
                     }
-                    daysHtml += `<div class="${classNames}">${i}</div>`;
-                }
-                for (let j = 1; j <= nextDays; j++) {
-                    daysHtml += `<div class="day next">${j}</div>`;
-                }
-
-                hideTodayBtn();
-                $daysContainer.html(daysHtml);
-            }
-
-            renderCalendar();
-
-            $nextBtn.on("click", function () {
-                currentMonth++;
-                if (currentMonth > 11) {
-                    currentMonth = 0;
-                    currentYear++;
-                }
-                renderCalendar();
-            });
-
-            $prevBtn.on("click", function () {
-                currentMonth--;
-                if (currentMonth < 0) {
-                    currentMonth = 11;
-                    currentYear--;
-                }
-                renderCalendar();
-            });
-
-            $todayBtn.on("click", function () {
-                currentMonth = currentDate.getMonth();
-                currentYear = currentDate.getFullYear();
-                renderCalendar();
-            });
-
-            function hideTodayBtn() {
-                if (
-                    currentMonth === new Date().getMonth() &&
-                    currentYear === new Date().getFullYear()
-                ) {
-                    $todayBtn.css("display", "none");
-                } else {
-                    $todayBtn.css("display", "flex");
                 }
             }
-
-            $('.labeldate').click(function () {
-                $('.labeldate').removeClass('active');
-                $(this).addClass('active');
-                selectingPickup = $(this).is('#startDateBtn');
-                renderCalendar();
-            });
-
-            $(document).on("click", ".day", function () {
-                if ($(this).hasClass("disabled")) return;
-
-                const day = $(this).text();
-                const selectedDate = new Date(currentYear, currentMonth, day);
-
-                if (selectingPickup) {
-                    pickupDate = selectedDate;
-                    $('#startDate1').val(formatDate(selectedDate));
-                    $('#startDate1').trigger('change');
-                } else {
-                    returnDate = selectedDate;
-                    $('#endDate1').val(formatDate(selectedDate));
-                }
-
-                // Xóa class 'today' và thêm class 'doimaudate' cho ngày được nhấn
-                $('.day').removeClass('today');
-                $('.day').removeClass('doimaudate');
-                $(this).addClass('doimaudate');
-
-                renderCalendar();
-            });
-
-            function formatDate(date) {
-                var month = '' + (date.getMonth() + 1);
-                var day = '' + date.getDate();
-                var year = date.getFullYear();
-
-                if (month.length < 2) month = '0' + month;
-                if (day.length < 2) day = '0' + day;
-
-                return [year, month, day].join('-');
-            }
-
-            $('#startDate1, #endDate1').focus(function () {
-                $('.calendar').removeClass('block');
-            });
-
-            $('#start, #end').on("click", function () {
-                $('.calendar').removeClass('block');
-            });
-
-            $('#x').click(function () {
-                $('.calendar').addClass('block');
-            });
         });
+
+        $('#btn-pick-up').on('click', function () {
+            selectingPickUp = true;
+            $(this).addClass('active');
+            $('#btn-drop-off').removeClass('active');
+            flatpickrInstance.set("minDate", "today");  // Hiển thị đầy đủ các ngày từ ngày hiện tại
+            flatpickrInstance.open();
+        });
+
+        $('#btn-drop-off').on('click', function () {
+            selectingPickUp = false;
+            $(this).addClass('active');
+            $('#btn-pick-up').removeClass('active');
+            if (pickUpDate) {
+                flatpickrInstance.set("minDate", pickUpDate);  // Chỉ hiển thị các ngày từ ngày nhận trở đi
+            } else {
+                flatpickrInstance.set("minDate", "today");
+            }
+            flatpickrInstance.open();
+        });
+
+        // Mở lịch khi nhấn vào input
+        pickUpInput.on('focus', function () {
+            selectingPickUp = true;
+            flatpickrInstance.set("minDate", "today");
+            flatpickrInstance.open();
+        });
+
+        dropOffInput.on('focus', function () {
+            selectingPickUp = false;
+            if (pickUpDate) {
+                flatpickrInstance.set("minDate", pickUpDate);
+            } else {
+                flatpickrInstance.set("minDate", "today");
+            }
+            flatpickrInstance.open();
+        });
+    });
 
 </script>
 

@@ -9,7 +9,7 @@
         var fullName = user.Name;
         <a class="nav-normal" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 @fullName
-                <img class="user-img-home" src="@Url.Content(user.Image)" alt="Image" />
+                <img style="margin-left:10px;" class="user-img-home" src="@Url.Content(user.Image)" alt="Image" />
         </a>
     
 }

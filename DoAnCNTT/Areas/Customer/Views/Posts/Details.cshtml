@@ -10,6 +10,12 @@
     var currentUser = await UserManager.GetUserAsync(User);
 }
 
+
+<div>
+    <a href="javascript:history.go(-1);">Quay lại</a>
+</div>
+
+
 <div style="margin-top:20px;">
     <div class="cover-car-container">
         <div class="main-img">
@@ -73,7 +79,19 @@
                         }
                         else
                         {
-                            <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+
+                            if (SignInManager.IsSignedIn(User))
+                            {
+                                if (currentUser!.Id == Model.UserId)
+                                {
+                                    <a asp-action="Edit" asp-route-id="@Model?.Id" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;"><img style="width:20px;" src="@Url.Content("~/images/logo/edit.png")" />  Chỉnh sửa</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+                                    <a asp-area="Employee" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" asp-controller="Reports" asp-action="Create" asp-route-id="@Model?.Id"><img style="width:20px;" src="@Url.Content("~/images/logo/error.png")" />  Báo cáo</a>
+                                }
+                            }
                         }
                     }
                 </div>
@@ -376,19 +394,7 @@
         </div>
 
 
-        <div>
-            @{
-                if (SignInManager.IsSignedIn(User))
-                {
-                    if (currentUser!.Id == Model.UserId)
-                    {
-                        <a asp-action="Edit" asp-route-id="@Model?.Id">Chỉnh sửa</a>
-                    }
-                }
-            }
-            <a asp-area="Employee" asp-controller="Reports" asp-action="Create" asp-route-id="@Model?.Id">Báo cáo bài viết</a>
-            <a href="javascript:history.go(-1);">Quay lại</a>
-        </div>
+        
 
 
 
@@ -399,7 +405,7 @@
                 if (@Model.IsAvailable == false)
                     createButton.hidden = true;
             });
-
+            
         </script>
 
 

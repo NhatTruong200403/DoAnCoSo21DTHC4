@@ -6,20 +6,17 @@
 }
 
 
-<h1>Đơn hàng</h1>
+<h1>Lịch sử giao dịch</h1>
 
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Total)
+                Tổng tiền
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReturnOn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking)
+                Ngày giao dịch
             </th>
             <th></th>
         </tr>
@@ -32,9 +29,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReturnOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking.Id)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
