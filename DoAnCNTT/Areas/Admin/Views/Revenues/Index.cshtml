@@ -3,12 +3,16 @@
     ViewData["Title"] = "Thống kê";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<body>
-    <div class="container mt-5">
-        <h2 class="text-center">Chọn ngày thống kê</h2>
+
+<div class="container " >
+        <div style="background-color:#1ee156;padding:20px 30px;border-radius:15px; ">
+            <div style="font-size:35px;color:white;display:flex;text-align:center;">
+                Thống kê doanh thu 
+            </div>
+        </div>
         <form asp-controller="Revenues" asp-action="Index" method="post">
             <div class="d-flex">
-                <div class="form-group mr-3">
+                <div class="form-group mr-3 tk">
                     <label for="day">Ngày:</label>
                     <select class="form-control" id="day" name="SelectedDay">
                         <option value="0">Chọn ngày</option>
@@ -18,7 +22,7 @@
                         }
                     </select>
                 </div>
-                <div class="form-group mr-3">
+                <div class="form-group mr-3 tk">
                     <label for="month">Tháng:</label>
                     <select class="form-control" id="month" name="SelectedMonth">
                         <option value="0">Chọn tháng</option>
@@ -55,7 +59,7 @@
                 <tr>
                     <th>Khách Hàng</th>
                     <th>Tổng Tiền</th>
-                    <th>Ngày Hoàn Trả</th>
+                    <th>Ngày Lập Đơn</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,4 +85,14 @@
             <p>@Model.Revenues</p>
         </div>
     </div>
-</body>
+
+                        <style>
+                            .tk{
+                                display:flex;
+                            }
+                            .tk label{
+                                margin-top:5px;
+                                font-size:20px;
+                                margin-right:10px;
+                            }
+                        </style>

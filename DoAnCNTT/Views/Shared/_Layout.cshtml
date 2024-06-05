@@ -81,7 +81,7 @@
                 @if (User.IsInRole("Admin"))
                 {
                     <details style="border:1px solid black;">
-                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                        <summary style="background-color:#1ee156;font-size:21px;font-weight:bold;">
                             <a style="margin-left:0px;" asp-area="" asp-controller="Home" asp-action="Index">
                                 <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý bài đăng
                             </a>
@@ -89,7 +89,7 @@
                         </summary>
                     </details>
                     <details style="border:1px solid black;">
-                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                        <summary style="background-color:#1ee156;font-size:21px;font-weight:bold;">
                             <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý đối tượng
                             </summary>
                         <details>
@@ -126,7 +126,7 @@
                         </details>
                     </details>
                     <details style="border:1px solid black;">
-                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                        <summary style="background-color:#1ee156;font-size:21px;font-weight:bold;">
                             <a style="margin-left:0px;" asp-area="Admin" asp-controller="Revenues" asp-action="Index">
                                 <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Thống kê
                             </a>
@@ -134,20 +134,22 @@
                         </summary>
                     </details>
                     //
+
+
                     <details style="border:1px solid black;">
-                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                        <summary style="background-color:#1ee156;font-size:21px;font-weight:bold;">
                             <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý người dùng
                         </summary>
-                        <details style="border:1px solid black;">
-                            <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                        <details>
+                            <summary>
                                 <a style="margin-left:0px;" asp-area="Admin" asp-controller="Customers" asp-action="Index">
                                     <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý khách hàng
                                 </a>
 
                             </summary>
                         </details>
-                        <details style="border:1px solid black;">
-                            <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                        <details>
+                            <summary>
                                 <a style="margin-left:0px;" asp-area="Admin" asp-controller="Employees" asp-action="Index">
                                     <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý Nhân viên
                                 </a>
@@ -161,7 +163,7 @@
                 else
                 {
                     <details>
-                        <summary style="background-color:lightpink;font-size:21px;font-weight:bold;">
+                        <summary style="background-color:#1ee156;font-size:21px;font-weight:bold;">
                             <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Xử lý yêu cầu
                         </summary>
                         <details>
@@ -178,7 +180,6 @@
                             </summary>
                             <p><a class="nav-normal" asp-area="Employee" asp-controller="Bookings" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/delete.png")" alt="" />  Hủy chuyến</a></p>
                         </details>
-                        
                     </details>
                     
                 }

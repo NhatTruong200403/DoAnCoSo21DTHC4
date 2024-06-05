@@ -124,6 +124,7 @@ li {
 }
 
     .table td {
+        margin-left:15px;
         border: 1px solid #ddd;
         padding: 13px;
         text-align: left;
@@ -131,6 +132,7 @@ li {
     }
 
     .table th {
+        text-align:center;
         background-color: #ccffcc;
     }
 
@@ -264,7 +266,9 @@ a {
 .item {
     display: none;
 }
-
+a:hover{
+    color:#333;
+}
 .header{
     
 }
@@ -272,15 +276,15 @@ a {
         cursor: pointer;
     }
 details summary {
-    background-color: rgb(255, 200, 208);
-    list-style:none;
+    background-color: #ccffcc;
+    list-style: none;
     padding: 15px 20px;
     /*border:1px solid black;*/
 }
 details p {
     padding: 10px 10px;
     margin-bottom: 0px;
-    background-color: rgb(255, 219, 224);
+    background-color: #e1fce1;
 }
 
 .form-group{
