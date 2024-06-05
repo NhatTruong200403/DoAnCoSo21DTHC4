@@ -28,7 +28,7 @@
                 Thời gian khóa
             </th>
             <th>
-                Khóa tài khoản
+                Thao tác
             </th>
         </tr>
     </thead>
@@ -37,7 +37,7 @@
         {
             <tr>
                 <td>
-                    <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                    <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.Id"><img class="user-img-home" src="@Url.Content(item.Image)" alt="Image" />@item.Name</a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
@@ -51,21 +51,29 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Birthday)
                 </td>
-                <td>
-                    @{
-                        if (item.LockoutEnd != null)
-                        {
+
+                @{
+                    if (item.LockoutEnd > DateTime.Now)
+                    {
+                        <td>
                             @item.LockoutEnd.Value.ToString("dd/MM/yyyy HH:mm")
-                        }
-                        else
-                        {
-                             @item.LockoutEnd
-                        }
+                        </td>
+
+                        <td>
+                            <a asp-area="Admin" asp-controller="Customers" asp-action="UnlockAccount" asp-route-userId="@item.Id">Mở khóa</a>
+                        </td>
                     }
-                </td>
-                <td>
-                    <a  asp-area="Admin" asp-controller="Customers" asp-action="LockAcount" asp-route-userId="@item.Id">Khóa tài khoản</a>
-                </td>
+                    else
+                    {
+                        <td>
+                        </td>
+
+                        <td>
+                            <a asp-area="Admin" asp-controller="Customers" asp-action="LockAccount" asp-route-userId="@item.Id">Khóa tài khoản</a>
+                        </td>
+                    }
+                }
+
             </tr>
         }
     </tbody>

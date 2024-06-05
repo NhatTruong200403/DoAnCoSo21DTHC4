@@ -32,22 +32,10 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: Admin/Reports/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var report = await _context.Report
-                .Include(r => r.Post)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (report == null)
-            {
-                return NotFound();
-            }
-
-            return View(report);
+            var user = await _userManager.FindByIdAsync(id);
+            return View(user);
         }
 
         // GET: Admin/Reports/Create
@@ -55,6 +43,35 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         {
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id");
             return View();
+        }
+
+        public async Task<IActionResult> LockAccount(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                if (user.LockoutEnd < DateTime.Now || user.LockoutEnd == null)
+                {
+                    user.LockoutEnd = DateTime.Now.AddYears(1000);
+                    user.LockoutEnabled = true;
+                }
+                var result = await _userManager.UpdateAsync(user!);
+            }
+            return RedirectToAction("Index", "Employees", new { area = "Admin" });
+        }
+
+        public async Task<IActionResult> UnlockAccount(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                if (user.LockoutEnd != null)
+                {
+                    user.LockoutEnd = DateTime.Now;
+                }
+                var result = await _userManager.UpdateAsync(user!);
+            }
+            return RedirectToAction("Index", "Employees", new { area = "Admin" });
         }
 
         // POST: Admin/Reports/Create
