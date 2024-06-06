@@ -89,7 +89,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         }
 
 
-
         [AllowAnonymous]
         [HttpPost]
         public ActionResult CalculateMiddleDate(string startDate, string endDate, decimal total)

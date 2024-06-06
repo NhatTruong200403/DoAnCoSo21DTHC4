@@ -13,45 +13,45 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" hidden>
                 <label asp-for="PostId" class="control-label"></label>
-                <input asp-for="PostId" class="form-control"  />
+                <input asp-for="PostId" class="form-control" />
             </div>
             <div class="form-group" hidden>
                 <label asp-for="UserId" class="control-label"></label>
-                <input asp-for="UserId" class="form-control"  />
+                <input asp-for="UserId" class="form-control" />
             </div>
             @* <div class="form-group">
-               <label asp-for="RecieveOn" class="control-label">Ngày nhận xe</label>
-                <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
-               <span asp-validation-for="RecieveOn" class="text-danger"></span>
+            <label asp-for="RecieveOn" class="control-label">Ngày nhận xe</label>
+            <input asp-for="RecieveOn" type="datetime-local" id="startDate" class="form-control" onchange="validateDate()" />
+            <span asp-validation-for="RecieveOn" class="text-danger"></span>
             </div>
             <div class="form-group">
-               <label asp-for="ReturnOn" class="control-label">Ngày trả xe</label>
-                <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
-               <span asp-validation-for="ReturnOn" class="text-danger"></span>
+            <label asp-for="ReturnOn" class="control-label">Ngày trả xe</label>
+            <input asp-for="ReturnOn" type="datetime-local" id="endDate" class="form-control" onchange="validateDate()" />
+            <span asp-validation-for="ReturnOn" class="text-danger"></span>
             </div> *@
-            
+
             @* <div class="date-time-form">
-                <div class="form-item">
-                    <label for="startDate1">Ngày nhận xe:</label>
-                    <div class="wrap-date-time" id="start">
-                        <div class="wrap-date">
-                            <span class="value">
-                                <input asp-for="RecieveOn" style="background-color:white;" type="datetime" id="startDate1" class="form-control inputcreate" readonly />
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="line"></div>
-                <div class="form-item">
-                    <label for="endDate1">Ngày trả xe:</label>
-                    <div class="wrap-date-time" id="end">
-                        <div class="wrap-date">
-                            <span class="value">
-                                <input asp-for="ReturnOn" style="background-color:white;" type="datetime" id="endDate1" class="form-control inputcreate" readonly />
-                            </span>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-item">
+            <label for="startDate1">Ngày nhận xe:</label>
+            <div class="wrap-date-time" id="start">
+            <div class="wrap-date">
+            <span class="value">
+            <input asp-for="RecieveOn" style="background-color:white;" type="datetime" id="startDate1" class="form-control inputcreate" readonly />
+            </span>
+            </div>
+            </div>
+            </div>
+            <div class="line"></div>
+            <div class="form-item">
+            <label for="endDate1">Ngày trả xe:</label>
+            <div class="wrap-date-time" id="end">
+            <div class="wrap-date">
+            <span class="value">
+            <input asp-for="ReturnOn" style="background-color:white;" type="datetime" id="endDate1" class="form-control inputcreate" readonly />
+            </span>
+            </div>
+            </div>
+            </div>
             </div> *@
             <div class="date-time-form">
                 <div class="form-item">
@@ -87,27 +87,27 @@
                 <label asp-for="PromotionId" class="control-label">Khuyến mãi: </label>
                 <select asp-for="PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions"></select>
             </div>
-                <div class="form-group">
-                    <label asp-for="Total" class="control-label">Thành tiền</label>
-                    <input asp-for="FinalValue" class="form-control" id="finalValue" readonly style="border:none;background-color:white;" />
-                    <span asp-validation-for="FinalValue" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Total" class="control-label">Đặt cọc</label>
-                    <input asp-for="PrePayment" class="form-control" id="prePayment" readonly style="border:none;background-color:white;" />
-                    <span asp-validation-for="PrePayment" class="text-danger"></span>
-                </div>
-      
-            
+            <div class="form-group">
+                <label asp-for="Total" class="control-label">Thành tiền</label>
+                <input asp-for="FinalValue" class="form-control" id="finalValue" readonly style="border:none;background-color:white;" />
+                <span asp-validation-for="FinalValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label">Đặt cọc</label>
+                <input asp-for="PrePayment" class="form-control" id="prePayment" readonly style="border:none;background-color:white;" />
+                <span asp-validation-for="PrePayment" class="text-danger"></span>
+            </div>
+
+
             <div class="form-group">
                 @{
                     if (@ViewBag.IsAvailable == false)
                     {
-                                                <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
+                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
                     }
                     else
                     {
-                                                <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
+                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
                     }
                 }
             </div>
@@ -122,8 +122,22 @@
     }
 }
 <script>
-    $(document).ready(function () 
-    {
+    $(document).ready(function () {
+
+        $('.giagiam').each(function () {
+                    var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
+                    $(this).text(formatPrice(price) + '/giờ');
+                });
+                function formatPrice(price) {
+                    if (price >= 1000) {
+                        return (price / 1000) + 'k';
+                    }
+                    return price;
+                }
+
+
+
+
         let bookedDates = [];
 
         // Gọi API để lấy các ngày đã được đặt
@@ -160,17 +174,14 @@
             dateFormat: "m/d/Y H:i",
             time_24hr: true,
             minDate: "today",
-            onChange: function (selectedDates, dateStr, instance) 
-            {
-                if (selectedDates.length === 2) 
-                {
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
                     pickUpDate = selectedDates[0];
                     dropOffDate = selectedDates[1];
                     $("#startDate1").val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
                     $("#endDate1").val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
-                } 
-                else if (selectedDates.length === 1) 
-                {
+                }
+                else if (selectedDates.length === 1) {
                     if (selectingPickUp) {
                         pickUpDate = selectedDates[0];
                         $("#startDate1").val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
@@ -185,8 +196,7 @@
         });
 
         // Các sự kiện cho các nút chọn ngày nhận và ngày trả
-        $('#btn-pick-up').on('click', function () 
-        {
+        $('#btn-pick-up').on('click', function () {
             selectingPickUp = true;
             $(this).addClass('active');
             $('#btn-drop-off').removeClass('active');
@@ -194,8 +204,7 @@
             flatpickrInstance.open();
         });
 
-        $('#btn-drop-off').on('click', function () 
-        {
+        $('#btn-drop-off').on('click', function () {
             selectingPickUp = false;
             $(this).addClass('active');
             $('#btn-pick-up').removeClass('active');
@@ -208,15 +217,13 @@
         });
 
         // Mở lịch khi nhấn vào input
-        $('#startDate1').on('focus', function () 
-        {
+        $('#startDate1').on('focus', function () {
             selectingPickUp = true;
             flatpickrInstance.set("minDate", "today");
             flatpickrInstance.open();
         });
 
-        $('#endDate1').on('focus', function () 
-        {
+        $('#endDate1').on('focus', function () {
             selectingPickUp = false;
             if (pickUpDate) {
                 flatpickrInstance.set("minDate", pickUpDate);
@@ -225,132 +232,42 @@
             }
             flatpickrInstance.open();
         });
+        $(document).on('click', function (e) {
+                    var startDate = $('#startDate1').val();
+                    var endDate = $('#endDate1').val();
+                    var total = @Model!.Total;
+                    if (startDate && endDate) {
+                        $.ajax({
+                            url: '/Customer/Bookings/CalculateMiddleDate',
+                            type: 'POST',
+                            data: { startDate: startDate, endDate: endDate, total: total },
+                            success: function (result) {
+                                $('#Total').val(result);
+                                $('#finalValue').val(result);
+                                $('#prePayment').val(result * 0.5);
+                            }
+                        });
+                    }
+                });
+        $('#Total, #promotionSelect').on('change blur', function () {
+                    var promotionId = $('#promotionSelect').val();
+                    var total = $('#Total').val();
+
+                    $.ajax({
+                        url: '/Customer/Bookings/CalculateFinalValue',
+                        type: 'POST',
+                        data: { total: total, promotionId: promotionId },
+                        success: function (result) {
+                            $('#finalValue').val(result.total);
+                            $('#prePayment').val(result.total * 0.5);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+
     });
-
-    // $(document).ready(function () {
-
-    //     $('.giagiam').each(function () {
-    //         var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
-    //         $(this).text(formatPrice(price) + '/giờ');
-    //     });
-    //     function formatPrice(price) {
-    //         if (price >= 1000) {
-    //             return (price / 1000) + 'k';
-    //         }
-    //         return price;
-    //     }
-
-    //     $(document).on('click', function (e) {
-    //         var startDate = $('#startDate1').val();
-    //         var endDate = $('#endDate1').val();
-    //         var total = @Model!.Total;
-    //         if (startDate && endDate) {
-    //             $.ajax({
-    //                 url: '/Customer/Bookings/CalculateMiddleDate',
-    //                 type: 'POST',
-    //                 data: { startDate: startDate, endDate: endDate, total: total },
-    //                 success: function (result) {
-    //                     $('#Total').val(result);
-    //                     $('#finalValue').val(result);
-    //                     $('#prePayment').val(result * 0.5);
-    //                 }
-    //             });
-    //         }
-    //     });
-
-
-    //     // Function to calculate the final value when promotion changes
-    //     $('#Total, #promotionSelect').on('change blur', function () {
-    //         var promotionId = $('#promotionSelect').val();
-    //         var total = $('#Total').val();
-
-    //         $.ajax({
-    //             url: '/Customer/Bookings/CalculateFinalValue',
-    //             type: 'POST',
-    //             data: { total: total, promotionId: promotionId },
-    //             success: function (result) {
-    //                 $('#finalValue').val(result.total);
-    //                 $('#prePayment').val(result.total * 0.5);
-    //             },
-    //             error: function (xhr, status, error) {
-    //                 console.error(error);
-    //             }
-    //         });
-    //     });
-    // }
-
-
-    //     let pickUpDate = null;
-    //     let dropOffDate = null;
-    //     let selectingPickUp = true;  // Biến để xác định chọn ngày nhận hay ngày trả
-
-    //     const pickUpInput = $('#startDate1');
-    //     const dropOffInput = $('#endDate1');
-    //     const datePickerContainer = $('#datepicker-container');
-
-    //     const flatpickrInstance = flatpickr(datePickerContainer[0], {
-    //         mode: "range",
-    //         enableTime: true,
-    //         dateFormat: "m/d/Y H:i", // Sửa định dạng ngày giờ ở đây
-    //         time_24hr: true,
-    //         minDate: "today",
-    //         onChange: function (selectedDates, dateStr, instance) {
-    //             if (selectedDates.length === 2) {
-    //                 pickUpDate = selectedDates[0];
-    //                 dropOffDate = selectedDates[1];
-    //                 pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
-    //                 dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
-    //             } else if (selectedDates.length === 1) {
-    //                 if (selectingPickUp) {
-    //                     pickUpDate = selectedDates[0];
-    //                     pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
-    //                     dropOffInput.val(""); // Xóa ngày trả nếu chỉ chọn ngày nhận
-    //                     dropOffDate = null;
-    //                 } else {
-    //                     dropOffDate = selectedDates[0];
-    //                     dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
-    //                 }
-    //             }
-    //         }
-    //     });
-
-    //     $('#btn-pick-up').on('click', function () {
-    //         selectingPickUp = true;
-    //         $(this).addClass('active');
-    //         $('#btn-drop-off').removeClass('active');
-    //         flatpickrInstance.set("minDate", "today");  // Hiển thị đầy đủ các ngày từ ngày hiện tại
-    //         flatpickrInstance.open();
-    //     });
-
-    //     $('#btn-drop-off').on('click', function () {
-    //         selectingPickUp = false;
-    //         $(this).addClass('active');
-    //         $('#btn-pick-up').removeClass('active');
-    //         if (pickUpDate) {
-    //             flatpickrInstance.set("minDate", pickUpDate);  // Chỉ hiển thị các ngày từ ngày nhận trở đi
-    //         } else {
-    //             flatpickrInstance.set("minDate", "today");
-    //         }
-    //         flatpickrInstance.open();
-    //     });
-
-    //     // Mở lịch khi nhấn vào input
-    //     pickUpInput.on('focus', function () {
-    //         selectingPickUp = true;
-    //         flatpickrInstance.set("minDate", "today");
-    //         flatpickrInstance.open();
-    //     });
-
-    //     dropOffInput.on('focus', function () {
-    //         selectingPickUp = false;
-    //         if (pickUpDate) {
-    //             flatpickrInstance.set("minDate", pickUpDate);
-    //         } else {
-    //             flatpickrInstance.set("minDate", "today");
-    //         }
-    //         flatpickrInstance.open();
-    //     });
-    // });
 
 </script>
 
