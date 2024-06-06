@@ -54,28 +54,28 @@
                 </div>
             </div> *@
             <div class="date-time-form">
-    <div class="form-item">
-        <label for="startDate1">Ngày nhận xe:</label>
-        <div class="wrap-date-time" id="start">
-            <div class="wrap-date">
-                <span class="value">
-                    <input asp-for="RecieveOn" style="background-color:white;" type="text" id="startDate1" class="form-control inputcreate" readonly />
-                </span>
+                <div class="form-item">
+                    <label for="startDate1">Ngày nhận xe:</label>
+                    <div class="wrap-date-time" id="start">
+                        <div class="wrap-date">
+                            <span class="value">
+                                <input asp-for="RecieveOn" style="background-color:white;" type="text" id="startDate1" class="form-control inputcreate" readonly />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="form-item">
+                    <label for="endDate1">Ngày trả xe:</label>
+                    <div class="wrap-date-time" id="end">
+                        <div class="wrap-date">
+                            <span class="value">
+                                <input asp-for="ReturnOn" style="background-color:white;" type="text" id="endDate1" class="form-control inputcreate" readonly />
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="line"></div>
-    <div class="form-item">
-        <label for="endDate1">Ngày trả xe:</label>
-        <div class="wrap-date-time" id="end">
-            <div class="wrap-date">
-                <span class="value">
-                    <input asp-for="ReturnOn" style="background-color:white;" type="text" id="endDate1" class="form-control inputcreate" readonly />
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
 
             <div id="datepicker-container"></div>
             <div class="form-group">
@@ -103,11 +103,11 @@
                 @{
                     if (@ViewBag.IsAvailable == false)
                     {
-                                    <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
+                                                <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
                     }
                     else
                     {
-                                    <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
+                                                <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
                     }
                 }
             </div>
@@ -122,247 +122,85 @@
     }
 }
 <script>
-    // $(document).ready(function () {
-    //     let bookedDates = [];
+    $(document).ready(function () 
+    {
+        let bookedDates = [];
 
-    //     Gọi API để lấy các ngày đã được đặt
-    //     $.ajax({
-    //         url: '/Customer/Bookings/GetBookedDates',
-    //         type: 'GET',
-    //         success: function (data) {
-    //             Chuyển đổi dữ liệu thành mảng các ngày bị disable
-    //             bookedDates = data.flatMap(booking => {
-    //                 let dates = [];
-    //                 let startDate = new Date(booking.recieveOn);
-    //                 let endDate = new Date(booking.returnOn);
+        // Gọi API để lấy các ngày đã được đặt
+        $.ajax({
+            url: '/Customer/Bookings/GetBookedDates',
+            type: 'GET',
+            success: function (data) {
+                // Chuyển đổi dữ liệu thành mảng các ngày bị disable
+                bookedDates = data.flatMap(booking => {
+                    let dates = [];
+                    let startDate = new Date(booking.recieveOn);
+                    let endDate = new Date(booking.returnOn);
 
-    //                 Lặp qua các ngày giữa startDate và endDate và thêm vào mảng bookedDates
-    //                 while (startDate <= endDate) {
-    //                     dates.push(new Date(startDate));
-    //                     startDate.setDate(startDate.getDate() + 1);
-    //                 }
-    //                 return dates;
-    //             });
-
-    //             Định dạng lại các ngày bị disable cho Flatpickr
-    //             bookedDates = bookedDates.map(date => {
-    //                 return flatpickr.formatDate(date, 'Y-m-d');
-    //             });
-
-    //             Khởi tạo Flatpickr với các ngày bị disable
-    //             initializeFlatpickr(bookedDates);
-    //         },
-    //         error: function (xhr, status, error) {
-    //             console.error(error);
-    //         }
-    //     });
-
-    //     function initializeFlatpickr(disabledDates) {
-    //         const pickUpInput = $('#startDate1');
-    //         const dropOffInput = $('#endDate1');
-    //         const datePickerContainer = $('#datepicker-container');
-    //         let pickUpDate = null;
-    //         let dropOffDate = null;
-    //         let selectingPickUp = true;  Biến để xác định chọn ngày nhận hay ngày trả
-
-    //         const flatpickrInstance = flatpickr(datePickerContainer[0], {
-    //             mode: "range",
-    //             enableTime: true,
-    //             dateFormat: "Y-m-d H:i",
-    //             time_24hr: true,
-    //             minDate: "today",
-    //             disable: disabledDates,
-    //             onChange: function (selectedDates, dateStr, instance) {
-    //                 if (selectedDates.length === 2) {
-    //                     pickUpDate = selectedDates[0];
-    //                     dropOffDate = selectedDates[1];
-    //                     pickUpInput.val(flatpickr.formatDate(pickUpDate, "Y-m-d H:i"));
-    //                     dropOffInput.val(flatpickr.formatDate(dropOffDate, "Y-m-d H:i"));
-    //                 } else if (selectedDates.length === 1) {
-    //                     if (selectingPickUp) {
-    //                         pickUpDate = selectedDates[0];
-    //                         pickUpInput.val(flatpickr.formatDate(pickUpDate, "Y-m-d H:i"));
-    //                         dropOffInput.val("");
-    //                         dropOffDate = null;
-    //                     } else {
-    //                         dropOffDate = selectedDates[0];
-    //                         dropOffInput.val(flatpickr.formatDate(dropOffDate, "Y-m-d H:i"));
-    //                     }
-    //                 }
-    //             }
-    //         });
-
-    //         $('#btn-pick-up').on('click', function () {
-    //             selectingPickUp = true;
-    //             $(this).addClass('active');
-    //             $('#btn-drop-off').removeClass('active');
-    //             flatpickrInstance.set("minDate", "today");  Hiển thị đầy đủ các ngày từ ngày hiện tại
-    //             flatpickrInstance.open();
-    //         });
-
-    //         $('#btn-drop-off').on('click', function () {
-    //             selectingPickUp = false;
-    //             $(this).addClass('active');
-    //             $('#btn-pick-up').removeClass('active');
-    //             if (pickUpDate) {
-    //                 flatpickrInstance.set("minDate", pickUpDate);  Chỉ hiển thị các ngày từ ngày nhận trở đi
-    //             } else {
-    //                 flatpickrInstance.set("minDate", "today");
-    //             }
-    //             flatpickrInstance.open();
-    //         });
-
-    //         Mở lịch khi nhấn vào input
-    //         pickUpInput.on('focus', function () {
-    //             selectingPickUp = true;
-    //             flatpickrInstance.set("minDate", "today");
-    //             flatpickrInstance.open();
-    //         });
-
-    //         dropOffInput.on('focus', function () {
-    //             selectingPickUp = false;
-    //             if (pickUpDate) {
-    //                 flatpickrInstance.set("minDate", pickUpDate);
-    //             } else {
-    //                 flatpickrInstance.set("minDate", "today");
-    //             }
-    //             flatpickrInstance.open();
-    //         });
-    //     }
-    // });
-
-    // $(document).ready(function () {
-    //     $('form').submit(function (event) {
-    //         event.preventDefault(); Prevent default form submission
-
-    //         var form = $(this);
-    //         var url = form.attr('action');
-
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: url,
-    //             data: form.serialize(),
-    //             success: function (response) {
-    //                 if (!response.success) {
-    //                     Display the error message
-    //                     displayErrorMessage(response.message);
-    //                 } else {
-    //                     window.location.href = response.redirectUrl;
-    //                 }
-    //             },
-    //             error: function (xhr, status, error) {
-    //                 console.error("An error occurred while submitting the form.");
-    //                 displayErrorMessage("An error occurred while submitting the form.");
-    //             }
-    //         });
-    //     });
-
-    //     function displayErrorMessage(message) {
-    //         var errorContainer = $('.text-danger');
-    //         errorContainer.text(message).show();
-    //     }
-    // });
-
-    $(document).ready(function () {
-        
-        $('.giagiam').each(function () {
-            var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
-            $(this).text(formatPrice(price) + '/giờ');
-        });
-        function formatPrice(price) {
-            if (price >= 1000) {
-                return (price / 1000) + 'k';
-            }
-            return price;
-        }
-
-        $(document).on('click', function (e) {
-            var startDate = $('#startDate1').val();
-            var endDate = $('#endDate1').val();
-            var total = @Model!.Total;
-            if (startDate && endDate) {
-                $.ajax({
-                    url: '/Customer/Bookings/CalculateMiddleDate',
-                    type: 'POST',
-                    data: { startDate: startDate, endDate: endDate, total: total },
-                    success: function (result) {
-                        $('#Total').val(result);
-                        $('#finalValue').val(result);
-                        $('#prePayment').val(result * 0.5);
+                    // Lặp qua các ngày giữa startDate và endDate và thêm vào mảng bookedDates
+                    while (startDate <= endDate) {
+                        dates.push(new Date(startDate));
+                        startDate.setDate(startDate.getDate() + 1);
                     }
+                    return dates;
                 });
+
+                // Cập nhật Flatpickr với các ngày bị disable
+                flatpickrInstance.set('disable', bookedDates);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
             }
         });
 
-
-        // Function to calculate the final value when promotion changes
-        $('#Total, #promotionSelect').on('change blur', function () {
-            var promotionId = $('#promotionSelect').val();
-            var total = $('#Total').val();
-
-            $.ajax({
-                url: '/Customer/Bookings/CalculateFinalValue',
-                type: 'POST',
-                data: { total: total, promotionId: promotionId },
-                success: function (result) {
-                    $('#finalValue').val(result.total);
-                    $('#prePayment').val(result.total * 0.5);
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        });
-
-
-        let pickUpDate = null;
-        let dropOffDate = null;
-        let selectingPickUp = true;  // Biến để xác định chọn ngày nhận hay ngày trả
-
-        const pickUpInput = $('#startDate1');
-        const dropOffInput = $('#endDate1');
-        const datePickerContainer = $('#datepicker-container');
-
-        const flatpickrInstance = flatpickr(datePickerContainer[0], {
+        // Code hiện tại để tạo flatpickrInstance
+        const flatpickrInstance = flatpickr("#datepicker-container", {
             mode: "range",
             enableTime: true,
-            dateFormat: "m/d/Y H:i", // Sửa định dạng ngày giờ ở đây
+            dateFormat: "m/d/Y H:i",
             time_24hr: true,
             minDate: "today",
-            onChange: function (selectedDates, dateStr, instance) {
-                if (selectedDates.length === 2) {
+            onChange: function (selectedDates, dateStr, instance) 
+            {
+                if (selectedDates.length === 2) 
+                {
                     pickUpDate = selectedDates[0];
                     dropOffDate = selectedDates[1];
-                    pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
-                    dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
-                } else if (selectedDates.length === 1) {
+                    $("#startDate1").val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+                    $("#endDate1").val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
+                } 
+                else if (selectedDates.length === 1) 
+                {
                     if (selectingPickUp) {
                         pickUpDate = selectedDates[0];
-                        pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
-                        dropOffInput.val(""); // Xóa ngày trả nếu chỉ chọn ngày nhận
+                        $("#startDate1").val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+                        $("#endDate1").val("");
                         dropOffDate = null;
                     } else {
                         dropOffDate = selectedDates[0];
-                        dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
+                        $("#endDate1").val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
                     }
                 }
             }
         });
 
-        $('#btn-pick-up').on('click', function () {
+        // Các sự kiện cho các nút chọn ngày nhận và ngày trả
+        $('#btn-pick-up').on('click', function () 
+        {
             selectingPickUp = true;
             $(this).addClass('active');
             $('#btn-drop-off').removeClass('active');
-            flatpickrInstance.set("minDate", "today");  // Hiển thị đầy đủ các ngày từ ngày hiện tại
+            flatpickrInstance.set("minDate", "today");
             flatpickrInstance.open();
         });
 
-        $('#btn-drop-off').on('click', function () {
+        $('#btn-drop-off').on('click', function () 
+        {
             selectingPickUp = false;
             $(this).addClass('active');
             $('#btn-pick-up').removeClass('active');
             if (pickUpDate) {
-                flatpickrInstance.set("minDate", pickUpDate);  // Chỉ hiển thị các ngày từ ngày nhận trở đi
+                flatpickrInstance.set("minDate", pickUpDate);
             } else {
                 flatpickrInstance.set("minDate", "today");
             }
@@ -370,13 +208,15 @@
         });
 
         // Mở lịch khi nhấn vào input
-        pickUpInput.on('focus', function () {
+        $('#startDate1').on('focus', function () 
+        {
             selectingPickUp = true;
             flatpickrInstance.set("minDate", "today");
             flatpickrInstance.open();
         });
 
-        dropOffInput.on('focus', function () {
+        $('#endDate1').on('focus', function () 
+        {
             selectingPickUp = false;
             if (pickUpDate) {
                 flatpickrInstance.set("minDate", pickUpDate);
@@ -386,6 +226,131 @@
             flatpickrInstance.open();
         });
     });
+
+    // $(document).ready(function () {
+
+    //     $('.giagiam').each(function () {
+    //         var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
+    //         $(this).text(formatPrice(price) + '/giờ');
+    //     });
+    //     function formatPrice(price) {
+    //         if (price >= 1000) {
+    //             return (price / 1000) + 'k';
+    //         }
+    //         return price;
+    //     }
+
+    //     $(document).on('click', function (e) {
+    //         var startDate = $('#startDate1').val();
+    //         var endDate = $('#endDate1').val();
+    //         var total = @Model!.Total;
+    //         if (startDate && endDate) {
+    //             $.ajax({
+    //                 url: '/Customer/Bookings/CalculateMiddleDate',
+    //                 type: 'POST',
+    //                 data: { startDate: startDate, endDate: endDate, total: total },
+    //                 success: function (result) {
+    //                     $('#Total').val(result);
+    //                     $('#finalValue').val(result);
+    //                     $('#prePayment').val(result * 0.5);
+    //                 }
+    //             });
+    //         }
+    //     });
+
+
+    //     // Function to calculate the final value when promotion changes
+    //     $('#Total, #promotionSelect').on('change blur', function () {
+    //         var promotionId = $('#promotionSelect').val();
+    //         var total = $('#Total').val();
+
+    //         $.ajax({
+    //             url: '/Customer/Bookings/CalculateFinalValue',
+    //             type: 'POST',
+    //             data: { total: total, promotionId: promotionId },
+    //             success: function (result) {
+    //                 $('#finalValue').val(result.total);
+    //                 $('#prePayment').val(result.total * 0.5);
+    //             },
+    //             error: function (xhr, status, error) {
+    //                 console.error(error);
+    //             }
+    //         });
+    //     });
+    // }
+
+
+    //     let pickUpDate = null;
+    //     let dropOffDate = null;
+    //     let selectingPickUp = true;  // Biến để xác định chọn ngày nhận hay ngày trả
+
+    //     const pickUpInput = $('#startDate1');
+    //     const dropOffInput = $('#endDate1');
+    //     const datePickerContainer = $('#datepicker-container');
+
+    //     const flatpickrInstance = flatpickr(datePickerContainer[0], {
+    //         mode: "range",
+    //         enableTime: true,
+    //         dateFormat: "m/d/Y H:i", // Sửa định dạng ngày giờ ở đây
+    //         time_24hr: true,
+    //         minDate: "today",
+    //         onChange: function (selectedDates, dateStr, instance) {
+    //             if (selectedDates.length === 2) {
+    //                 pickUpDate = selectedDates[0];
+    //                 dropOffDate = selectedDates[1];
+    //                 pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+    //                 dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
+    //             } else if (selectedDates.length === 1) {
+    //                 if (selectingPickUp) {
+    //                     pickUpDate = selectedDates[0];
+    //                     pickUpInput.val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+    //                     dropOffInput.val(""); // Xóa ngày trả nếu chỉ chọn ngày nhận
+    //                     dropOffDate = null;
+    //                 } else {
+    //                     dropOffDate = selectedDates[0];
+    //                     dropOffInput.val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
+    //                 }
+    //             }
+    //         }
+    //     });
+
+    //     $('#btn-pick-up').on('click', function () {
+    //         selectingPickUp = true;
+    //         $(this).addClass('active');
+    //         $('#btn-drop-off').removeClass('active');
+    //         flatpickrInstance.set("minDate", "today");  // Hiển thị đầy đủ các ngày từ ngày hiện tại
+    //         flatpickrInstance.open();
+    //     });
+
+    //     $('#btn-drop-off').on('click', function () {
+    //         selectingPickUp = false;
+    //         $(this).addClass('active');
+    //         $('#btn-pick-up').removeClass('active');
+    //         if (pickUpDate) {
+    //             flatpickrInstance.set("minDate", pickUpDate);  // Chỉ hiển thị các ngày từ ngày nhận trở đi
+    //         } else {
+    //             flatpickrInstance.set("minDate", "today");
+    //         }
+    //         flatpickrInstance.open();
+    //     });
+
+    //     // Mở lịch khi nhấn vào input
+    //     pickUpInput.on('focus', function () {
+    //         selectingPickUp = true;
+    //         flatpickrInstance.set("minDate", "today");
+    //         flatpickrInstance.open();
+    //     });
+
+    //     dropOffInput.on('focus', function () {
+    //         selectingPickUp = false;
+    //         if (pickUpDate) {
+    //             flatpickrInstance.set("minDate", pickUpDate);
+    //         } else {
+    //             flatpickrInstance.set("minDate", "today");
+    //         }
+    //         flatpickrInstance.open();
+    //     });
+    // });
 
 </script>
 
