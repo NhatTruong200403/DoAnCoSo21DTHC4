@@ -30,7 +30,7 @@
                <span asp-validation-for="ReturnOn" class="text-danger"></span>
             </div> *@
             
-            <div class="date-time-form">
+            @* <div class="date-time-form">
                 <div class="form-item">
                     <label for="startDate1">Ngày nhận xe:</label>
                     <div class="wrap-date-time" id="start">
@@ -39,9 +39,6 @@
                                 <input asp-for="RecieveOn" style="background-color:white;" type="datetime" id="startDate1" class="form-control inputcreate" readonly />
                             </span>
                         </div>
-                        @* <div class="wrap-time">
-                            <span class="value">21:00</span>
-                        </div> *@
                     </div>
                 </div>
                 <div class="line"></div>
@@ -53,12 +50,33 @@
                                 <input asp-for="ReturnOn" style="background-color:white;" type="datetime" id="endDate1" class="form-control inputcreate" readonly />
                             </span>
                         </div>
-                        @* <div class="wrap-time">
-                            <span class="value">20:00</span>
-                        </div> *@
                     </div>
                 </div>
+            </div> *@
+            <div class="date-time-form">
+    <div class="form-item">
+        <label for="startDate1">Ngày nhận xe:</label>
+        <div class="wrap-date-time" id="start">
+            <div class="wrap-date">
+                <span class="value">
+                    <input asp-for="RecieveOn" style="background-color:white;" type="text" id="startDate1" class="form-control inputcreate" readonly />
+                </span>
             </div>
+        </div>
+    </div>
+    <div class="line"></div>
+    <div class="form-item">
+        <label for="endDate1">Ngày trả xe:</label>
+        <div class="wrap-date-time" id="end">
+            <div class="wrap-date">
+                <span class="value">
+                    <input asp-for="ReturnOn" style="background-color:white;" type="text" id="endDate1" class="form-control inputcreate" readonly />
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
             <div id="datepicker-container"></div>
             <div class="form-group">
                 <label asp-for="Total" class="control-label">Tổng cộng</label>
@@ -104,6 +122,147 @@
     }
 }
 <script>
+    // $(document).ready(function () {
+    //     let bookedDates = [];
+
+    //     Gọi API để lấy các ngày đã được đặt
+    //     $.ajax({
+    //         url: '/Customer/Bookings/GetBookedDates',
+    //         type: 'GET',
+    //         success: function (data) {
+    //             Chuyển đổi dữ liệu thành mảng các ngày bị disable
+    //             bookedDates = data.flatMap(booking => {
+    //                 let dates = [];
+    //                 let startDate = new Date(booking.recieveOn);
+    //                 let endDate = new Date(booking.returnOn);
+
+    //                 Lặp qua các ngày giữa startDate và endDate và thêm vào mảng bookedDates
+    //                 while (startDate <= endDate) {
+    //                     dates.push(new Date(startDate));
+    //                     startDate.setDate(startDate.getDate() + 1);
+    //                 }
+    //                 return dates;
+    //             });
+
+    //             Định dạng lại các ngày bị disable cho Flatpickr
+    //             bookedDates = bookedDates.map(date => {
+    //                 return flatpickr.formatDate(date, 'Y-m-d');
+    //             });
+
+    //             Khởi tạo Flatpickr với các ngày bị disable
+    //             initializeFlatpickr(bookedDates);
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error(error);
+    //         }
+    //     });
+
+    //     function initializeFlatpickr(disabledDates) {
+    //         const pickUpInput = $('#startDate1');
+    //         const dropOffInput = $('#endDate1');
+    //         const datePickerContainer = $('#datepicker-container');
+    //         let pickUpDate = null;
+    //         let dropOffDate = null;
+    //         let selectingPickUp = true;  Biến để xác định chọn ngày nhận hay ngày trả
+
+    //         const flatpickrInstance = flatpickr(datePickerContainer[0], {
+    //             mode: "range",
+    //             enableTime: true,
+    //             dateFormat: "Y-m-d H:i",
+    //             time_24hr: true,
+    //             minDate: "today",
+    //             disable: disabledDates,
+    //             onChange: function (selectedDates, dateStr, instance) {
+    //                 if (selectedDates.length === 2) {
+    //                     pickUpDate = selectedDates[0];
+    //                     dropOffDate = selectedDates[1];
+    //                     pickUpInput.val(flatpickr.formatDate(pickUpDate, "Y-m-d H:i"));
+    //                     dropOffInput.val(flatpickr.formatDate(dropOffDate, "Y-m-d H:i"));
+    //                 } else if (selectedDates.length === 1) {
+    //                     if (selectingPickUp) {
+    //                         pickUpDate = selectedDates[0];
+    //                         pickUpInput.val(flatpickr.formatDate(pickUpDate, "Y-m-d H:i"));
+    //                         dropOffInput.val("");
+    //                         dropOffDate = null;
+    //                     } else {
+    //                         dropOffDate = selectedDates[0];
+    //                         dropOffInput.val(flatpickr.formatDate(dropOffDate, "Y-m-d H:i"));
+    //                     }
+    //                 }
+    //             }
+    //         });
+
+    //         $('#btn-pick-up').on('click', function () {
+    //             selectingPickUp = true;
+    //             $(this).addClass('active');
+    //             $('#btn-drop-off').removeClass('active');
+    //             flatpickrInstance.set("minDate", "today");  Hiển thị đầy đủ các ngày từ ngày hiện tại
+    //             flatpickrInstance.open();
+    //         });
+
+    //         $('#btn-drop-off').on('click', function () {
+    //             selectingPickUp = false;
+    //             $(this).addClass('active');
+    //             $('#btn-pick-up').removeClass('active');
+    //             if (pickUpDate) {
+    //                 flatpickrInstance.set("minDate", pickUpDate);  Chỉ hiển thị các ngày từ ngày nhận trở đi
+    //             } else {
+    //                 flatpickrInstance.set("minDate", "today");
+    //             }
+    //             flatpickrInstance.open();
+    //         });
+
+    //         Mở lịch khi nhấn vào input
+    //         pickUpInput.on('focus', function () {
+    //             selectingPickUp = true;
+    //             flatpickrInstance.set("minDate", "today");
+    //             flatpickrInstance.open();
+    //         });
+
+    //         dropOffInput.on('focus', function () {
+    //             selectingPickUp = false;
+    //             if (pickUpDate) {
+    //                 flatpickrInstance.set("minDate", pickUpDate);
+    //             } else {
+    //                 flatpickrInstance.set("minDate", "today");
+    //             }
+    //             flatpickrInstance.open();
+    //         });
+    //     }
+    // });
+
+    // $(document).ready(function () {
+    //     $('form').submit(function (event) {
+    //         event.preventDefault(); Prevent default form submission
+
+    //         var form = $(this);
+    //         var url = form.attr('action');
+
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: url,
+    //             data: form.serialize(),
+    //             success: function (response) {
+    //                 if (!response.success) {
+    //                     Display the error message
+    //                     displayErrorMessage(response.message);
+    //                 } else {
+    //                     window.location.href = response.redirectUrl;
+    //                 }
+    //             },
+    //             error: function (xhr, status, error) {
+    //                 console.error("An error occurred while submitting the form.");
+    //                 displayErrorMessage("An error occurred while submitting the form.");
+    //             }
+    //         });
+    //     });
+
+    //     function displayErrorMessage(message) {
+    //         var errorContainer = $('.text-danger');
+    //         errorContainer.text(message).show();
+    //     }
+    // });
+
     $(document).ready(function () {
         
         $('.giagiam').each(function () {

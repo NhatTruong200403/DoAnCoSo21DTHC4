@@ -68,10 +68,10 @@ namespace DoAnCNTT.Controllers
         public async Task<IActionResult> Index(string query, string company, int seat, int pageNumber = 1)
         {
             int pageSize = 6;
-            IQueryable<Post> carsQuery = _context.Posts.Where(b => b.IsDeleted == false);
+            IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);
             if (!string.IsNullOrEmpty(query))
             {
-                carsQuery = carsQuery.Where(b => b.Name.Contains(query));
+                carsQuery = carsQuery.Where(b => b.Name!.Contains(query));
 
             }
             if (!string.IsNullOrEmpty(company))

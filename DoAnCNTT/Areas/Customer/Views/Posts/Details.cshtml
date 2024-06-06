@@ -14,8 +14,12 @@
 <div>
     <a href="javascript:history.go(-1);">Quay lại</a>
 </div>
-
-
+@if(Model.IsDisabled == true)
+{
+    <div>
+        <p>Bài đăng đã bị khóa</p>
+    </div>
+}
 <div style="margin-top:20px;">
     <div class="cover-car-container">
         <div class="main-img">

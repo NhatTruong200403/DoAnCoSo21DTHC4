@@ -132,6 +132,17 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
         }
 
+
+        [HttpGet]
+        public IActionResult GetBookedDates()
+        {
+            // Lấy danh sách các ngày đã được đặt từ cơ sở dữ liệu
+            var bookedDates = _context.Booking
+                                      .Select(b => new { b.RecieveOn, b.ReturnOn })
+                                      .ToList();
+            return Json(bookedDates);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id")] Booking booking)
@@ -152,9 +163,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("MomoPayment", "Invoices", new { bookingId = booking.Id });
             }
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id", booking.PostId);
-            ViewData["PromotionId"] = new SelectList(_context.Promotions, "Id", "Id", booking.PromotionId);
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", booking.UserId);
             return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
         }
 

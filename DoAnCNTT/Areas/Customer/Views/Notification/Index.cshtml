@@ -1,0 +1,36 @@
+﻿@model List<DoAnCNTT.Models.Post>
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Index";
+    var currentUser = await UserManager.GetUserAsync(User);
+}
+
+<h1>Thông báo</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nội dung
+            </th>           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                Bài viết @item.Name đã bị báo cáo. Bạn đã vi phạm quy định @currentUser!.ReportPoint lần
+            </td>
+            <td>
+                <form asp-area="Customer" asp-controller="Notification" asp-action="Delete" asp-route-id="@item.Id" method="post">
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

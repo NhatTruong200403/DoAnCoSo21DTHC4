@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DoAnCNTT.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240519093204_v1")]
-    partial class v1
+    [Migration("20240606030043_AddCheckDisablePost")]
+    partial class AddCheckDisablePost
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -431,6 +431,9 @@ namespace DoAnCNTT.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDisabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedById")

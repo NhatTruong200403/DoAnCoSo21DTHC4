@@ -30,7 +30,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 Include(p => p.CarType).
                 Include(p => p.Company).
                 Include(p => p.User).
-                Where(p => p.IsDeleted == false && p.UserId == user!.Id).ToListAsync();
+                Where(p => !p.IsDeleted && p.UserId == user!.Id).ToListAsync();
             return View(await posts);
         }
 
@@ -188,6 +188,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 post.CreatedOn = DateTime.Now;
                 post.ModifiedOn = null;
                 post.IsDeleted = false;
+                post.IsDisabled = false;
                 post.IsAvailable = true;
                 post.RideNumber = 0;
                 post.AvgRating = 0;

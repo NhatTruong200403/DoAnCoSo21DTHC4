@@ -185,7 +185,7 @@ namespace DoAnCNTT.Areas.Employee.Controllers
                 var reportedPost = await _context.Posts.FirstOrDefaultAsync(p => p.Id == report.PostId);
                 if (reportedPost != null)
                 {
-                    reportedPost.IsDeleted = true;
+                    reportedPost.IsDisabled = true;
                     await UpdateUserReportPoint(reportedPost.UserId!);
                 }
             }
