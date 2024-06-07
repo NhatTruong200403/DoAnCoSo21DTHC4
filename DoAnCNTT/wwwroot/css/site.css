@@ -526,3 +526,14 @@ details p {
         .button-group button.active {
             background-color: #0056b3;
         }
+
+
+.duoihe{
+    padding:5px;
+    background-color:white;
+    display:flex;
+    
+}
+.duoihe div{
+    margin-inline:60px;
+}
