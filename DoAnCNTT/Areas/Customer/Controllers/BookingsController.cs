@@ -133,10 +133,10 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
 
         [HttpGet]
-        public IActionResult GetBookedDates()
+        public IActionResult GetBookedDates(int id)
         {
             // Lấy danh sách các ngày đã được đặt từ cơ sở dữ liệu
-            var bookedDates = _context.Booking
+            var bookedDates = _context.Booking.Where(b => b.PostId == id && !b.IsDeleted)
                                       .Select(b => new { b.RecieveOn, b.ReturnOn })
                                       .ToList();
             return Json(bookedDates);
