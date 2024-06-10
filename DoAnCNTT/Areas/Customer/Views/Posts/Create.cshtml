@@ -72,17 +72,11 @@
                 <input asp-for="Image" type="file" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="Images" class="control-label">Danh sách ảnh</label>
-                <input type="file" asp-for="Images" class="form-control" multiple />
-                <span asp-validation-for="Images" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="Images" class="control-label to">Danh sách ảnh (tối đa 3 ảnh)</label>
                 <input type="file" asp-for="Images" class="form-control" multiple accept="image/*" onchange="limitFiles(this, 3)" />
                 <span asp-validation-for="Images" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Description" class="control-label to">Mô tả</label>
                 <input asp-for="Description" class="form-control" />
@@ -139,6 +133,7 @@
                 <select asp-for="Fuel" class="form-control">
                     <option value="Xăng">Xăng</option>
                     <option value="Dầu">Dầu</option>
+                    <option value="Điện">Điện</option>
                 </select>
                 <span asp-validation-for="Fuel" class="text-danger"></span>
             </div>

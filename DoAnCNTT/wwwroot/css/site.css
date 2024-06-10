@@ -163,64 +163,6 @@ a {
 }
 
 
-
-.FormSearch {
-    display: flex;
-    align-items: center;
-    position: relative;
-    border-radius: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-}
-
-.InfoSearch {
-    padding: 13px;
-    border: none;
-    border-radius: 15px;
-    flex: 1;
-    font-size: 16px;
-    width: 350px;
-}
-    .InfoSearch:focus {
-        outline: none; /* Đảm bảo không có viền khi focus */
-    }
-
-
-.ButtonSearch {
-    /*margin-right: 10px;*/
-    padding: 15px;
-    background-color: #1ee156;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 12px;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-height: 300px;
-    overflow-y: auto;
-    width: 100%;
-    box-sizing: border-box;
-    top: 100%;
-}
-
-.suggestion {
-    padding: 10px;
-    cursor: pointer;
-}
-
-    .suggestion:hover {
-        background-color: #f4f4f4;
-    }
-
-
 .logo {
     font-size: 2em;
     color: black;
@@ -528,6 +470,9 @@ details p {
         }
 
 
+
+
+
 .duoihe{
     padding:5px;
     background-color:white;
@@ -537,3 +482,308 @@ details p {
 .duoihe div{
     margin-inline:60px;
 }
+
+
+/*anhnoiabt*/
+
+.anhnb{
+    width:305px;
+    position:relative;
+    z-index:1;
+    border-radius:10px;
+}
+.anhaa a{
+    margin:8px; 
+}
+/*.anhaa a .sumxe {
+    color: white;
+    margin-top: 120px;
+    margin-left: -70px;
+    position: absolute;
+    z-index: 2;
+}*/
+    .anhaa a .sumxe {
+        text-align:right;
+        color: white;
+        margin-top: 120px;
+        margin-left: 230px;
+        position: absolute;
+        z-index: 2;
+    }
+
+
+
+
+
+
+
+
+/*thanhtimkiem*//**/
+
+.checkbox {
+    position: relative;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    -webkit-appearance: none; /* Remove default styling for webkit browsers */
+    -moz-appearance: none; /* Remove default styling for Firefox */
+    appearance: none; /* Remove default styling for all browsers */
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+    .checkbox:checked {
+        background-color: #4CAF50;
+        border-color: #4CAF50;
+    }
+
+        .checkbox:checked::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+/*.check:checked {
+    background-color: #ccffcc;
+    color: white;
+    border-color: #4CAF50;
+}*/
+
+.SearchCar{
+    padding:20px 30px;
+    /*width:87%;*/
+    margin:auto;
+    background-color:aliceblue;
+}
+
+.SearchCar .la{
+    font-size:40px;
+    font-weight:bold;
+}
+.mar{
+    margin-right:10px;
+}
+.label{
+    margin-top:15px;
+    width:160px;
+    font-size:18px;
+    font-weight:bold;
+}
+.label1 {
+    font-size: 18px;
+    margin-right: 20px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+/*select{
+    font-size:18px;
+}
+select option {
+    padding: 10px 20px;
+}*/
+
+.FormSearch {
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.InfoSearch {
+    padding: 13px;
+    border: none;
+    border-radius: 15px;
+    flex: 1;
+    font-size: 16px;
+    width: 350px;
+}
+
+    .InfoSearch:focus {
+        outline: none; /* Đảm bảo không có viền khi focus */
+    }
+
+
+.ButtonSearch {
+    /*margin-right: 10px;*/
+    padding: 15px;
+    background-color: #1ee156;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    top: 100%;
+}
+
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+    .suggestion:hover {
+        background-color: #f4f4f4;
+    }
+
+
+
+
+
+
+
+
+
+.volume-slider {
+    width: 200px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+
+
+
+
+
+
+
+
+
+/* Ẩn label mặc định */
+.slide label {
+    display: none;
+    z-index: 998;
+    position:absolute;
+    margin-top:-90px;
+    margin-left:110px;
+    font-size:25px;
+    color:white;
+
+}
+
+/* Hiển thị label khi hover vào slide */
+.slide:hover label {
+    display: block;
+    opacity: 1; /* Hiển thị chữ */
+}
+
+
+.image-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slider-container {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    display: none;
+    margin:10px;
+}
+
+    .slide:first-child, .slide:nth-child(2), .slide:nth-child(3), .slide:nth-child(4) {
+        display: block; /* Hiển thị 4 slide đầu tiên */
+    }
+
+    .slide img {
+        z-index: 1;
+        width: 305px;
+        position: relative;
+        z-index: 1;
+        border-radius: 10px;
+        transition: opacity 0.3s ease;
+    }
+
+    .slide:hover img {
+        opacity: 0.5; /* Điều chỉnh độ mờ */
+    }
+.prev-button, .next-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.5); /* Màu nền của nút */
+    padding: 10px; /* Kích thước nút */
+    border-radius: 50%; /* Làm cho nút tròn */
+    text-decoration: none; /* Loại bỏ gạch chân */
+    color: black; /* Màu chữ */
+}
+
+.prev-button {
+    font-size:30px;
+    padding: 5px;
+    z-index: 999;
+    left: 0px;
+    border-radius: 0;
+}
+
+.next-button {
+    font-size: 30px;
+    padding: 5px;
+    z-index: 999;
+    right: 0px;
+    border-radius: 0;
+}
+
