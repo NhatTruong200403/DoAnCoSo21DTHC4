@@ -9,17 +9,14 @@
 }
 @if (User.IsInRole("Admin"))
 {
+    <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
+        <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
+        <div id="search-results" class="dropdown-content">
+        </div>
+        <input class="ButtonSearch" type="submit" value="Search" />
+    </form>
 
-        <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
-            <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
-            <div id="search-results" class="dropdown-content">
-            </div>
-            <input class="ButtonSearch" type="submit" value="Search" />
-        </form>
-
-<h1>Danh sách bài đăng</h1>
-
-
+    <h1>Danh sách bài đăng</h1>
 
     <table style="min-height:500px;" class="table">
         <thead>
@@ -55,7 +52,7 @@
                 
             </td>
             <td>
-                <img src="@item.Image" alt="hinhanh.jpg" width="200px" />
+                <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px"  />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -83,10 +80,25 @@
 }
 else
 {
-    @* <div>
-        layout
-    </div> *@
     <section class="py-2" style="min-height:600px;">
+        @{
+            //Sắp xếp theo giá
+            bool nextSortPriceOrder = ViewBag.SortPriceOrder != null ? !(bool)ViewBag.SortPriceOrder : true;
+            string sortPriceText = ViewBag.SortPriceOrder != null && (bool)ViewBag.SortPriceOrder ? "Giá giảm dần" : "Giá tăng dần";
+
+            //Sắp xếp theo số chuyến
+            bool nextSortRideNumberOrder = ViewBag.SortRideNumberOrder != null ? !(bool)ViewBag.SortRideNumberOrder : true;
+            string sortRideNumberText = ViewBag.SortRideNumberOrder != null && (bool)ViewBag.SortRideNumberOrder ? "Số chuyến giảm dần" : "Số chuyến tăng dần";
+            
+            //Sắp xếp theo đánh giá
+            //Sắp xếp theo số chuyến
+            bool nextSorRatingOrder = ViewBag.SortRatingOrder != null ? !(bool)ViewBag.SortRatingOrder : true;
+            string sortRatingText = ViewBag.SortRatingOrder != null && (bool)ViewBag.SortRatingOrder ? "Đánh giá giảm dần" : "Đánh giá tăng dần";
+
+        }
+        <a asp-action="SortByPrice" asp-route-sortPriceOrder="@nextSortPriceOrder">@sortPriceText</a>
+        <a asp-action="SortByRideNumber" asp-route-sortRideNumberOrder="@nextSortRideNumberOrder">@sortRideNumberText</a>
+        <a asp-action="SortByRating" asp-route-sortRatingOrder="@nextSorRatingOrder">@sortRatingText</a>
         <div class="container ">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
 
