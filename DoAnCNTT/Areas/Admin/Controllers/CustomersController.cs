@@ -71,8 +71,19 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                     user.LockoutEnabled = true;
                 }
                 var result = await _userManager.UpdateAsync(user!);
+                await DisableUserPosts(user.Id);
             }
             return RedirectToAction("Index", "Customers", new { area = "Admin"});
+        }
+
+        public async Task DisableUserPosts(string userId)
+        {
+            var userPosts = await _context.Posts.Where(p => p.UserId ==  userId).ToListAsync();
+            foreach (var item in userPosts)
+            {
+                item.IsDeleted = true;
+            }
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IActionResult> UnlockAccount(string userId)
@@ -83,10 +94,22 @@ namespace DoAnCNTT.Areas.Admin.Controllers
                 if (user.LockoutEnd != null)
                 {
                     user.LockoutEnd = DateTime.Now;
+                    user.ReportPoint = 2;
                 }
+                await EnableUserPosts(user.Id);
                 var result = await _userManager.UpdateAsync(user!);
             }
             return RedirectToAction("Index", "Customers", new { area = "Admin" });
+        }
+
+        public async Task EnableUserPosts(string userId)
+        {
+            var userPosts = await _context.Posts.Where(p => p.UserId == userId).ToListAsync();
+            foreach (var item in userPosts)
+            {
+                item.IsDeleted = false;
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

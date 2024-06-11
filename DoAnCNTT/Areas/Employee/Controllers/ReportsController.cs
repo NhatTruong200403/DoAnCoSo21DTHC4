@@ -68,7 +68,7 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             if (user != null)
             {
                 user.ReportPoint++;
-                if(user.ReportPoint >= 5)
+                if(user.ReportPoint >= 3)
                 {
                     user.LockoutEnd = DateTime.Now.AddYears(1000);
                 }    
