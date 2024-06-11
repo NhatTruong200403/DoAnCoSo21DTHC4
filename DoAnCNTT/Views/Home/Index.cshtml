@@ -80,6 +80,141 @@
 }
 else
 {
+    <nav style="border-radius:15px;padding:20px 30px; margin-top:20px;" class="SearchCar">
+        @* class="nav" *@
+        @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
+        {
+
+            <form class="" action="/Home/Index" method="get" style="">
+                <label class="la">Tìm xe cho bạn</label>
+
+                <div style="display:flex;justify-content:space-between;">
+
+                    <div style="display:flex;" class="mar">
+                        <lable class="label1">Hãng xe: </lable>
+                        <select id="company-input" name="company" style="border:none;">
+
+                            <!-- Các hãng xe sẽ được load từ backend -->
+                        </select>
+                    </div>
+
+
+                    <div class="volume-slider" class="mar">
+                        <label class="label">Số chổ ngồi: <span id="rangeValue">2</span></label>
+                        <input type="range" min="2" max="16" value="0" step="2" class="slider" id="volumeRange">
+                    </div>
+
+
+
+                    <div style="display:flex;" class="mar">
+                        <label class="label">Động cơ: </label>
+                        <select name="Gear" class="form-control">
+                            <option value="Số sàn">Số sàn</option>
+                            <option value="Số tự động">Số tự động</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;" class="mar">
+                        <label class="label" style="margin-right:10px; width:170px;">Nhiên liệu: </label>
+                        <select name="Fuel" class="form-control">
+                            <option value="Xăng">Xăng</option>
+                            <option value="Dầu">Dầu</option>
+                            <option value="Điện">Điện</option>
+                        </select>
+                        @* <span name="Fuel" class="text-danger"></span> *@
+                    </div>
+
+                    <div class="mar">
+                        <label class="label"> Tài Xế Riêng:</label>
+                        <label class="" style="margin-left:-30px;">
+                            <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" />
+                        </label>
+                    </div>
+                </div>
+
+                <div id="search-results" class="dropdown-content"></div>
+                <input class="ButtonSearch" type="submit" value="Search" />
+            </form>
+        }
+    </nav>
+
+
+    @* Loaixe *@
+    <div style="margin-top:30px;">
+        <div style="font-size:30px;font-weight:bold;margin-bottom:10px;">
+            Loại xe nổi bật
+        </div>
+        <div class="image-slider">
+            <a href="#" class="prev-button">&#10094;</a>
+            <a href="#" class="next-button">&#10095;</a>
+            <div class="slider-container">
+                <div class="slide">
+                    <img src="@Url.Content("~/images/logo/sedan.png")" alt="Image 1">
+                    <label>SEDAN</label>
+                </div>
+                <div class="slide">
+                    <img src="@Url.Content("~/images/logo/xebantai.png")" alt="Image 2">
+                    <label>OFFROAD</label>
+                </div>
+                <div class="slide">
+                    <img src="@Url.Content("~/images/logo/xedien.png")" alt="Image 3">
+                    <label>ELECTRIC</label>
+                </div>
+                <div class="slide">
+                    <img src="@Url.Content("~/images/logo/SUV.png")" alt="Image 4">
+                    <label>SUV</label>
+                </div>
+                <div class="slide">
+                    <img src="@Url.Content("~/images/logo/sport.png")" alt="Image 5">
+                    <label>SPORT</label>
+                </div>
+                <div class="slide">
+                    <img src="@Url.Content("~/images/logo/hatchback.png")" alt="Image 6">
+                    <label>HATCHBACK</label>
+                </div>
+                <div class="slide">
+                    <img src="@Url.Content("~/images/logo/coupe.png")" alt="Image 7">
+                    <label>COUPE</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+    @*   địa điểm của xe *@
+
+    <div style="margin-top:30px;">
+        <div style="font-size:30px;font-weight:bold;margin-bottom:10px;">
+            Địa điểm nổi bật
+        </div>
+        <div class="anhaa">
+            <a style="margin-left:7px;">
+                <label class="sumxe">300 xe</label>
+                <img class="anhnb" src="@Url.Content("~/images/logo/hanoi.png")">
+                @* <label class="sumxe">300+ xe</label> *@
+            </a>
+            <a>
+                <label class="sumxe">300 xe</label>
+                <img class="anhnb" src="@Url.Content("~/images/logo/danang.png")">
+                @* <label class="sumxe">300+ xe</label> *@
+            </a>
+            <a>
+                <label class="sumxe">300 xe</label>
+                <img class="anhnb" src="@Url.Content("~/images/logo/tphcm.png")">
+                @*  <label class="sumxe">300+ xe</label> *@
+            </a>
+            <a>
+                <label class="sumxe">300 xe</label>
+                <img class="anhnb" src="@Url.Content("~/images/logo/camau.png")">
+
+            </a>
+        </div>
+
+
+    </div>
     <section class="py-2" style="min-height:600px;">
         @{
             //Sắp xếp theo giá
