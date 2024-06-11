@@ -11,8 +11,7 @@
 {
     <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
         <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
-        <div id="search-results" class="dropdown-content">
-        </div>
+        <div id="search-results" class="dropdown-content"></div>
         <input class="ButtonSearch" type="submit" value="Search" />
     </form>
 
@@ -21,25 +20,12 @@
     <table style="min-height:500px;" class="table">
         <thead>
             <tr>
-                <th>
-                    Tên
-                </th>
-                <th>
-                    Hình ảnh
-                </th>
-                <th>
-                    Mô tả
-                </th>
-                <th>
-                    Địa chỉ nhận
-                </th>
-                <th>
-                    Có tài xế
-                </th>
-                <th>
-                    Giá
-                </th>
-
+                <th>Tên</th>
+                <th>Hình ảnh</th>
+                <th>Mô tả</th>
+                <th>Địa chỉ nhận</th>
+                <th>Có tài xế</th>
+                <th>Giá</th>
                 <th></th>
             </tr>
         </thead>
@@ -48,44 +34,30 @@
             {
                 <tr>
                     <td>
-                        <a asp-controller="Posts"asp-area="Customer" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-                
-            </td>
-            <td>
-                <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px"  />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RentLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HasDriver)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-            </td>
-        </tr>
-}
-    </tbody>
-
+                        <a asp-controller="Posts" asp-area="Customer" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                    </td>
+                    <td>
+                        <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px"  />
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RentLocation)</td>
+                    <td>@Html.DisplayFor(modelItem => item.HasDriver)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
-
-
 }
 else
 {
     <nav style="border-radius:15px;padding:20px 30px; margin-top:20px;" class="SearchCar">
-        @* class="nav" *@
         @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
         {
-
-            <form class="" action="/Home/Index" method="get" style="">
+            <!-- Form tìm kiếm cho khách hàng -->
+            <form class="" asp-area="" asp-controller="Home" asp-action="Index" method="get" style="">
                 <label class="la">Tìm xe cho bạn</label>
 
                 <div style="display:flex;justify-content:space-between;">
@@ -93,7 +65,7 @@ else
                     <div style="display:flex;" class="mar">
                         <lable class="label1">Hãng xe: </lable>
                         <select id="company-input" name="company" style="border:none;">
-
+                            <option value="">Chọn xe cần tìm</option>
                             <!-- Các hãng xe sẽ được load từ backend -->
                         </select>
                     </div>
@@ -101,14 +73,15 @@ else
 
                     <div class="volume-slider" class="mar">
                         <label class="label">Số chổ ngồi: <span id="rangeValue">2</span></label>
-                        <input type="range" min="2" max="16" value="0" step="2" class="slider" id="volumeRange">
+                        <input type="range" min="" max="16" value="0" step="1" class="slider" name="seat" id="volumeRange">
                     </div>
 
 
 
                     <div style="display:flex;" class="mar">
                         <label class="label">Động cơ: </label>
-                        <select name="Gear" class="form-control">
+                        <select name="gear" class="form-control">
+                            <option value="">Loại động cơ</option>
                             <option value="Số sàn">Số sàn</option>
                             <option value="Số tự động">Số tự động</option>
                         </select>
@@ -116,6 +89,7 @@ else
                     <div style="display:flex;" class="mar">
                         <label class="label" style="margin-right:10px; width:170px;">Nhiên liệu: </label>
                         <select name="Fuel" class="form-control">
+                            <option value="">Loại nhiên liệu</option>
                             <option value="Xăng">Xăng</option>
                             <option value="Dầu">Dầu</option>
                             <option value="Điện">Điện</option>
@@ -126,7 +100,7 @@ else
                     <div class="mar">
                         <label class="label"> Tài Xế Riêng:</label>
                         <label class="" style="margin-left:-30px;">
-                            <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" />
+                            <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" value="false" onclick="updateCheckboxValue(this)" />
                         </label>
                     </div>
                 </div>
@@ -137,8 +111,7 @@ else
         }
     </nav>
 
-
-    @* Loaixe *@
+    <!-- Slider loại xe -->
     <div style="margin-top:30px;">
         <div style="font-size:30px;font-weight:bold;margin-bottom:10px;">
             Loại xe nổi bật
@@ -179,13 +152,7 @@ else
         </div>
 
     </div>
-
-
-
-
-
-    @*   địa điểm của xe *@
-
+    <!-- Địa điểm của xe -->
     <div style="margin-top:30px;">
         <div style="font-size:30px;font-weight:bold;margin-bottom:10px;">
             Địa điểm nổi bật
@@ -209,13 +176,15 @@ else
             <a>
                 <label class="sumxe">300 xe</label>
                 <img class="anhnb" src="@Url.Content("~/images/logo/camau.png")">
-
             </a>
         </div>
 
 
     </div>
+
+    <!-- Sắp xếp và hiển thị danh sách xe -->
     <section class="py-2" style="min-height:600px;">
+        <!-- Code sắp xếp và hiển thị danh sách xe -->
         @{
             //Sắp xếp theo giá
             bool nextSortPriceOrder = ViewBag.SortPriceOrder != null ? !(bool)ViewBag.SortPriceOrder : true;
@@ -224,7 +193,7 @@ else
             //Sắp xếp theo số chuyến
             bool nextSortRideNumberOrder = ViewBag.SortRideNumberOrder != null ? !(bool)ViewBag.SortRideNumberOrder : true;
             string sortRideNumberText = ViewBag.SortRideNumberOrder != null && (bool)ViewBag.SortRideNumberOrder ? "Số chuyến giảm dần" : "Số chuyến tăng dần";
-            
+
             //Sắp xếp theo đánh giá
             //Sắp xếp theo số chuyến
             bool nextSorRatingOrder = ViewBag.SortRatingOrder != null ? !(bool)ViewBag.SortRatingOrder : true;
@@ -294,34 +263,13 @@ else
             </div>
         </div>
     </section>
-}
 
-@if (User.IsInRole("Admin"))
-{
-    <div class="nutchuyentrang1">
-        <a asp-action="Index" asp-route-query="@ViewBag.SearchString"
-           asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default
-@prevDisabled">
-            <img src="@Url.Content("~/images/logo/back-arrow.png")" width="25px" /> Previous
-        </a>
-        <a asp-action="Index"
-           asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-query="@ViewBag.SearchString"
-           class="btn btn-default @nextDisabled">
-            Next <img src="@Url.Content("~/images/logo/go-arrow.png")" width="25px" />
-        </a>
-    </div>
-}
-else @* if (User.IsInRole("Customer")) *@
-{
+    <!-- Pagination -->
     <div class="nutchuyentrang">
-        <a asp-action="Index" asp-route-query="@ViewBag.SearchString"
-           asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default
-@prevDisabled">
+        <a asp-action="Index" asp-route-company="@ViewBag.Company" asp-route-seat="@ViewBag.Seat" asp-route-gear="@ViewBag.Gear" asp-route-hasDriver="@ViewBag.HasDriver" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
             <img src="@Url.Content("~/images/logo/back-arrow.png")" width="25px" /> Previous
         </a>
-        <a asp-action="Index"
-           asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-query="@ViewBag.SearchString"
-           class="btn btn-default @nextDisabled">
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-company="@ViewBag.Company" asp-route-seat="@ViewBag.Seat" asp-route-gear="@ViewBag.Gear" asp-route-hasDriver="@ViewBag.HasDriver" class="btn btn-default @nextDisabled">
             Next <img src="@Url.Content("~/images/logo/go-arrow.png")" width="25px" />
         </a>
     </div>
@@ -330,6 +278,18 @@ else @* if (User.IsInRole("Customer")) *@
 
 
 <script>
+    document.getElementById('volumeRange').addEventListener('input', function () {
+        document.getElementById('rangeValue').innerText = this.value;
+    });
+
+    function updateCheckboxValue(checkbox) {
+        if (checkbox.checked) {
+            checkbox.value = true;
+        } 
+        else {
+            checkbox.value = false;
+        }
+    }
     document.onready
     $(document).ready(function () {
         $("#search-input").keyup(function () {

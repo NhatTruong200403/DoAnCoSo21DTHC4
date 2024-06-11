@@ -9,6 +9,7 @@ using DoAnCNTT.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Drawing.Printing;
+using System.Runtime.CompilerServices;
 
 namespace DoAnCNTT.Controllers
 {
@@ -66,28 +67,54 @@ namespace DoAnCNTT.Controllers
 
 
 
-        public async Task<IActionResult> Index(string query, string company, int seat, int pageNumber = 1)
+        public async Task<IActionResult> Index(string company, int seat, string gear, string fuel,bool hasDriver, int pageNumber = 1)
         {
             int pageSize = 6;
             IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);
-            if (!string.IsNullOrEmpty(query))
-            {
-                carsQuery = carsQuery.Where(b => b.Name!.Contains(query));
-
-            }
             if (!string.IsNullOrEmpty(company))
             {
                 carsQuery = carsQuery.Where(b => b.Company.Name == company);
             }
-            if (seat>0)
+            if (seat > 0)
             {
                 carsQuery = carsQuery.Where(b => b.Seat == seat);
             }
+            if (!string.IsNullOrEmpty(gear))
+            {
+                if(gear == "Số sàn")
+                {
+                    carsQuery = carsQuery.Where(b => b.Gear == false);
+                }
+                else
+                {
+                    carsQuery = carsQuery.Where(b => b.Gear == true);
+                }    
+            }  
+            if(!string.IsNullOrEmpty(fuel))
+            {
+                if (fuel == "Xăng")
+                {
+                    carsQuery = carsQuery.Where(b => b.Fuel == "Xăng");
+                }
+                else if(fuel == "Điện")
+                {
+                    carsQuery = carsQuery.Where(b => b.Fuel == "Điện");
+                }
+                else
+                {
+                    carsQuery = carsQuery.Where(b => b.Fuel == "Dầu");
+                }    
+            }    
+            if(hasDriver)
+            {
+                
+                carsQuery = carsQuery.Where(b => b.HasDriver == true);
+            }    
             var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery.Distinct(), pageNumber, pageSize);
-            ViewData["SearchString"] = query;
-            ViewData["Companies"] = await _context.Companies.Select(c => c.Name).Distinct().ToListAsync();
-            ViewData["Seats"] = await _context.Posts.Select(p => p.Seat.ToString()).Distinct().ToListAsync();
-
+            ViewData["Company"] = company;
+            ViewData["Seat"] = seat;
+            ViewData["Gear"] = gear;
+            ViewData["HasDriver"] = hasDriver;
             // Call UpdateExpiredPromotion method (assuming it's a void method)
             UpdateExpiredPromotion();
 
