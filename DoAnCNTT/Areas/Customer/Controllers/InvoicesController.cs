@@ -194,7 +194,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                     booking.IsPay = true;
                     var invoice = new Invoice()
                     {
-                        Total = -booking.PrePayment,
+                        Total = booking.PrePayment,
                         ReturnOn = booking.RecieveOn.AddDays(2),
                         BookingId = booking.Id,
                         CreatedOn = booking.CreatedOn,

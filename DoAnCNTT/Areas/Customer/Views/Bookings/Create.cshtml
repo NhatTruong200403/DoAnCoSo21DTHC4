@@ -95,7 +95,6 @@
             var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
             $(this).text(formatPrice(price) + '/giờ');
         });
-
         function formatPrice(price) {
             if (price >= 1000) {
                 return (price / 1000) + 'k';
@@ -103,19 +102,15 @@
             return price;
         }
 
-        let bookedDates = [];
-        let pickUpDate = null;
-        let dropOffDate = null;
-        let selectingPickUp = true;
 
-        // Get postId from hidden input field
-        const postId = $('#postIdInput').val();
+
+
+        let bookedDates = [];
 
         // Gọi API để lấy các ngày đã được đặt
         $.ajax({
             url: '/Customer/Bookings/GetBookedDates',
             type: 'GET',
-            data: { id: postId },
             success: function (data) {
                 // Chuyển đổi dữ liệu thành mảng các ngày bị disable
                 bookedDates = data.flatMap(booking => {
@@ -152,7 +147,6 @@
                     dropOffDate = selectedDates[1];
                     $("#startDate1").val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
                     $("#endDate1").val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
-                    calculateTotal();
                 }
                 else if (selectedDates.length === 1) {
                     if (selectingPickUp) {
@@ -205,30 +199,41 @@
             }
             flatpickrInstance.open();
         });
-
-        // Bấm nút hoặc click ra ngoài để tính toán tổng
-        function calculateTotal() {
+        $(document).on('click', function (e) {
             var startDate = $('#startDate1').val();
             var endDate = $('#endDate1').val();
-            var total = @Model.Total;
+            var total = @Model!.Total;
             if (startDate && endDate) {
                 $.ajax({
                     url: '/Customer/Bookings/CalculateMiddleDate',
                     type: 'POST',
                     data: { startDate: startDate, endDate: endDate, total: total },
                     success: function (result) {
-                        $('#Total').val(result.total);
-                        $('#finalValue').val(result.total);
-                        $('#prePayment').val(result.deposit);
+                        $('#Total').val(result);
+                        $('#finalValue').val(result);
+                        $('#prePayment').val(result * 0.5);
                     }
                 });
             }
-        }
-
-        // Tính toán tổng khi thay đổi ngày hoặc khuyến mãi
-        $('#startDate1, #endDate1').on('change', calculateTotal);
-        $('#promotionSelect').on('change', function () {
-            calculateTotal();
         });
+        $('#Total, #promotionSelect').on('change blur', function () {
+            var promotionId = $('#promotionSelect').val();
+            var total = $('#Total').val();
+
+            $.ajax({
+                url: '/Customer/Bookings/CalculateFinalValue',
+                type: 'POST',
+                data: { total: total, promotionId: promotionId },
+                success: function (result) {
+                    $('#finalValue').val(result.total);
+                    $('#prePayment').val(result.total * 0.5);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+
     });
+
 </script>

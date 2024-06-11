@@ -81,8 +81,9 @@ namespace DoAnCNTT.Areas.Employee.Controllers
   
                 var refundInvoice = new Invoice()
                 {
-                    Total = (decimal)refundValue,
+                    Total = -(decimal)refundValue,
                     ReturnOn = DateTime.Now,
+                    CreatedOn = DateTime.Now,
                     BookingId = booking.Id,
                 };
                 _context.Invoices.Add(refundInvoice);

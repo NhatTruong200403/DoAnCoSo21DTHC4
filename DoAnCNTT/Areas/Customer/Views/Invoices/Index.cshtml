@@ -25,10 +25,21 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Total)
+                @{
+                    if (item.Total < 0)
+                    {
+                        @("+" + (-item.Total).ToString())
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Total)
+                    }
+                }
+
+
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReturnOn)
+                @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
