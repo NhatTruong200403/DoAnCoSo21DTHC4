@@ -1,4 +1,258 @@
-﻿@model DoAnCNTT.Models.Booking
+﻿@* @model DoAnCNTT.Models.Booking
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="">
+    <div class="" style="padding:20px;">
+        <h3 style="font-size:30px;" class="giagiam">@Model.Total/Giờ</h3>
+        <form asp-controller="Bookings" asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="PostId" class="control-label"></label>
+                <input asp-for="PostId" class="form-control" />
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" class="form-control" />
+            </div>
+
+            <div class="date-time-form">
+                <div class="form-item">
+                    <label for="startDate1">Ngày nhận xe:</label>
+                    <div class="wrap-date-time" id="start">
+                        <div class="wrap-date">
+                            <span class="value">
+                                <input asp-for="RecieveOn" style="background-color:white;" type="text" id="startDate1" class="form-control inputcreate" readonly />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="form-item">
+                    <label for="endDate1">Ngày trả xe:</label>
+                    <div class="wrap-date-time" id="end">
+                        <div class="wrap-date">
+                            <span class="value">
+                                <input asp-for="ReturnOn" style="background-color:white;" type="text" id="endDate1" class="form-control inputcreate" readonly />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="datepicker-container"></div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label">Tổng cộng</label>
+                <input asp-for="Total" id="Total" class="form-control" readonly style="border:none;background-color:white;" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PromotionId" class="control-label">Khuyến mãi: </label>
+                <select asp-for="PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label">Thành tiền</label>
+                <input asp-for="FinalValue" class="form-control" id="finalValue" readonly style="border:none;background-color:white;" />
+                <span asp-validation-for="FinalValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Total" class="control-label">Đặt cọc</label>
+                <input asp-for="PrePayment" class="form-control" id="prePayment" readonly style="border:none;background-color:white;" />
+                <span asp-validation-for="PrePayment" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                @{
+                    if (@ViewBag.IsAvailable == false)
+                    {
+                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
+                    }
+                    else
+                    {
+                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" />
+                    }
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script>
+    $(document).ready(function () {
+
+        $('.giagiam').each(function () {
+                    var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
+                    $(this).text(formatPrice(price) + '/giờ');
+                });
+                function formatPrice(price) {
+                    if (price >= 1000) {
+                        return (price / 1000) + 'k';
+                    }
+                    return price;
+                }
+
+
+
+
+        let bookedDates = [];
+
+        // Gọi API để lấy các ngày đã được đặt
+        $.ajax({
+            url: '/Customer/Bookings/GetBookedDates',
+            type: 'GET',
+            success: function (data) {
+                // Chuyển đổi dữ liệu thành mảng các ngày bị disable
+                bookedDates = data.flatMap(booking => {
+                    let dates = [];
+                    let startDate = new Date(booking.recieveOn);
+                    let endDate = new Date(booking.returnOn);
+
+                    // Lặp qua các ngày giữa startDate và endDate và thêm vào mảng bookedDates
+                    while (startDate <= endDate) {
+                        dates.push(new Date(startDate));
+                        startDate.setDate(startDate.getDate() + 1);
+                    }
+                    return dates;
+                });
+
+                // Cập nhật Flatpickr với các ngày bị disable
+                flatpickrInstance.set('disable', bookedDates);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+
+        // Code hiện tại để tạo flatpickrInstance
+        const flatpickrInstance = flatpickr("#datepicker-container", {
+            mode: "range",
+            enableTime: true,
+            dateFormat: "m/d/Y H:i",
+            time_24hr: true,
+            minDate: "today",
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length === 2) {
+                    pickUpDate = selectedDates[0];
+                    dropOffDate = selectedDates[1];
+                    $("#startDate1").val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+                    $("#endDate1").val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
+                }
+                else if (selectedDates.length === 1) {
+                    if (selectingPickUp) {
+                        pickUpDate = selectedDates[0];
+                        $("#startDate1").val(flatpickr.formatDate(pickUpDate, "m/d/Y H:i"));
+                        $("#endDate1").val("");
+                        dropOffDate = null;
+                    } else {
+                        dropOffDate = selectedDates[0];
+                        $("#endDate1").val(flatpickr.formatDate(dropOffDate, "m/d/Y H:i"));
+                    }
+                }
+            }
+        });
+
+        // Các sự kiện cho các nút chọn ngày nhận và ngày trả
+        $('#btn-pick-up').on('click', function () {
+            selectingPickUp = true;
+            $(this).addClass('active');
+            $('#btn-drop-off').removeClass('active');
+            flatpickrInstance.set("minDate", "today");
+            flatpickrInstance.open();
+        });
+
+        $('#btn-drop-off').on('click', function () {
+            selectingPickUp = false;
+            $(this).addClass('active');
+            $('#btn-pick-up').removeClass('active');
+            if (pickUpDate) {
+                flatpickrInstance.set("minDate", pickUpDate);
+            } else {
+                flatpickrInstance.set("minDate", "today");
+            }
+            flatpickrInstance.open();
+        });
+
+        // Mở lịch khi nhấn vào input
+        $('#startDate1').on('focus', function () {
+            selectingPickUp = true;
+            flatpickrInstance.set("minDate", "today");
+            flatpickrInstance.open();
+        });
+
+        $('#endDate1').on('focus', function () {
+            selectingPickUp = false;
+            if (pickUpDate) {
+                flatpickrInstance.set("minDate", pickUpDate);
+            } else {
+                flatpickrInstance.set("minDate", "today");
+            }
+            flatpickrInstance.open();
+        });
+        $(document).on('click', function (e) {
+                    var startDate = $('#startDate1').val();
+                    var endDate = $('#endDate1').val();
+                    var total = @Model!.Total;
+                    if (startDate && endDate) {
+                        $.ajax({
+                            url: '/Customer/Bookings/CalculateMiddleDate',
+                            type: 'POST',
+                            data: { startDate: startDate, endDate: endDate, total: total },
+                            success: function (result) {
+                                $('#Total').val(result);
+                                $('#finalValue').val(result);
+                                $('#prePayment').val(result * 0.5);
+                            }
+                        });
+                    }
+                });
+        $('#Total, #promotionSelect').on('change blur', function () {
+                    var promotionId = $('#promotionSelect').val();
+                    var total = $('#Total').val();
+
+                    $.ajax({
+                        url: '/Customer/Bookings/CalculateFinalValue',
+                        type: 'POST',
+                        data: { total: total, promotionId: promotionId },
+                        success: function (result) {
+                            $('#finalValue').val(result.total);
+                            $('#prePayment').val(result.total * 0.5);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+
+    });
+
+</script>
+
+
+
+ *@
+
+
+
+
+
+
+
+
+
+
+
+@model DoAnCNTT.Models.Booking
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -143,13 +397,6 @@
             dateFormat: "m/d/Y H:i",
             time_24hr: true,
             minDate: "today",
-            onDayCreate: function (dObj, dStr, fp, dayElem) {
-                // Check if the day is in the list of booked dates
-                const date = new Date(dayElem.dateObj);
-                if (bookedDates.some(bookedDate => bookedDate.toDateString() === date.toDateString())) {
-                    dayElem.classList.add('disabled-date');
-                }
-            },
             onChange: function (selectedDates, dateStr, instance) {
                 if (selectedDates.length === 2) {
                     pickUpDate = selectedDates[0];
@@ -258,10 +505,3 @@
         });
     });
 </script>
-<style>
-    .flatpickr-day.disabled-date {
-        background-color:rgb(120, 120, 120); /* Red background for disabled dates */
-        color: #fff; /* White text for better contrast */
-        pointer-events: none; /* Disable pointer events */
-    }
-</style>

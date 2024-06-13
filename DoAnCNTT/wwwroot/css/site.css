@@ -787,3 +787,16 @@ select option {
     border-radius: 0;
 }
 
+
+
+
+
+
+/*thongbaochonguoidung*/
+
+.tbuser {
+    position: absolute;
+    z-index: 999999;
+    right: 50px;
+    top: 68px;
+}

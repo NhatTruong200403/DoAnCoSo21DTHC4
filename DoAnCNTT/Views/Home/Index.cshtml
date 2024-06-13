@@ -1,4 +1,8 @@
-﻿@model PaginatedList<DoAnCNTT.Models.Post>
+﻿
+
+
+
+@model PaginatedList<DoAnCNTT.Models.Post>
 @{
     ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -277,21 +281,30 @@ else
 
 
 
+
+
 <script>
     document.getElementById('volumeRange').addEventListener('input', function () {
         document.getElementById('rangeValue').innerText = this.value;
     });
-
     function updateCheckboxValue(checkbox) {
         if (checkbox.checked) {
             checkbox.value = true;
-        } 
+        }
         else {
             checkbox.value = false;
         }
     }
-    document.onready
     $(document).ready(function () {
+        $(".prev-button").click(function () {
+            var lastSlide = $(".slide").last();
+            $(".slider-container").prepend(lastSlide);
+        });
+
+        $(".next-button").click(function () {
+            var firstSlide = $(".slide").first();
+            $(".slider-container").append(firstSlide);
+        });
         $("#search-input").keyup(function () {
             var query = $(this).val();
             if (query !== '') {
@@ -356,7 +369,6 @@ else
 
 
 </script>
-
 
 
 <style>
@@ -480,5 +492,5 @@ else
             .pte .pte_right div {
                 margin-right: 10px;
             }
-
 </style>
+
