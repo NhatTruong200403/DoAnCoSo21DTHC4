@@ -9,6 +9,7 @@ using DoAnCNTT.Data;
 using DoAnCNTT.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace DoAnCNTT.Areas.Employee.Controllers
 {
@@ -51,7 +52,15 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             {
                 return NotFound();
             }
-
+            var post = _context.Posts.FirstOrDefault(p => p.Id == booking.PostId);
+            
+            var originValue = booking.Total;
+            if (booking.PromotionId != null)
+            {
+                originValue = (int)(booking.Total / (1 - booking.Promotion.DiscountValue));
+            }
+            ViewBag.Post = post;
+            ViewBag.Sum = originValue;
             return View(booking);
         }
 

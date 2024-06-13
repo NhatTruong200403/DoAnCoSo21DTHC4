@@ -5,66 +5,109 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Booking</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Đặt cọc
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrePayment)
-        </dd>
-        <dt class = "col-sm-2">
-            Tổng tiền
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Total)
-        </dd>
-        <dt class = "col-sm-2">
-            Thành tiền
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FinalValue)
-        </dd>
-        <dt class = "col-sm-2">
-            Ngày nhận
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RecieveOn)
-        </dd>
-        <dt class = "col-sm-2">
-            Ngày trả
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReturnOn)
-        </dd>
-        <dt class = "col-sm-2">
-            Bài đăng
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Post.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            Người đặt cọc
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Promotion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Promotion.Id)
-        </dd>
-    </dl>
+
+    <div id="cancelOrderPopup" class="popup">
+        
+        <div class="popup-content">
+            <div style="display:flex;justify-content:space-between;">
+                <h3>Bạn có chắc muốn hủy đặt cọc?
+                <label style="font-size:19px;">Bạn hãy đọc kỹ quy định trước khi hủy nhé.</label>
+            </h3>
+                <span class="close" id="cancelOrderClose">&times;</span>
+            </div>
+        
+            <div>
+                <strong>Đặt cọc:</strong>
+                <span>@Html.DisplayFor(model => model.PrePayment)</span>
+            </div>
+            <div>
+                <strong>Tổng tiền:</strong>
+                <span>@Html.DisplayFor(model => model.Total)</span>
+            </div>
+            <div>
+                <strong>Thành tiền:</strong>
+                <span>@Html.DisplayFor(model => model.FinalValue)</span>
+            </div>
+            <div>
+                <strong>Ngày nhận:</strong>
+                <span>@Html.DisplayFor(model => model.RecieveOn)</span>
+            </div>
+            <div>
+                <strong>Ngày trả:</strong>
+                <span>@Html.DisplayFor(model => model.ReturnOn)</span>
+            </div>
+
+            <div style="text-align: center;display:flex;">
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Xác nhận" class="btn btn-danger" /> 
+
+                </form> 
+                
+                <button type="button" id="cancelOrderCancel" style="background-color:gray;margin-left:15px;" class="btn btn-secondary">Hủy bỏ</button>
+            </div>
+        </div>
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a href="javascript:history.go(-1);">Quay lại</a>
-    </form>
-</div>
+    </div>
+ 
+    
+
+<style>
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .popup-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        border-radius: 5px;
+    }
+
+        .popup-content div {
+            margin-bottom: 10px;
+        }
+
+        .popup-content strong {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .popup-content .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .popup-content .close:hover,
+            .popup-content .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('#cancelOrderButton').click(function () {
+            $('#cancelOrderPopup').fadeIn();
+        });
+
+        $('#cancelOrderClose, #cancelOrderCancel').click(function () {
+            $('#cancelOrderPopup').fadeOut();
+        });
+    });
+</script>

@@ -24,12 +24,7 @@
             <th>
                 Ngày báo cáo
             </th>
-            <th>
-                Người cập nhật
-            </th>
-            <th>
-                Ngày cập nhật
-            </th>
+
             <th>
                 Trạng thái
             </th>
@@ -43,7 +38,7 @@
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
             <td>
-                <a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">@item.Post.Name</a>
+                    <a style="text-decoration:underline;color:rgb(53, 31, 255);" asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">@item.Post.Name</a>
             </td>
             <td>
                 @{
@@ -55,23 +50,6 @@
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
             <td>
-                @{
-                    if(item.ModifiedById != null)
-                    {
-                        var modifiedUser = await UserManager.FindByIdAsync(item.ModifiedById!);
-                        <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.ModifiedById">@modifiedUser!.Name</a>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.ModifiedById)
-                    }
-                }
-                
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedOn)
-            </td>
-            <td>
                 @if (item.IsDeleted)
                 {
                     <text>Đã xử lí</text>
@@ -81,10 +59,100 @@
                     <text>Chưa xử lí</text>
                 }
             </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@item.Id">Khóa bài đăng</a>
-            </td>
+                @if (item.IsDeleted)
+                {
+                    <td>
+                        <div class="btn" style="background-color:gray;">
+                            Đã khóa
+                        </div>
+                    </td>
+
+                }
+                else
+                {
+                    <td>
+                        <a id="cancelOrderButton-@item.Id" class="cancelOrderButton btn" data-id="@item.Id">Khóa bài đăng</a>
+                    </td>
+                }
+            
         </tr>
+            <tr class="popupRow" id="popupRow-@item.Id" style="display:none;">
+                <td colspan="6">
+                    <div class="popup">
+                        <div style="padding:20px 35px; border:1px solid black;border-radius:10px;">
+                            <div style="display:flex;justify-content:space-between;">
+                                <h3>Bạn có chắc chắn muốn khóa bài đăng vi phạm này hay không? <label>Vui lòng kiểm tra kĩ thông tin.</label></h3>
+                                <span class="close" id="cancelOrderClose-@item.Id">&times;</span>
+                            </div>
+
+                            <form asp-action="Delete" asp-area="Employee" asp-controller="Reports">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="Xác nhận" class="btn btn-danger" />
+                                <a class="btn btn-danger cancelOrderCancel" style="background-color:gray;">Không</a>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
 }
     </tbody>
 </table>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('.cancelOrderButton').click(function () {
+            var itemId = $(this).data('id');
+            $('#popupRow-' + itemId).fadeIn();
+        });
+
+        $('.close, .cancelOrderCancel').click(function () {
+            $(this).closest('.popupRow').fadeOut();
+        });
+    });
+</script>
+
+<style>
+    .popup {
+        display: block;
+        position: absolute;
+        z-index: 1000;
+        width: 600px;
+        margin-left: 160px;
+        background-color: rgb(225, 225, 225) !important;
+    }
+
+    .popup-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        border-radius: 5px;
+    }
+
+        .popup-content div {
+            margin-bottom: 10px;
+        }
+
+        .popup-content strong {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .popup-content .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .popup-content .close:hover,
+            .popup-content .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+</style>

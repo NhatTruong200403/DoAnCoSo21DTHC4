@@ -89,6 +89,23 @@
                                 if (currentUser!.Id == Model.UserId)
                                 {
                                     <a asp-action="Edit" asp-route-id="@Model?.Id" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;"><img style="width:20px;" src="@Url.Content("~/images/logo/edit.png")" />  Chỉnh sửa</a>
+                                    // <a asp-action="Delete" asp-route-id="@Model?.Id" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;"><img style="width:20px;" src="@Url.Content("~/images/logo/edit.png")" />  Xóa bài</a>
+                                    <a id="deleteButton" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;">
+                                        <img style="width:20px;" src="@Url.Content("~/images/logo/delete.png")" /> Xóa bài
+                                    </a>
+                                        <div id="deleteConfirmation" class="delete none">
+                                            <div style="padding:20px 35px; border:1px solid black;border-radius:10px;">
+                                                <h3>Bạn có chắc chắn muốn xóa bài đăng</h3>
+                                                <form asp-action="Delete">
+                                                    <input type="hidden" asp-for="@Model.Id" />
+                                                    <input type="submit" value="Xóa bài đăng" class="btn btn-danger" />
+                                                <a class="btn btn-danger" id="delete" style="background-color:gray;">Không</a>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    
+                                   
+
                                 }
                                 else
                                 {
@@ -397,12 +414,28 @@
                 if (@Model.IsAvailable == false)
                     createButton.hidden = true;
             });
-            
+            $(document).ready(function () {
+                $('#deleteButton').click(function () {
+                    $('#deleteConfirmation').toggleClass('none');
+                });
+                $('#delete').click(function () {
+                    $('#deleteConfirmation').addClass('none');
+                });
+            });
         </script>
 
 
 
         <style>
+            .none{
+                display:none;
+            }
+            .delete{
+                position: absolute;
+                z-index: 99990000;
+                background-color: rgb(225, 225, 225) !important;
+                margin-top: -40px;
+            }
             .start {
                 width: 20px !important;
                 height: 20px !important;

@@ -230,14 +230,14 @@
 
     <script>
         function loadNotifications() {
-            var userId = "@userId"; // Hoặc phương thức khác để lấy userId nếu bạn không dùng Identity
+            var userId = "@userId"; 
             $.ajax({
                 url: '@Url.Action("Index", "Notification", new { area = "Customer" })',
                 type: 'GET',
                 data: { userId: userId },
                 success: function (data) {
                     $('#notificationContainer').html(data);
-                    $('#notificationContainer').toggle(); // Hiển thị/ẩn container thông báo
+                    $('#notificationContainer').toggle(); 
                 },
                 error: function () {
                     alert('Failed to load notifications.');
@@ -245,77 +245,6 @@
             });
         }
         $(document).ready(function () {
-            $("#search-input").keyup(function () {
-                var query = $(this).val();
-                if (query !== '') {
-                    $.ajax({
-                        url: "/Home/SearchSuggestions",
-                        type: "GET",
-                        data: { query: query },
-                        dataType: "json",
-                        success: function (data) {
-                            $("#search-results").empty();
-                            $.each(data, function (index, suggestion) {
-                                $("#search-results").append("<div class='suggestion'>" + suggestion + "</div>");
-                            });
-                            if ($("#search-results").children().length == 0) {
-                                $(".dropdown-content").css("display", "none");
-                            } else {
-                                $(".dropdown-content").css("display", "block");
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("Error:", error);
-                        }
-                    });
-                } else {
-                    $("#search-results").empty();
-                    $(".dropdown-content").css("display", "none");
-                }
-            });
-
-            $(document).on("click", ".suggestion", function () {
-                var selectedSuggestion = $(this).text();
-                $("#search-input").val(selectedSuggestion);
-                $("#search-results").empty();
-                $(".dropdown-content").css("display", "none");
-            });
-
-            $(document).click(function (event) {
-                if (!$(event.target).closest('.dropdown').length) {
-                    $(".dropdown-content").css("display", "none");
-                }
-            });
-
-            // Load options for companies (hãng xe)
-            $.ajax({
-                url: "/Home/GetCompanies",
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    $.each(data, function (index, company) {
-                        $("#company-input").append("<option value='" + company + "'>" + company + "</option>");
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                }
-            });
-
-            // Load options for seats (số chỗ ngồi)
-            $.ajax({
-                url: "/Home/GetSeats",
-                type: "GET",
-                dataType: "json",
-                success: function (data) {
-                    $.each(data, function (index, seat) {
-                        $("#seat-input").append("<option value='" + parseInt(seat) + "'>" + seat + "</option>");
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error:", error);
-                }
-            });
             $('#volumeRange').on('input', function () {
                 $('#rangeValue').text($(this).val());
                 console.log('Số chỗ ngồi: ' + $(this).val());
