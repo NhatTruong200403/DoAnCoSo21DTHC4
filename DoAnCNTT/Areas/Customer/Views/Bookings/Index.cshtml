@@ -43,13 +43,30 @@
                             {
                             <a asp-action="Delete" asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Yêu cầu trả cọc</a>
                             }
+                    @if (item.Status == "Hoàn tất")
+                    {
+                        <div style="margin-top:20px;">
+                            @{
+                                var newRating = new Rating()
+                    {
+                        PostId = item.PostId,
+                        CreatedById = currentUser == null ? null : currentUser!.Id,
+                        CreatedOn = DateTime.Now,
+                        UserId = currentUser == null ? null : currentUser!.Id
+                    };
+                                <partial name="../Rating/AddComment.cshtml" model="newRating" />
+                            }
+
                         </div>
+                    }
+                </div>
                         <div class="phai">
                             <div>
                                     Đã đặt cọc : @item.PrePayment
                                 </div>
                             </div>
                     </div>
+            
                 </div>
         }
 </div>

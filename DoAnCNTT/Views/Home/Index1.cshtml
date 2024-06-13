@@ -1,13 +1,12 @@
-﻿
-
-
-
-@model IEnumerable<DoAnCNTT.Models.Post>
+﻿@model PaginatedList<DoAnCNTT.Models.Post>
 @{
     ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 @if (User.IsInRole("Admin"))
 {
     <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
@@ -38,7 +37,7 @@
                         <a asp-controller="Posts" asp-area="Customer" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
                     </td>
                     <td>
-                        <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px"  />
+                        <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px" />
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Description)</td>
                     <td>@Html.DisplayFor(modelItem => item.RentLocation)</td>
@@ -265,7 +264,7 @@ else
         </div>
     </section>
 
-@*     <!-- Pagination -->
+    <!-- Pagination -->
     <div class="nutchuyentrang">
         <a asp-action="Index" asp-route-company="@ViewBag.Company" asp-route-seat="@ViewBag.Seat" asp-route-gear="@ViewBag.Gear" asp-route-hasDriver="@ViewBag.HasDriver" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
             <img src="@Url.Content("~/images/logo/back-arrow.png")" width="25px" /> Previous
@@ -273,7 +272,7 @@ else
         <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-company="@ViewBag.Company" asp-route-seat="@ViewBag.Seat" asp-route-gear="@ViewBag.Gear" asp-route-hasDriver="@ViewBag.HasDriver" class="btn btn-default @nextDisabled">
             Next <img src="@Url.Content("~/images/logo/go-arrow.png")" width="25px" />
         </a>
-    </div> *@
+    </div>
 }
 
 

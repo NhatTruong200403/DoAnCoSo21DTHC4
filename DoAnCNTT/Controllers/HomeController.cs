@@ -65,9 +65,16 @@ namespace DoAnCNTT.Controllers
             .ToListAsync();
         }
 
+        public async Task<IActionResult> Index(string company, int seat, string gear, string fuel, bool hasDriver, int pageNumber = 1)
+        {
+            int pageSize = 8;
+            IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled).Take(8);
+            
+            return View(carsQuery);
+        }
 
 
-        public async Task<IActionResult> Index(string company, int seat, string gear, string fuel,bool hasDriver, int pageNumber = 1)
+        public async Task<IActionResult> Index1(string company, int seat, string gear, string fuel,bool hasDriver, int pageNumber = 1)
         {
             int pageSize = 6;
             IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);

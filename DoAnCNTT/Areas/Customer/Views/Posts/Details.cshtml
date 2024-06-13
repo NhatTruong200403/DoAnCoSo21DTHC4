@@ -356,19 +356,7 @@
                     {
                         <p>Không có đánh giá.</p>
                     }
-                    <div>
-                        @{
-                            var newRating = new Rating()
-            {
-                PostId = Model.Id,
-                CreatedById = currentUser == null ? null : currentUser!.Id,
-                CreatedOn = DateTime.Now,
-                UserId = currentUser == null ? null : currentUser!.Id
-            };
-                            <partial name="../Rating/AddComment.cshtml" model="newRating" />
-                        }
-
-                    </div>
+                   
 
 
                 </div>
