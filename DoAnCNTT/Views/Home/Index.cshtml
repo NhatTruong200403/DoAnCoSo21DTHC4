@@ -59,9 +59,7 @@ else
             <!-- Form tìm kiếm cho khách hàng -->
             <form class="" asp-area="" asp-controller="Home" asp-action="Index" method="get" style="">
                 <label class="la">Tìm xe cho bạn</label>
-
                 <div style="display:flex;justify-content:space-between;">
-
                     <div style="display:flex;" class="mar">
                         <lable class="label1">Hãng xe: </lable>
                         <select id="company-input" name="company" style="border:none;">
@@ -69,15 +67,10 @@ else
                             <!-- Các hãng xe sẽ được load từ backend -->
                         </select>
                     </div>
-
-
-                    <div class="volume-slider" class="mar">
+                    <div class="volume-slider mar">
                         <label class="label">Số chổ ngồi: <span id="rangeValue">0</span></label>
                         <input type="range" min="" max="16" value="0" step="1" class="slider" name="seat" id="volumeRange">
                     </div>
-
-
-
                     <div style="display:flex;" class="mar">
                         <label class="label">Động cơ: </label>
                         <select name="gear" class="form-control">
@@ -94,28 +87,26 @@ else
                             <option value="Dầu">Dầu</option>
                             <option value="Điện">Điện</option>
                         </select>
-                        @* <span name="Fuel" class="text-danger"></span> *@
+                        <!-- <span name="Fuel" class="text-danger"></span> -->
                     </div>
-
                     <div class="mar">
                         <label class="label"> Tài Xế Riêng:</label>
                         <label class="" style="margin-left:-30px;">
-                            <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" value="false" onclick="updateCheckboxValue(this)" />
+                        <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" value="false" onclick="updateCheckboxValue(this)" />
                         </label>
                     </div>
                 </div>
-
                 <div id="search-results" class="dropdown-content"></div>
                 <input class="ButtonSearch" type="submit" value="Search" />
             </form>
         }
     </nav>
 
+
+
     <!-- Slider loại xe -->
     <div style="margin-top:30px;">
-        <div style="font-size:30px;font-weight:bold;margin-bottom:10px;">
-            Loại xe nổi bật
-        </div>
+        <div style="font-size:30px;font-weight:bold;margin-bottom:10px;"> Loại xe nổi bật </div>
         <div class="image-slider">
             <a href="#" class="prev-button">&#10094;</a>
             <a href="#" class="next-button">&#10095;</a>
@@ -154,9 +145,7 @@ else
     </div>
     <!-- Địa điểm của xe -->
     <div style="margin-top:30px;">
-        <div style="font-size:30px;font-weight:bold;margin-bottom:10px;">
-            Địa điểm nổi bật
-        </div>
+        <div style="font-size:30px;font-weight:bold;margin-bottom:10px;"> Địa điểm nổi bật </div>
         <div class="anhaa">
             <a style="margin-left:7px;">
                 <label class="sumxe">300 xe</label>
@@ -178,8 +167,6 @@ else
                 <img class="anhnb" src="@Url.Content("~/images/logo/camau.png")">
             </a>
         </div>
-
-
     </div>
 
     <!-- Sắp xếp và hiển thị danh sách xe -->
