@@ -26,7 +26,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
         // GET: Customer/Notification
         public async Task<IActionResult> Index(string userId)
         {
-            var notifications = _context.Posts.Where(p => p.IsDisabled == true && p.IsHidden == false && p.UserId == userId);
+            var notifications = _context.Posts.Where(p => p.IsDisabled == true && p.IsHidden == false && p.UserId == userId).OrderByDescending(p => p.Id);
             return View(await notifications.ToListAsync());
         }
 

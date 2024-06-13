@@ -2,7 +2,8 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-    var currentUser = await UserManager.GetUserAsync(User); 
+    var currentUser = await UserManager.GetUserAsync(User);
+    var userId = currentUser?.Id;
 }
 
 <!DOCTYPE html>
@@ -48,30 +49,30 @@
 
             </a>
         }
-        
-       @*  <nav class="nav">
-            
-            @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
-            {
-                
-                <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
-                    <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm sản phẩm" />
-                    <select id="company-input" name="company" style="border:none;">
-                        <option value="">Chọn hãng xe</option>
-                        <!-- Các hãng xe sẽ được load từ backend -->
-                    </select>
-                    <select id="seat-input" name="seat" style="border:none;">
-                        <option value="0">Chọn số chỗ ngồi</option>
-                    </select>
-                    <div id="search-results" class="dropdown-content"></div>
-                    <input class="ButtonSearch" type="submit" value="Search" />
-                </form>
-            }
 
+        @if (User.IsInRole("Customer"))
+        {
+            <div style="display:flex;">
+                <a id="notificationButton" href="javascript:void(0);" onclick="loadNotifications();">
+                    <img class="" style="width:30px;margin-top:8px;" src="@Url.Content("~/images/logo/bell.png")" alt="" />
+                </a>
+                <partial name="_LoginPartial" />
+            </div>
+        }
+        else
+        {
+            <partial name="_LoginPartial" />
+        }
 
-        </nav> *@
-        <partial name="_LoginPartial" />
     </header>
+    @if (User.IsInRole("Customer"))
+    {
+        <div id="notificationContainer" class="tbuser" style="display:none;">
+            <!-- Notifications will be loaded here -->
+        </div>
+    }
+
+
    
 
     @if (User.IsInRole("Admin") || User.IsInRole("Employee"))
@@ -226,8 +227,23 @@
             <p>Bản quyền © 2024 - DoAnCNTT.</p>
         </div>
     </footer>
-    
+
     <script>
+        function loadNotifications() {
+            var userId = "@userId"; // Hoặc phương thức khác để lấy userId nếu bạn không dùng Identity
+            $.ajax({
+                url: '@Url.Action("Index", "Notification", new { area = "Customer" })',
+                type: 'GET',
+                data: { userId: userId },
+                success: function (data) {
+                    $('#notificationContainer').html(data);
+                    $('#notificationContainer').toggle(); // Hiển thị/ẩn container thông báo
+                },
+                error: function () {
+                    alert('Failed to load notifications.');
+                }
+            });
+        }
         $(document).ready(function () {
             $("#search-input").keyup(function () {
                 var query = $(this).val();
@@ -306,6 +322,7 @@
             });
         });
     </script>
+
 
 
 

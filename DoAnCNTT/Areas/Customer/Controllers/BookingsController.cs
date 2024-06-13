@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 namespace DoAnCNTT.Areas.Customer.Controllers
 {
     [Area("Customer")]
-
+    [Authorize(Roles = "Customer")]
     public class BookingsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,7 +44,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
         }
 
-        [Authorize(Roles = "Customer")]
         // GET: Customer/Bookings
         public async Task<IActionResult> Index()
         {
@@ -57,7 +56,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             UpdateBookingStatus(bookings);
             return View(bookings);
         }
-        [Authorize(Roles = "Customer")]
+
         // GET: Customer/Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -143,7 +142,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return Json(bookedDates);
         }
 
-        [Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IsPay,PrePayment,Total,FinalValue,RecieveOn,ReturnOn,PostId,UserId,PromotionId,InvoiceId,Id")] Booking booking)
@@ -167,7 +165,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;
         }
 
-        [Authorize(Roles = "Customer")]
         // GET: Customer/Bookings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -189,7 +186,6 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(booking);
         }
 
-        [Authorize(Roles = "Customer")]
         // POST: Customer/Bookings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
