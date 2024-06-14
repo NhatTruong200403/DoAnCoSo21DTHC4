@@ -3,9 +3,23 @@
 @{
     ViewData["Title"] = "Danh sách nhân viên";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    bool isFilteringLockedAccounts = ViewBag.IsFilteringLockedAccounts ?? false;
 }
 
 <h1>Danh sách nhân viên</h1>
+<form class="FormSearch dropdown" asp-area="Admin" asp-controller="Employees" asp-action="SearchEmployees" style="">
+    <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm SDT hoặc Email" />
+    <div id="search-results" class="dropdown-content"></div>
+    <input class="ButtonSearch" type="submit" value="Search" />
+</form>
+@if (isFilteringLockedAccounts)
+{
+    <a asp-area="Admin" asp-controller="Employees" asp-action="Index" asp-route-showLockedAccounts="false">Hiển thị tất cả tài khoản</a>
+}
+else
+{
+    <a asp-area="Admin" asp-controller="Employees" asp-action="Index" asp-route-showLockedAccounts="true">Lọc tài khoản bị khóa</a>
+}
 <table class="table">
     <thead>
         <tr>

@@ -6,6 +6,7 @@
 
 @if (User.IsInRole("Admin"))
 {
+
     <form class="FormSearch dropdown" action="/Home/ViewSearch" method="get" style="">
         <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
         <div id="search-results" class="dropdown-content"></div>
