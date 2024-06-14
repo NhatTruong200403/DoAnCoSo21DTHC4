@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Drawing.Printing;
 using System.Runtime.CompilerServices;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Mono.TextTemplating;
 
 namespace DoAnCNTT.Controllers
 {
@@ -74,9 +76,9 @@ namespace DoAnCNTT.Controllers
         }
 
 
-        public async Task<IActionResult> Index1(string company, int seat, string gear, string fuel,bool hasDriver, int pageNumber = 1)
+        public async Task<IActionResult> ViewSearch(string company, int seat, string gear, string fuel,bool hasDriver, int pageNumber = 1)
         {
-            int pageSize = 6;
+            int pageSize = 8;
             IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);
             if (!string.IsNullOrEmpty(company))
             {
@@ -139,7 +141,7 @@ namespace DoAnCNTT.Controllers
                 paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.Price), 1, 6);
             }
             ViewBag.SortPriceOrder = isSortAscending;
-            return View("Index", paginatedCar);
+            return View("ViewSearch", paginatedCar);
         }
 
         public async Task<IActionResult> SortByRideNumber(bool? sortRideNumberOrder)
@@ -152,7 +154,7 @@ namespace DoAnCNTT.Controllers
                 paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.RideNumber), 1, 6);
             }
             ViewBag.SortRideNumberOrder = isSortAscending;
-            return View("Index", paginatedCar);
+            return View("ViewSearch", paginatedCar);
         }
 
         public async Task<IActionResult> SortByRating(bool? sortRatingOrder)
@@ -165,11 +167,11 @@ namespace DoAnCNTT.Controllers
                 paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.AvgRating), 1, 6);
             }
             ViewBag.SortRatingOrder = isSortAscending;
-            return View("Index", paginatedCar);
+            return View("ViewSearch", paginatedCar);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCompanies()
+        public async Task<IActionResult> GetCarCompanies()
         {
             var companies = await _context.Companies.Select(c => c.Name).Distinct().ToListAsync();
             return Json(companies);
@@ -182,13 +184,30 @@ namespace DoAnCNTT.Controllers
             return Json(seats);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCartypes(string name, int pageNumber = 1)
+        {
+            int pageSize = 8;
+            IQueryable<Post> carsQuery = _context.Posts.Where(p => p.CarType.Name == name && !p.IsDeleted && !p.IsDisabled);            
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery.Distinct(), pageNumber, pageSize);
+            return View("ViewSearch",paginatedCar);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Address(string name, int pageNumber = 1)
+        {
+            int pageSize = 8;
+            IQueryable<Post> carsQuery = _context.Posts.Where(p => p.RentLocation.Contains(name) && !p.IsDeleted && !p.IsDisabled);
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery.Distinct(), pageNumber, pageSize);
+            return View("ViewSearch", paginatedCar);
+        }
 
 
-
-
-
-
-
+        [HttpGet]
+        public async Task<IActionResult> SumCars(string name)
+        {
+            var sum = _context.Posts.Where(p => p.RentLocation.Contains(name) && !p.IsDeleted && !p.IsDisabled).ToListAsync();
+            return Json(sum);
+        }
 
 
 

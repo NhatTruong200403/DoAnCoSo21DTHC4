@@ -1,8 +1,4 @@
-﻿
-
-
-
-@model IEnumerable<DoAnCNTT.Models.Post>
+﻿@model IEnumerable<DoAnCNTT.Models.Post>
 @{
     ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,7 +6,7 @@
 
 @if (User.IsInRole("Admin"))
 {
-    <form class="FormSearch dropdown" action="/Home/Index" method="get" style="">
+    <form class="FormSearch dropdown" action="/Home/Index1" method="get" style="">
         <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
         <div id="search-results" class="dropdown-content"></div>
         <input class="ButtonSearch" type="submit" value="Search" />
@@ -38,7 +34,7 @@
                         <a asp-controller="Posts" asp-area="Customer" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
                     </td>
                     <td>
-                        <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px"  />
+                        <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px" />
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Description)</td>
                     <td>@Html.DisplayFor(modelItem => item.RentLocation)</td>
@@ -58,19 +54,19 @@ else
         @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
         {
             <!-- Form tìm kiếm cho khách hàng -->
-            <form class="" asp-area="" asp-controller="Home" asp-action="Index" method="get" style="">
+            <form asp-area="" asp-controller="Home" asp-action="Index1" method="get" style="">
                 <label class="la">Tìm xe cho bạn</label>
                 <div style="display:flex;justify-content:space-between;">
                     <div style="display:flex;" class="mar">
-                        <lable class="label1">Hãng xe: </lable>
-                        <select id="company-input" name="company" style="border:none;">
+                        <label class="label1">Hãng xe: </label>
+                        <select id="company-input" class="select" name="company" style="width: 100%; border:none;">
                             <option value="">Chọn xe cần tìm</option>
                             <!-- Các hãng xe sẽ được load từ backend -->
                         </select>
                     </div>
                     <div class="volume-slider mar">
-                        <label class="label">Số chổ ngồi: <span id="rangeValue">0</span></label>
-                        <input type="range" min="" max="16" value="0" step="1" class="slider" name="seat" id="volumeRange">
+                        <label class="label">Số chổ ngồi: <span id="rangeValue">2</span></label>
+                        <input type="range" min="2" max="16" value="0" step="2" class="slider" name="seat" id="volumeRange">
                     </div>
                     <div style="display:flex;" class="mar">
                         <label class="label">Động cơ: </label>
@@ -88,12 +84,11 @@ else
                             <option value="Dầu">Dầu</option>
                             <option value="Điện">Điện</option>
                         </select>
-                        <!-- <span name="Fuel" class="text-danger"></span> -->
                     </div>
                     <div class="mar">
                         <label class="label"> Tài Xế Riêng:</label>
                         <label class="" style="margin-left:-30px;">
-                        <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" value="false" onclick="updateCheckboxValue(this)" />
+                            <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" value="false" onclick="updateCheckboxValue(this)" />
                         </label>
                     </div>
                 </div>
@@ -103,10 +98,8 @@ else
         }
     </nav>
 
-
     @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
     {
-
         <!-- Slider loại xe -->
         <div style="margin-top:30px;">
             <div style="font-size:30px;font-weight:bold;margin-bottom:10px;"> Loại xe nổi bật </div>
@@ -114,95 +107,68 @@ else
                 <a href="#" class="prev-button">&#10094;</a>
                 <a href="#" class="next-button">&#10095;</a>
                 <div class="slider-container">
-                    <div class="slide">
+                    <a class="slide" asp-controller="home" asp-action="GetCartypes" name="SEDAN">
                         <img src="@Url.Content("~/images/logo/sedan.png")" alt="Image 1">
                         <label>SEDAN</label>
-                    </div>
-                    <div class="slide">
+                    </a>
+                    <a class="slide" asp-controller="home" asp-action="GetCartypes" name="OFFROAD">
                         <img src="@Url.Content("~/images/logo/xebantai.png")" alt="Image 2">
                         <label>OFFROAD</label>
-                    </div>
-                    <div class="slide">
+                    </a>
+                    <a class="slide" asp-controller="home" asp-action="GetCartypes" name="ELECTRIC">
                         <img src="@Url.Content("~/images/logo/xedien.png")" alt="Image 3">
                         <label>ELECTRIC</label>
-                    </div>
-                    <div class="slide">
+                    </a>
+                    <a class="slide" asp-controller="home" asp-action="GetCartypes" name="SUV">
                         <img src="@Url.Content("~/images/logo/SUV.png")" alt="Image 4">
                         <label>SUV</label>
-                    </div>
-                    <div class="slide">
+                    </a>
+                    <a class="slide" asp-controller="home" asp-action="GetCartypes" name="SPORT">
                         <img src="@Url.Content("~/images/logo/sport.png")" alt="Image 5">
                         <label>SPORT</label>
-                    </div>
-                    <div class="slide">
+                    </a>
+                    <a class="slide" asp-controller="home" asp-action="GetCartypes" name="HATCHBACK">
                         <img src="@Url.Content("~/images/logo/hatchback.png")" alt="Image 6">
                         <label>HATCHBACK</label>
-                    </div>
-                    <div class="slide">
+                    </a>
+                    <a class="slide" asp-controller="home" asp-action="GetCartypes" name="COUPE">
                         <img src="@Url.Content("~/images/logo/coupe.png")" alt="Image 7">
                         <label>COUPE</label>
-                    </div>
+                    </a>
                 </div>
             </div>
-
         </div>
+
         <!-- Địa điểm của xe -->
         <div style="margin-top:30px;">
             <div style="font-size:30px;font-weight:bold;margin-bottom:10px;"> Địa điểm nổi bật </div>
             <div class="anhaa">
-                <a style="margin-left:7px;">
-                    <label class="sumxe">300 xe</label>
+                <a style="margin-left:7px;" asp-controller="home" asp-action="Address" data-name="Hà Nội">
+                    <label class="sumxe"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/hanoi.png")">
-                    @* <label class="sumxe">300+ xe</label> *@
                 </a>
-                <a>
-                    <label class="sumxe">300 xe</label>
+                <a asp-controller="home" asp-action="Address" data-name="Đà Nẵng">
+                    <label class="sumxe"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/danang.png")">
-                    @* <label class="sumxe">300+ xe</label> *@
                 </a>
-                <a>
-                    <label class="sumxe">300 xe</label>
+                <a asp-controller="home" asp-action="Address" data-name="TpHCM">
+                    <label class="sumxe"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/tphcm.png")">
-                    @*  <label class="sumxe">300+ xe</label> *@
                 </a>
-                <a>
-                    <label class="sumxe">300 xe</label>
+                <a asp-controller="home" asp-action="Address" data-name="Cà Mau">
+                    <label class="sumxe"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/camau.png")">
                 </a>
             </div>
         </div>
     }
-    <!-- Sắp xếp và hiển thị danh sách xe -->
+
     <section class="py-2" style="min-height:600px;">
-        <!-- Code sắp xếp và hiển thị danh sách xe -->
-        @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
-        {
-            
-                //Sắp xếp theo giá
-                bool nextSortPriceOrder = ViewBag.SortPriceOrder != null ? !(bool)ViewBag.SortPriceOrder : true;
-                string sortPriceText = ViewBag.SortPriceOrder != null && (bool)ViewBag.SortPriceOrder ? "Giá giảm dần" : "Giá tăng dần";
-
-                //Sắp xếp theo số chuyến
-                bool nextSortRideNumberOrder = ViewBag.SortRideNumberOrder != null ? !(bool)ViewBag.SortRideNumberOrder : true;
-                string sortRideNumberText = ViewBag.SortRideNumberOrder != null && (bool)ViewBag.SortRideNumberOrder ? "Số chuyến giảm dần" : "Số chuyến tăng dần";
-
-                //Sắp xếp theo đánh giá
-                //Sắp xếp theo số chuyến
-                bool nextSorRatingOrder = ViewBag.SortRatingOrder != null ? !(bool)ViewBag.SortRatingOrder : true;
-                string sortRatingText = ViewBag.SortRatingOrder != null && (bool)ViewBag.SortRatingOrder ? "Đánh giá giảm dần" : "Đánh giá tăng dần";
-            
-        <a asp-action="SortByPrice" asp-route-sortPriceOrder="@nextSortPriceOrder">@sortPriceText</a>
-        <a asp-action="SortByRideNumber" asp-route-sortRideNumberOrder="@nextSortRideNumberOrder">@sortRideNumberText</a>
-        <a asp-action="SortByRating" asp-route-sortRatingOrder="@nextSorRatingOrder">@sortRatingText</a>
-        }
-
-        <div class="container ">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
-
+        <div class="container">
+            <div class="row">
                 @foreach (var item in Model)
                 {
-
-                    <div class="box" style="padding:3px;margin-left:20px;background-color:white;border:0.5px solid #1ee156;margin-bottom:15px;">
+                    <div class="box" style="padding:3px;margin-inline:10px;background-color:white;border:0.5px solid #1ee156;margin-bottom:15px;">
                         <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
                             <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;border:0.5px solid #1ee156;" />
                         </div>
@@ -250,32 +216,14 @@ else
                                 <div class="giagiam">@item.Price/giờ</div>
                             </div>
                         </div>
-
                     </div>
                 }
             </div>
         </div>
     </section>
-
-@*     <!-- Pagination -->
-    <div class="nutchuyentrang">
-        <a asp-action="Index" asp-route-company="@ViewBag.Company" asp-route-seat="@ViewBag.Seat" asp-route-gear="@ViewBag.Gear" asp-route-hasDriver="@ViewBag.HasDriver" asp-route-pageNumber="@(Model.PageIndex - 1)" class="btn btn-default @prevDisabled">
-            <img src="@Url.Content("~/images/logo/back-arrow.png")" width="25px" /> Previous
-        </a>
-        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-company="@ViewBag.Company" asp-route-seat="@ViewBag.Seat" asp-route-gear="@ViewBag.Gear" asp-route-hasDriver="@ViewBag.HasDriver" class="btn btn-default @nextDisabled">
-            Next <img src="@Url.Content("~/images/logo/go-arrow.png")" width="25px" />
-        </a>
-    </div> *@
 }
-
-
-
-
-
 <script>
-    document.getElementById('volumeRange').addEventListener('input', function () {
-        document.getElementById('rangeValue').innerText = this.value;
-    });
+
     function updateCheckboxValue(checkbox) {
         if (checkbox.checked) {
             checkbox.value = true;
@@ -285,6 +233,43 @@ else
         }
     }
     $(document).ready(function () {
+        $('.address-link').each(function () {
+            var $sumXeLabel = $(this).find('.sumxe'); // Tìm nhãn label.sumxe trong thẻ <a>
+            var name = $(this).data('name'); // Lấy giá trị của thuộc tính data-name
+
+            // Gọi AJAX để lấy số lượng xe
+            $.ajax({
+                url: '/Home/SumCars',
+                type: 'GET',
+                data: { name: name }, // Truyền tham số name vào action SumCars
+                dataType: 'json',
+                success: function (data) {
+                    // Nếu gọi thành công, cập nhật nội dung của nhãn label.sumxe
+                    $sumXeLabel.text(data + ' xe'); // data là số lượng xe
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error: " + error);
+                }
+            });
+        });
+        $.ajax({
+            url: '/Home/GetCarCompanies',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var $select = $('#company-input');
+                $select.empty(); // Xóa các option hiện tại
+                $select.append('<option value="">Chọn xe cần tìm</option>'); // Thêm option mặc định
+
+                // Duyệt qua danh sách các hãng xe và thêm vào dropdown
+                $.each(data, function (index, company) {
+                    $select.append('<option value="' + company + '">' + company + '</option>');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error: " + error);
+            }
+        });
         $(".prev-button").click(function () {
             var lastSlide = $(".slide").last();
             $(".slider-container").prepend(lastSlide);
@@ -355,7 +340,9 @@ else
             $(this).text(formatPrice(price) + '/giờ');
         });
     });
-
+    document.getElementById('volumeRange').addEventListener('input', function () {
+        document.getElementById('rangeValue').innerText = this.value;
+    });
 
 </script>
 
@@ -482,4 +469,3 @@ else
                 margin-right: 10px;
             }
 </style>
-
