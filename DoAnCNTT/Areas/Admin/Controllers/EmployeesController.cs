@@ -25,10 +25,25 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: CustomerController
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(bool showLockedAccounts = false)
         {
-            var employee = await _userManager.GetUsersInRoleAsync("Employee");
-            return View(employee);
+            var employees = await _userManager.GetUsersInRoleAsync("Employee");
+            if (showLockedAccounts)
+            {
+                employees = employees.Where(u => u.LockoutEnd > DateTime.Now).ToList();
+            }
+            ViewBag.IsFilteringLockedAccounts = showLockedAccounts;
+            return View(employees);
+        }
+
+        public async Task<IActionResult> SearchEmployees(string query)
+        {
+            var employees = await _userManager.GetUsersInRoleAsync("Employee");
+            if (!string.IsNullOrEmpty(query))
+            {
+                employees = employees.Where(u => u.Email == query || u.PhoneNumber == query).ToList();
+            }
+            return View("Index", employees);
         }
 
         // GET: Admin/Reports/Details/5

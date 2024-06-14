@@ -21,12 +21,38 @@ namespace DoAnCNTT.Areas.Admin.Controllers
         }
 
         // GET: CustomerController
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index(bool showLockedAccounts = false, bool sortByReportPointAsc = true)
         {
-            var customers = await _userManager.GetUsersInRoleAsync("Customer");
-            return View(customers);
+            var users = await _userManager.GetUsersInRoleAsync("Customer");
+
+            if (showLockedAccounts)
+            {
+                users = users.Where(u => u.LockoutEnd > DateTime.Now).ToList();
+            }
+
+            if (sortByReportPointAsc)
+            {
+                users = users.OrderBy(u => u.ReportPoint).ToList();
+            }
+            else
+            {
+                users = users.OrderByDescending(u => u.ReportPoint).ToList();
+            }
+
+            ViewBag.IsFilteringLockedAccounts = showLockedAccounts;
+            ViewBag.SortByReportPointAsc = sortByReportPointAsc;
+            return View(users);
         }
 
+        public async Task<IActionResult> SearchCustomers(string query)
+        {
+            var users = await _userManager.GetUsersInRoleAsync("Customer");
+            if(!string.IsNullOrEmpty(query))
+            {
+                users = users.Where(u => u.Email == query || u.PhoneNumber == query).ToList();
+            }
+            return View("Index", users);
+        }
 
         // GET: CustomerController/Details/5
         public async Task<ActionResult> Details(string id)
