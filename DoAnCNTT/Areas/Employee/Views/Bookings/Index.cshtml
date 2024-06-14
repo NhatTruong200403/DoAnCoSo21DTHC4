@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<DoAnCNTT.Models.Booking>
-
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,16 +12,10 @@
     <thead>
         <tr>
             <th>
+                Người thuê xe
+            </th>
+            <th>
                 Bài đăng
-            </th>
-            <th>
-                Ngày nhận
-            </th>
-            <th>
-                Ngày trả
-            </th>
-            <th>
-                Tổng tiền
             </th>
             <th>
                 Thành tiền
@@ -39,16 +34,13 @@
         {
             <tr>
                 <td>
+                    @{
+                        var user = await UserManager.FindByIdAsync(@item.UserId);
+                    }
+                    @user.Name
+                </td>
+                <td>
                     <a asp-action="Details" asp-route-id="@item.PostId">@item.Post.Name</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecieveOn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ReturnOn)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.FinalValue)
@@ -60,11 +52,92 @@
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết đặt cọc</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Trả cọc</a>
+                    <a asp-action="Details" class="btn" asp-route-id="@item.Id">Chi tiết đặt cọc</a>
+                    @if (item.Status == "Đang xử lí")
+                    {
+
+                    
+                        <a id = "cancelOrderButton-@item.Id" class="cancelOrderButton btn" data-id="@item.Id">Trả cọc</a>
+                    }
+                    
+                </td>
+            </tr>
+            <tr class="popupRow" id="popupRow-@item.Id" style="display:none;">
+                <td colspan="6">
+                    <div class="popup">
+                        <div style="padding:20px 35px; border:1px solid black;border-radius:10px;">
+                            <div style="display:flex;justify-content:space-between;">
+                                <h3>Bạn có chắc chắn muốn trả cọc cho giao dịch này hay không? <label>Vui lòng kiểm tra kĩ thông tin.</label></h3>
+                                <span class="close" id="cancelOrderClose-@item.Id">&times;</span>
+                            </div>
+                            
+                            <form asp-action="Delete" asp-area="Employee" asp-controller="Bookings">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <input type="submit" value="Xác nhận" class="btn btn-danger" />
+                                <a class="btn btn-danger cancelOrderCancel" style="background-color:gray;">Không</a>
+                            </form>
+                        </div>
+                    </div>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<script>
+    $(document).ready(function () {
+        $('.cancelOrderButton').click(function () {
+            var itemId = $(this).data('id');
+            $('#popupRow-' + itemId).fadeIn();
+        });
+
+        $('.close, .cancelOrderCancel').click(function () {
+            $(this).closest('.popupRow').fadeOut();
+        });
+    });
+</script>
+
+<style>
+    .popup {
+        display: block;
+        position: absolute;
+        z-index: 1000;
+        width: 600px;
+        margin-left:160px;
+        background-color: rgb(225, 225, 225) !important;
+    }
+
+    .popup-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+
+        border: 1px solid #888;
+        width: 50%;
+        border-radius: 5px;
+    }
+
+    .popup-content div {
+        margin-bottom: 10px;
+    }
+
+    .popup-content strong {
+        display: inline-block;
+        width: 120px;
+    }
+
+    .popup-content .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .popup-content .close:hover,
+    .popup-content .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>

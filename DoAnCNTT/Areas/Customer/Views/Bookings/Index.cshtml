@@ -4,127 +4,193 @@
 @{
     ViewData["Title"] = "Lịch sử đặt xe";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 
 <h1>Lịch sử đặt xe</h1>
 
 <div>
+    @foreach (var item in Model)
+    {
+        var currentUser = await UserManager.FindByIdAsync(item.Post.UserId!);
+        var commentSectionId = $"commentSection-{item.Id}";
+        var toggleButtonId = $"toggleCommentButton-{item.Id}";
 
-        @foreach (var item in Model)
-        {
-                var currentUser = await UserManager.FindByIdAsync(item.Post.UserId!);
-                <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;margin-bottom:20px;background-color:white;border-radius:5px;">
-                    
-                    <div class="tren">
-                        <div class="trai">Tên chủ xe : @currentUser.Name</div>
-                        <div class="phai" style="color:orange;font-size:20px;">@item.Status</div>
-                    </div>
-                    <hr />
-                    <div class="giua">
-                        <div class="trai" style="display:flex;">
-                            <img src="@Url.Content(item.Post.Image)" style="height:150px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" />
-                            <span style="padding:10px 20px;font-size:23px;font-weight:bold;">@item.Post.Name</span>
-                        </div>
-                        <div class="phai">
-                            <p>Số tiền gốc : @item.Post.Price/giờ</p>
-                            <p>Thành tiền : @item.Total</p>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="duoi">
-                        <div class="trai">
-                            <a asp-action="Details" asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Xem chi tiết</a>
-                            @if(@item.RecieveOn <= @DateTime.Now)
-                            {
-                                <a asp-action="Delete" hidden asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Yêu cầu trả cọc</a>
-                            }
-                            else
-                            {
-                            <a asp-action="Delete" asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Yêu cầu trả cọc</a>
-                            }
-                        </div>
-                        <div class="phai">
-                            <div>
-                                    Đã đặt cọc : @item.PrePayment
+        <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;margin-bottom:20px;background-color:white;border-radius:5px;">
+            <div class="tren">
+                <div class="trai">Tên chủ xe : @currentUser.Name</div>
+                <div class="phai" style="color:orange;font-size:20px;">@item.Status</div>
+            </div>
+            <hr />
+            <div class="giua">
+                <div class="trai" style="display:flex;">
+                    <img src="@Url.Content(item.Post.Image)" style="height:150px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" />
+                    <span style="padding:10px 20px;font-size:23px;font-weight:bold;">@item.Post.Name</span>
+                </div>
+                <div class="phai">
+                    <p>Số tiền gốc : @item.Post.Price/giờ</p>
+                    <p>Thành tiền : @item.Total</p>
+                    <p>Đã đặt cọc : @item.PrePayment</p>
+                </div>
+            </div>
+            <hr />
+            <div class="duoi">
+                <div class="trai">
+                    <a asp-action="Details" asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Xem chi tiết</a>
+                    @if (@item.RecieveOn <= @DateTime.Now)
+                    {
+                        <a asp-action="Delete" hidden asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Yêu cầu trả cọc</a>
+                    }
+                    else
+                    {
+                        <a id="cancelOrderButton" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Yêu cầu trả cọc</a>
+
+
+
+                        <div id="cancelOrderPopup" class="popup">
+
+                            <div class="popup-content">
+                                <div style="display:flex;justify-content:space-between;">
+                                    <h3>
+                                        Bạn có chắc muốn hủy đặt cọc?
+                                        <label style="font-size:19px;">Bạn hãy đọc kỹ quy định trước khi hủy nhé.</label>
+                                    </h3>
+                                    <span class="close" id="cancelOrderClose">&times;</span>
+                                </div>
+                                <div>
+                                    <strong>Mã giao dịch:</strong>
+                                    <span>@item.Id</span>
+                                </div>
+                                <div>
+                                    <strong>Đặt cọc:</strong>
+                                    <span>@item.PrePayment</span>
+                                </div>
+                                <div>
+                                    <strong>Tổng tiền:</strong>
+                                    <span>@item.Total</span>
+                                </div>
+                                <div>
+                                    <strong>Thành tiền:</strong>
+                                    <span>@item.FinalValue</span>
+                                </div>
+                                <div>
+                                    <strong>Ngày nhận:</strong>
+                                    <span>@item.RecieveOn</span>
+                                </div>
+                                <div>
+                                    <strong>Ngày trả:</strong>
+                                    <span>@item.ReturnOn</span>
+                                </div>
+                                <div style="text-align: center;display:flex;">
+                                    <form asp-action="Delete" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <input type="submit" value="Xác nhận" class="btn btn-danger" />
+                                    </form>
+
+                                    <button type="button" id="cancelOrderCancel" style="background-color:gray;margin-left:15px;" class="btn btn-secondary">Hủy bỏ</button>
                                 </div>
                             </div>
-                    </div>
+
+                        </div>
+
+
+                    }
+                    @if (item.Status == "Hoàn tất")
+                    {
+                        <a style="padding:13px 20px;background-color:cadetblue;border-radius:5px;" id="@toggleButtonId">Bình luận</a>
+                        <div id="@commentSectionId" style="margin-top:20px;" class="none">
+                            @{
+                                var newRating = new Rating()
+                    {
+                        PostId = item.PostId,
+                        CreatedById = currentUser == null ? null : currentUser!.Id,
+                        CreatedOn = DateTime.Now,
+                        UserId = currentUser == null ? null : currentUser!.Id
+                    };
+                                <partial name="../Rating/AddComment.cshtml" model="newRating" />
+                            }
+                        </div>
+                    }
                 </div>
-        }
+            </div>
+        </div>
+    }
 </div>
-@* 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Bài đăng
-            </th>
-            <th>
-                Ngày nhận
-            </th>
-            <th>
-                Ngày trả
-            </th>
-            <th>
-                Tổng tiền
-            </th>
-            <th>
-                Thành tiền
-            </th>
-            <th>
-                Đặt cọc
-            </th>
-            <th>
-                Trạng thái
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.PostId">@item.Post.Name</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecieveOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReturnOn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinalValue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrePayment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết đặt cọc</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Yêu cầu trả cọc</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
- *@
+
 <style>
-    .tren,.giua,.duoi{
+    .tren, .giua, .duoi {
         display: flex;
         justify-content: space-between;
         align-items: center;
-
     }
+
+    .none {
+        display: none;
+    }
+
+
+
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .popup-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+        border-radius: 5px;
+    }
+
+        .popup-content div {
+            margin-bottom: 10px;
+        }
+
+        .popup-content strong {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .popup-content .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .popup-content .close:hover,
+            .popup-content .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
 
 </style>
 
-    @* .duoi {
-        display: flex;
-        justify-content: flex-end;
-    }  *@
+
+<script>
+    $(document).ready(function () {
+        $('a[id^="toggleCommentButton"]').click(function () {
+            var buttonId = $(this).attr('id');
+            var commentSectionId = buttonId.replace('toggleCommentButton', 'commentSection');
+            $('#' + commentSectionId).toggleClass('none');
+        });
+        $('#cancelOrderButton').click(function () {
+            $('#cancelOrderPopup').fadeIn();
+        });
+
+        $('#cancelOrderClose, #cancelOrderCancel').click(function () {
+            $('#cancelOrderPopup').fadeOut();
+        });
+    });
+</script>
