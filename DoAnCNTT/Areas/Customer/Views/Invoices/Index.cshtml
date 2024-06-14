@@ -5,46 +5,83 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <h1>Lịch sử giao dịch</h1>
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Tổng tiền
-            </th>
-            <th>
-                Ngày giao dịch
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @{
-                    if (item.Total < 0)
-                    {
-                        @("+" + (-item.Total).ToString())
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Total)
-                    }
-                }
-
-
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
+@foreach (var item in Model)
+{
+    @if (item.Total < 0)
+    {
+        <div class="tracoc">
+            <div class="transaction-header">
+                <h4>@("+" + (-item.Total).ToString())</h4>
+                <span class="transaction-date">@item.CreatedOn</span>
+            </div>
+            <div>
+                <p>Nội dung: Hoàn trả giao dịch có mã #@item.BookingId</p>
+            </div>
+            <div>
                 <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
-            </td>
-        </tr>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="thanhtoan">
+            <div class="transaction-header">
+                <h4>@("-" + (item.Total).ToString())</h4>
+                <span class="transaction-date">@item.CreatedOn</span>
+            </div>
+            <div>
+                <p>Nội dung: Thanh toán giao dịch có mã #@item.BookingId</p>
+            </div>
+            <div>
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
+            </div>
+        </div>
+    }
 }
-    </tbody>
-</table>
+
+<style>
+    .tracoc, .thanhtoan {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        color: white;
+    }
+
+    .tracoc {
+        background-color: #33ff33;
+    }
+
+    .thanhtoan {
+        background-color: #FF3333;
+    }
+
+    .transaction-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .transaction-header h4 {
+            margin: 0;
+        }
+
+    .transaction-date {
+        font-size: 12px;
+    }
+
+    .transaction-content, .transaction-details {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+        .transaction-content p, .transaction-details a {
+            margin: 0;
+        }
+
+        .transaction-details a {
+            color: white;
+            text-decoration: underline;
+        }
+</style>
