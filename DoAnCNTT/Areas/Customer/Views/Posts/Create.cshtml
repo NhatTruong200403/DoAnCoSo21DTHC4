@@ -89,7 +89,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="RentLocation" class="control-label to">Địa chỉ nhận xe</label>
-                <input asp-for="RentLocation" class="form-control" />
+                <select class="form-control" asp-for="RentLocation">
+                    <option value="">-- Chọn địa chỉ nhận xe --</option>
+                    <option value="Hà Nội">Hà Nội</option>
+                    <option value="Đà Nẵng">Đà Nẵng</option>
+                    <option value="TPHCM">TP HCM</option>
+                    <option value="Cà Mau">Cà Mau</option>
+                </select>
                 <span asp-validation-for="RentLocation" class="text-danger"></span>
             </div>
             <div class="form-group to">

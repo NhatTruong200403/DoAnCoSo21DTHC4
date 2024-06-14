@@ -56,7 +56,53 @@ else
     <div>
         <a href="javascript:history.go(-1);">Quay lại</a>
     </div>
-
+    <nav style="border-radius:15px;padding:20px 30px; margin-top:20px;margin-bottom:20px;" class="SearchCar">
+        @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
+        {
+            <!-- Form tìm kiếm cho khách hàng -->
+            <form asp-area="" asp-controller="Home" asp-action="ViewSearch" method="get" style="">
+                <label class="la">Tìm xe cho bạn</label>
+                <div style="display:flex;justify-content:space-between;">
+                    <div style="display:flex;" class="mar">
+                        <label class="label1">Hãng xe: </label>
+                        <select id="company-input" class="select" name="company" style="width: 100%; border:none;">
+                            <option value="">Chọn xe cần tìm</option>
+                            <!-- Các hãng xe sẽ được load từ backend -->
+                        </select>
+                    </div>
+                    <div class="volume-slider mar">
+                        <label class="label">Số chổ ngồi: <span id="rangeValue">2</span></label>
+                        <input type="range" min="2" max="16" value="0" step="2" class="slider" name="seat" id="volumeRange">
+                    </div>
+                    <div style="display:flex;" class="mar">
+                        <label class="label">Động cơ: </label>
+                        <select name="gear" class="form-control">
+                            <option value="">Loại động cơ</option>
+                            <option value="Số sàn">Số sàn</option>
+                            <option value="Số tự động">Số tự động</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;" class="mar">
+                        <label class="label" style="margin-right:10px; width:170px;">Nhiên liệu: </label>
+                        <select name="Fuel" class="form-control">
+                            <option value="">Loại nhiên liệu</option>
+                            <option value="Xăng">Xăng</option>
+                            <option value="Dầu">Dầu</option>
+                            <option value="Điện">Điện</option>
+                        </select>
+                    </div>
+                    <div class="mar">
+                        <label class="label"> Tài Xế Riêng:</label>
+                        <label class="" style="margin-left:-30px;">
+                            <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" value="false" onclick="updateCheckboxValue(this)" />
+                        </label>
+                    </div>
+                </div>
+                <div id="search-results" class="dropdown-content"></div>
+                <input class="ButtonSearch" type="submit" value="Search" />
+            </form>
+        }
+    </nav>
     <!-- Sắp xếp và hiển thị danh sách xe -->
     <section class="py-2" style="min-height:600px;">
         <!-- Code sắp xếp và hiển thị danh sách xe -->
@@ -75,16 +121,53 @@ else
             string sortRatingText = ViewBag.SortRatingOrder != null && (bool)ViewBag.SortRatingOrder ? "Đánh giá giảm dần" : "Đánh giá tăng dần";
 
         }
-        <a asp-action="SortByPrice" asp-route-sortPriceOrder="@nextSortPriceOrder">@sortPriceText</a>
-        <a asp-action="SortByRideNumber" asp-route-sortRideNumberOrder="@nextSortRideNumberOrder">@sortRideNumberText</a>
-        <a asp-action="SortByRating" asp-route-sortRatingOrder="@nextSorRatingOrder">@sortRatingText</a>
+        <i style="font-size:20px;font-weight:bold;margin-left:20px;">Lọc :</i>
+        <a class="theloc" asp-action="SortByPrice" asp-route-sortPriceOrder="@nextSortPriceOrder">
+            @if (@sortPriceText == "Giá giảm dần")
+            {
+                @sortPriceText
+
+                <img width="20px" src="@Url.Content("~/images/logo/tiengiam.png")" />
+            }
+            else
+            {
+                @sortPriceText
+
+                <img width="20px" src="@Url.Content("~/images/logo/tientang.png")" />
+            }
+
+        </a>
+        <a class="theloc" asp-action="SortByRideNumber" asp-route-sortRideNumberOrder="@nextSortRideNumberOrder">
+            @if (@sortRideNumberText == "Số chuyến giảm dần")
+            {
+                @sortRideNumberText
+                <img width="20px" src="@Url.Content("~/images/logo/giamdan.png")" /> 
+            }
+            else
+            {
+                @sortRideNumberText
+                <img width="20px" src="@Url.Content("~/images/logo/tangdan.png")" /> 
+            }
+            </a>
+        <a class="theloc" asp-action="SortByRating" asp-route-sortRatingOrder="@nextSorRatingOrder">
+            @if (@sortRatingText == "Đánh giá giảm dần")
+            {
+                @sortRatingText
+                <img width="20px" src="@Url.Content("~/images/logo/danhgiathap.png")" />
+            }
+            else
+            {
+                @sortRatingText
+                <img width="20px" src="@Url.Content("~/images/logo/danhgiacao.png")" /> 
+            }
+            </a>
         <div class="container" style="margin-top:20px;">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
 
                 @foreach (var item in Model)
                 {
 
-                    <div class="box" style="padding:3px;margin-left:20px;background-color:white;border:0.5px solid #1ee156;margin-bottom:15px;">
+                    <div class="box" style="padding:3px;margin-left:20px;background-color:white;border:0.5px solid #1ee156;margin-bottom:20px;">
                         <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
                             <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;border:0.5px solid #1ee156;" />
                         </div>
@@ -243,6 +326,11 @@ else
 
 
 <style>
+    .theloc{
+        padding:5px 10px;
+        border:0.5px solid #333;
+        border-radius:15px;
+    }
     .nutchuyentrang {
         margin-inline: 43%;
         width: 300px;

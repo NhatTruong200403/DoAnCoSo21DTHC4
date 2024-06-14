@@ -495,18 +495,11 @@ details p {
 .anhaa a{
     margin:8px; 
 }
-/*.anhaa a .sumxe {
-    color: white;
-    margin-top: 120px;
-    margin-left: -70px;
-    position: absolute;
-    z-index: 2;
-}*/
     .anhaa a .sumxe {
         text-align:right;
         color: white;
         margin-top: 120px;
-        margin-left: 230px;
+        margin-left: 250px;
         position: absolute;
         z-index: 2;
     }

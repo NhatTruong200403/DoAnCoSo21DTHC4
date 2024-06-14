@@ -164,6 +164,12 @@
 
             <div>
                 <div style="font-weight:bold;" class="mar font">Mô tả</div>
+                <div>
+                    Loại xe: @Model.CarType.Name
+                </div>
+                <div>
+                    Hãng xe: @Model.Company.Name
+                </div>
                 @if (Model.HasDriver == true)
                 {
                     <div>

@@ -178,19 +178,15 @@ namespace DoAnCNTT.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSeats()
-        {
-            var seats = await _context.Posts.Select(p => p.Seat).Distinct().ToListAsync();
-            return Json(seats);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> GetCartypes(string name, int pageNumber = 1)
         {
             int pageSize = 8;
-            IQueryable<Post> carsQuery = _context.Posts.Where(p => p.CarType.Name == name && !p.IsDeleted && !p.IsDisabled);            
+            IQueryable<Post> carsQuery = _context.Posts
+                .Where(p => p.CarType.Name == name && !p.IsDeleted && !p.IsDisabled);
+
             var paginatedCar = await PaginatedList<Post>.CreateAsync(carsQuery.Distinct(), pageNumber, pageSize);
-            return View("ViewSearch",paginatedCar);
+
+            return View("ViewSearch", paginatedCar);
         }
         [HttpGet]
         public async Task<IActionResult> Address(string name, int pageNumber = 1)
@@ -205,9 +201,27 @@ namespace DoAnCNTT.Controllers
         [HttpGet]
         public async Task<IActionResult> SumCars(string name)
         {
-            var sum = _context.Posts.Where(p => p.RentLocation.Contains(name) && !p.IsDeleted && !p.IsDisabled).ToListAsync();
-            return Json(sum);
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Tên địa phương không hợp lệ.");
+            }
+
+            try
+            {
+                var sum = await _context.Posts
+                    .Where(p => p.RentLocation == name && !p.IsDeleted && !p.IsDisabled)
+                    .CountAsync(); // Lấy tổng số xe
+                return Json(sum);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Console.WriteLine(ex.Message);
+                // Return a user-friendly error message
+                return StatusCode(500, "Đã xảy ra lỗi trong quá trình xử lý yêu cầu.");
+            }
         }
+
 
 
 
