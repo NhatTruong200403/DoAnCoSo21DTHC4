@@ -250,6 +250,24 @@ else
         }
     }
     $(document).ready(function () {
+        $.ajax({
+            url: '/Home/GetCarCompanies',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var $select = $('#company-input');
+                $select.empty(); // Xóa các option hiện tại
+                $select.append('<option value="">Chọn xe cần tìm</option>'); // Thêm option mặc định
+
+                // Duyệt qua danh sách các hãng xe và thêm vào dropdown
+                $.each(data, function (index, company) {
+                    $select.append('<option value="' + company + '">' + company + '</option>');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error: " + error);
+            }
+        });
         $(".prev-button").click(function () {
             var lastSlide = $(".slide").last();
             $(".slider-container").prepend(lastSlide);

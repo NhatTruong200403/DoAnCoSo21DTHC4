@@ -5,46 +5,105 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <h1>Lịch sử giao dịch</h1>
+@foreach (var item in Model)
+{
+    @if (item.Total < 0)
+    {
+        <div class="tracoc">
+            <div style="margin-left:5px;margin-top:5px; margin-right:20px;">
+                <img width="80px" src="@Url.Content("~/images/logo/tracoc.png")" />
+            </div>
+            <div class ="transaction-header">
+                <div>
+                    <div >
+                        <h4>@("+" + (-item.Total).ToString())</h4>
+                        
+                    </div>
+                    <div>
+                        <p>Nội dung: Hoàn trả giao dịch có mã #@item.BookingId</p>
+                    </div>
+                    <div>
+                        <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
+                    </div>
+                </div>
+                <span class="transaction-date">@item.CreatedOn</span>
+            </div>
+           
+        </div>
+    }
+    else
+    {
+        <div class="thanhtoan">
+            <div style="margin-left:5px;margin-top:5px; margin-right:20px;">
+                <img width="80px" src="@Url.Content("~/images/logo/thanhtoantc.png")" />
+            </div>
+            <div class="transaction-header">
+                <div>
+                    <div >
+                        <h4>@("-" + (item.Total).ToString())</h4>
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Tổng tiền
-            </th>
-            <th>
-                Ngày giao dịch
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @{
-                    if (item.Total < 0)
-                    {
-                        @("+" + (-item.Total).ToString())
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(modelItem => item.Total)
-                    }
-                }
-
-
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
-            </td>
-        </tr>
+                    </div>
+                    <div>
+                        <p>Nội dung: Thanh toán giao dịch có mã #@item.BookingId</p>
+                    </div>
+                    <div>
+                        <a asp-action="Details" asp-route-id="@item.Id">  Chi tiết hóa đơn</a>
+                    </div>
+                </div>
+                <span class="transaction-date">@item.CreatedOn</span>
+            </div>
+        </div>
+    }
 }
-    </tbody>
-</table>
+
+<style>
+    .tracoc, .thanhtoan {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 15px;
+        color: white;
+    }
+
+    .tracoc {
+        display: flex;
+        width: 100%;
+        background-color: rgb(60, 179, 113);
+    }
+
+    .thanhtoan {
+        display:flex;
+        width:100%;
+        background-color: rgb(171, 64, 64);
+    }
+
+    .transaction-header {
+        width:100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .transaction-header h4 {
+            margin: 0;
+        }
+
+    .transaction-date {
+        font-size: 12px;
+    }
+
+    .transaction-content, .transaction-details {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+        .transaction-content p, .transaction-details a {
+            margin: 0;
+        }
+
+        .transaction-details a {
+            color: white;
+            text-decoration: underline;
+        }
+</style>

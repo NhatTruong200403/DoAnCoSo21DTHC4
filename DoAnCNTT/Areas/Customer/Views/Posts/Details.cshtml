@@ -62,8 +62,8 @@
                         }
                         else
                         {
-                            <li style="margin-left:-35px;">
-                                chưa có chuyến
+                            <li style="margin-left:-35px;margin-right:15px;">
+                                Chưa có chuyến
                             </li>
                         }
 
@@ -78,8 +78,12 @@
                     @{
                         if (currentUser == null)
                         {
-                            <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
-
+                             
+                            <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" 
+                             asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" 
+                            asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+                            
+                            
                         }
                         else
                         {
@@ -109,7 +113,16 @@
                                 }
                                 else
                                 {
-                                    <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+                                    // <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+                                   
+                                    if(@ViewBag.Favorite != 0){
+                                        <a class="nav-normal azzzz" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id"  asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite"><img src="@Url.Content("~/images/logo/fulltim.png")" /></a>
+                                    }
+                                    else{
+                                        <a class="nav-normal azzzz" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id"  asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite"><img src="@Url.Content("~/images/logo/timtrong.png")" /></a>
+                                    }
+
+
                                     <a asp-area="Employee" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" asp-controller="Reports" asp-action="Create" asp-route-id="@Model?.Id"><img style="width:20px;" src="@Url.Content("~/images/logo/error.png")" />  Báo cáo</a>
                                 }
                             }
@@ -433,6 +446,9 @@
 
 
         <style>
+            .azzzz img{
+                width:50px;
+            }
             .none{
                 display:none;
             }

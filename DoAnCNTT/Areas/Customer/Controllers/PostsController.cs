@@ -69,6 +69,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            var user = await _userManager.GetUserAsync(User);
             if (id == null)
             {
                 return NotFound();
@@ -84,6 +85,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                 return NotFound();
             }
             await IsPostAvailable(post);
+            
             ViewData["PostAmenities"] = _context.PostAmenities.Include(pa => pa.Amenity).Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity).ToList();
             ViewData["PostIMG"] = _context.Amenities.ToList();
             ViewData["PostImages"] = _context.PostImages.Where(p => p.PostId == id).Select(p => p.Url).ToList();
@@ -92,6 +94,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewData["Cmt"] = _context.Ratings.Where(p => p.PostId == id).ToList();
             var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
             ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
+            ViewData["Favorite"] = _context.Favorite.Where(p => p.UserId == user.Id && p.PostId == id).Count();
             await UpdateAvgRating(post);
             return View(post);
         }
