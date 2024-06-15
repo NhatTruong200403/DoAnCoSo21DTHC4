@@ -413,6 +413,7 @@
                 PrePayment = Model!.Price * (decimal)0.3,
             };
                     ViewBag.UserID = Model.UserId;
+                    ViewBag.CurrentUserId = currentUser!.Id;
                     ViewBag.IsAvailable = Model.IsAvailable;
                     <partial name="../Bookings/Create.cshtml" model="booking" />
                 }

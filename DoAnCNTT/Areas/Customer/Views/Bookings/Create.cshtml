@@ -80,12 +80,8 @@
 
             <div class="form-group">
                 @{
-                    
-                    if (@ViewBag.IsAvailable == false)
-                    {
-                        <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
-                    }
-                    else if (@Model.Post.UserId == @ViewBag.UserID)
+
+                    if (@ViewBag.IsAvailable == false || @ViewBag.UserID == @ViewBag.CurrentUserId)
                     {
                         <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
                     }

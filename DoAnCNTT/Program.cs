@@ -27,17 +27,17 @@ builder.Services.AddControllersWithViews();
 
 var configuration = builder.Configuration;
 
-builder.Services.AddAuthentication().AddGoogle(options =>
-{
-    options.ClientId = configuration["Authentication:Google:ClientId"];
-    options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-    options.Scope.Add("profile");
-    options.Events.OnCreatingTicket = (context) =>
-    {
-        context.Identity.AddClaim(new Claim("picture", context.User.GetProperty("picture").ToString()));
-        return Task.CompletedTask;
-    };
-});
+//builder.Services.AddAuthentication().AddGoogle(options =>
+//{
+//    options.ClientId = configuration["Authentication:Google:ClientId"];
+//    options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+//    options.Scope.Add("profile");
+//    options.Events.OnCreatingTicket = (context) =>
+//    {
+//        context.Identity.AddClaim(new Claim("picture", context.User.GetProperty("picture").ToString()));
+//        return Task.CompletedTask;
+//    };
+//});
 
 var app = builder.Build();
 
