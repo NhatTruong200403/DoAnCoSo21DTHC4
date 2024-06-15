@@ -12,7 +12,7 @@
 
             <!-- Form tìm kiếm cho khách hàng -->
             <form asp-area="" asp-controller="Home" asp-action="ViewSearch" method="get" style="">
-                <label class="la">Tìm xe cho bạn</label>
+                <label class="la">Tìm xe</label>
                 <div style="display:flex;justify-content:space-between;">
                     <div style="display:flex;" class="mar">
                         <label class="label1">Hãng xe: </label>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div id="search-results" class="dropdown-content"></div>
-                <input class="ButtonSearch" type="submit" value="Search" />
+            <input class="ButtonSearch" type="submit" value="Tìm kiếm" />
             </form>
         
     </nav>
@@ -84,12 +84,16 @@
                     <td>@Html.DisplayFor(modelItem => item.HasDriver)</td>
                     <td>@Html.DisplayFor(modelItem => item.Price)</td>
                     <td>
-                        <a asp-action="Delete" class="btn" asp-route-id="@item.Id">Xóa</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Delete" class="btn" asp-route-id="@item.Id">Xóa</a>
+                        }
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+
 }
 else
 {
@@ -251,13 +255,34 @@ else
         <div style="margin-top:30px;">
             <div style="font-size:30px;font-weight:bold;margin-bottom:10px;"> Hướng dẫn thuê xe trên trang web GoWheels </div>
             <div style="display:flex">
-                <div class="box" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;">
+                <div class="box1" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;">
+                    <img style="width: 305px;height: 345px;" src="@Url.Content("~/images/logo/sss1.png")" />
+                    <label>
+                        1. Tìm kiếm xe theo nhu cầu
+                    </label>
                 </div>
-                <div class="box" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;"></div>
-                <div class="box" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;"></div>
-                <div class="box" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;"></div>
+                <div class="box1" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;">
+                    <img style="width: 305px;height: 345px;" src="@Url.Content("~/images/logo/sss2.png")" />
+                    <label>
+                        2. Chọn ngày thuê và ngày trả
+                    </label>
+                </div>
+                <div class="box1" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;">
+                    <img style="width: 305px;height: 345px;" src="@Url.Content("~/images/logo/sss3.png")" />
+                    <label>
+                        3. Đặt cọc xe 
+                    </label>
+                </div>
+                <div class="box1" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;">
+                    <img style="width: 305px;height: 345px;" src="@Url.Content("~/images/logo/sss4.png")" />
+                    <label>
+                        4. Liên hệ với chủ xe và nhận xe
+                    </label>
+                </div>
             </div>
         </div>
+
+        
     </section>
 }
 
@@ -414,6 +439,18 @@ else
         border-radius: 15px;
     }
 
+    .box1 {
+        width: 305px;
+        height: 375px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        text-align: center;
+    }
+    .box1 label{
+        margin-top: -10px;
+        font-weight:bold;
+        font-size:20px;
+    }
     .pta {
         padding: 0px;
         margin: 10px;

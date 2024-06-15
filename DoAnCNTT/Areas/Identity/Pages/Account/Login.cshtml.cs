@@ -126,6 +126,7 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account
                 if (user.LockoutEnd > DateTime.Now)
                 {
                     _logger.LogWarning("User account locked out.");
+                    TempData["LockoutEnd"] = user.LockoutEnd?.ToString("dd/MM/yyyy HH:mm");
                     return RedirectToPage("./Lockout");
                 }
                 if (result.Succeeded)

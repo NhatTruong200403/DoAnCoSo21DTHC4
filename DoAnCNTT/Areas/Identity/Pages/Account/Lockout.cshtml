@@ -4,16 +4,17 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "Trang chủ";
-    var currentUser = await UserManager.GetUserAsync(User);
+    var lockoutEnd = TempData["LockoutEnd"] as string;
 }
 <style>
     .lockout-container {
-        max-width: 600px;
+        max-width: 800px;
         margin: 50px auto;
         padding: 20px;
         border: 1px solid #dc3545;
         border-radius: 10px;
         background-color: #f8d7da;
+        border-radius:10px;
     }
 
     .lockout-header {
@@ -22,35 +23,26 @@
 
     .lockout-message {
         color: #721c24;
+        margin-right:15px;
+    }
+
+    .text-center{
+        margin-top:15px;
     }
 </style>
 <body>
-    @{
-        if(User.IsInRole("Customer"))
-        {
+    
             <div class="container lockout-container">
+               
                 <header class="lockout-header text-center">
-                    <h1>@ViewData["Title"]</h1>
-                    <p class="lockout-message">Tài khoản của bạn đã bị khóa đến <strong>@currentUser?.LockoutEnd?.ToString("dd/MM/yyyy HH:mm")</strong>.</p>
+                    <h1>  <img style="width:45px;height:45px;margin-top:10px;margin-left:15px;" src="@Url.Content("~/images/logo/denied.png")" /> Đăng nhập thất bại.</h1>
+            <p class="lockout-message">Tài khoản của bạn đã bị khóa đến <strong>@lockoutEnd</strong>.</p>
                 </header>
                 <div class="text-center">
                     <p class="mb-0">Nếu bạn cần hỗ trợ, vui lòng liên hệ với quản trị viên của hệ thống.</p>
                     <a href="https://www.facebook.com/profile.php?id=100009953740724" class="btn btn-danger mt-3">Liên hệ hỗ trợ</a>
                 </div>
             </div>
-        }
-        else
-        {
-            <div class="container lockout-container">
-                <header class="lockout-header text-center">
-                    <h1>@ViewData["Title"]</h1>
-                    <p class="lockout-message">Tài khoản của bạn đã bị vô hiệu hóa</p>
-                </header>
-            </div>
-        }
-    }
+       
 
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

@@ -199,9 +199,19 @@
                     Các tiện nghi khác
                 </div>
                 <div class="grid-li">
-                    @foreach (var amenity in ViewBag.PostAmenities)
+
+                    @foreach (var amenity in @ViewBag.PostAmenities)
                     {
-                        var foundImage = false;
+
+                        <div class="item1" style="padding:10px;">
+                            <img src="@amenity.IconImage" style="width:24px;margin-right:10px;" alt="@amenity.Name" />
+                            <span>@amenity.Name</span>
+                        </div>
+
+
+
+
+                        @* var foundImage = false;
                         foreach (var img in ViewBag.PostIMG)
                         {
                             if (img.Name == amenity.Name)
@@ -219,7 +229,7 @@
                             <div class="item">
                                 No image found for @amenity.Name
                             </div>
-                        }
+                        } *@
                     }
                 </div>
             </div>
@@ -251,12 +261,8 @@
 
 
             <div>
-                <div class="font">Điều khoản</div>
-            </div>
-
-            <div>
                 <div class="font">
-                    Chính sách hủy chuyến
+                    Chính sách hủy chuyến : <a asp-controller="Home" asp-action="Dieukhoan" class="font1">Đọc điều khoản tại đây.</a>
                 </div>
             </div>
 
@@ -472,6 +478,12 @@
 
             .font {
                 font-size: 25px;
+            }
+
+            .font1 {
+                font-size: 20px;
+                color:blue;
+                text-decoration:underline;
             }
 
             .mar {

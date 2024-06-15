@@ -4,12 +4,6 @@
     ViewData["Title"] = "Danh sách tiện nghi";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<form asp-controller="Amenities" class="FormSearch dropdown" asp-action="Index" method="get" style="">
-    <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
-    <div id="search-results" class="dropdown-content">
-    </div>
-    <input class="ButtonSearch" type="submit" value="Search" />
-</form>
 <script>
     document.onready
     $(document).ready(function () {
