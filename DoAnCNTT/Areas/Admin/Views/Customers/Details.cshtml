@@ -4,7 +4,7 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "Thông tin chủ xe";
+    ViewData["Title"] = "Thông tin khách hàng";
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 @{
@@ -31,14 +31,9 @@
             <img style="border-radius:50%;" src="@Url.Content(Model.Image)" alt="User Image" />
         </div>
         <div style="margin-left:20px;">
-            <h2>Tên của chủ xe : @Model.Name</h2>
+            <h2>Tên của khách hàng : @Model.Name</h2>
             <h4>Thông tin liên hệ </h4>    
             <p>Số điện thoại: @Model.PhoneNumber</p>
-            <p hidden>Liên hệ chủ xe qua: 
-                <a href="zalos://@Model.PhoneNumber">
-                    <img style="width:30px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" src="@Url.Content("~/images/logo/zalo.png")" alt="Zalo" />
-                </a>
-            </p>
             @if (User.IsInRole("Admin"))
             {
                 <a class="nav-link den" asp-area="Admin" asp-controller="Customers" asp-action="GetBookingHistory" asp-route-userId="@Model.Id">Lịch sử đặt xe</a>
@@ -49,7 +44,7 @@
     </div>
     <hr style="width:100%;"/>
     <div style="margin-left:10px;" >
-        <h3 style="margin-left:10px;">Các bài viết khác của chủ xe</h3>
+        <h3 style="margin-left:10px;">Các bài viết khác</h3>
         <section class="py-2">
             <div class="container ">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify_content-center">
@@ -111,7 +106,7 @@
                     else
                     {
                         <span>
-                            Chủ xe không có bài viết khác
+                            Chưa có bài viết
                         </span>
                     }
                 </div>
