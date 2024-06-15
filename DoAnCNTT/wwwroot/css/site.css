@@ -5,7 +5,12 @@
     --primary-color: #f90a39;
     --text-color: #1d1d1d;
     --bg-color: #f1f1fb;
+    --color-primary1: #1ee156;
+    --color-white1: #eaeaea;
+    --color-dark1: #333;
+    --color-black1: #222;
 }
+
 * {
     margin: 0;
     padding: 0;
@@ -16,7 +21,7 @@
 }
 body {
     /*background: url(/images/background.jpg) no-repeat;*/
-    background-color:rgba(224, 224, 224, 0.952);
+    background-color:white;
     background-size: cover;
     background-position: center;
     margin-bottom: 60px;
@@ -237,15 +242,33 @@ details p {
     margin-top:20px;
 }
 .btn {
-    background-color: #1ee156;
-    border:none;
+    background-color: #4c4c4c;
+    border: none;
+    color:white ;
 }
+    .btn:hover {
+        color: #4c4c4c;
+        background-color: white;
+        border:1px solid #4c4c4c;
+        transition:0.3s;
+    }
 
 .op {
     padding: 10px 15px!important;
 
 }
 
+
+.theloc {
+    padding: 5px 10px;
+    border: 0.5px solid #333;
+    border-radius: 15px;
+}
+
+
+.mabottom{
+    margin-bottom:30px;
+}
 
 
 
@@ -615,12 +638,19 @@ select option {
 
 .ButtonSearch {
     /*margin-right: 10px;*/
-    padding: 15px;
-    background-color: #1ee156;
+    margin-top:15px;
+    padding: 15px 25px;
+    background-color: #4c4c4c;
     color: #fff;
     border: none;
     cursor: pointer;
     border-radius: 12px;
+}
+.ButtonSearch:hover{
+    background-color:white;
+    border: 1px solid #4c4c4c;
+    color:#4c4c4c;
+    transition:0.3s;
 }
 
 .dropdown-content {
@@ -794,3 +824,217 @@ select option {
     top: 68px;
 }
 
+
+
+
+/*header maume*/
+
+
+.container5 {
+    max-width: 1620px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.header {
+    margin-left:-120px;
+    margin-top:-10px;
+    width: 120%;
+    height: 100vh;
+    display: flex;
+    position: fixed;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background-size:cover;
+    
+}
+
+.header-left {
+    max-width: 620px;
+    position: relative;
+    margin-right:-100px;
+}
+
+    .header-left h1 {
+        font-size: 54px;
+        line-height: 1.2;
+        color: var(--color-black1);
+        animation: H1Ani forwards 1s ease;
+        opacity: 0;
+        animation-delay: 1s;
+    }
+
+    .header-left h3 {
+        font-size: 40px;
+        font-weight: 400;
+        color: var(--color-primary1);
+        margin-top: .5rem;
+        animation: H1Ani forwards 1s ease;
+        opacity: 0;
+        animation-delay: .8s;
+    }
+
+    .header-left p {
+        margin: 15px 0 30px;
+        line-height: 150%;
+        font-size: 16px;
+        animation: logoAni forwards 1s ease;
+        opacity: 0;
+        animation-delay: .6s;
+    }
+
+.header-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.header-right {
+    position: relative;
+    width: 450px;
+    height: 450px;
+    transform: rotate(45deg);
+    margin-left:-50px;
+}
+
+.sq-box {
+    height: 100%;
+    width: 100%;
+    border: 25px solid var(--color-primary1);
+    background: var(--color-white1);
+    box-shadow: -15px 15px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    animation: zoomOut 1s ease forwards;
+    animation-delay: 1.3s;
+}
+
+    .sq-box img {
+        position: absolute;
+        transform: rotate(-45deg);
+        max-width: 700px;
+        top: 130px;
+        left: -180px;
+        opacity: 0;
+        animation: carAni forwards 1s ease;
+        animation-delay: 1.6s;
+    }
+
+.sq-box2 {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    background: var(--color-primary1);
+    transform: rotate(45deg);
+    top: -30%;
+    right: -76%;
+
+    z-index: -1;
+    opacity: 0;
+    animation: sqbox2Ani forwards 1s ease;
+    animation-delay: .3s;
+}
+/* .......................End Header Section...................... */
+
+
+
+/* .......................Animation Start...................... */
+@keyframes logoAni {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes NavliaAni {
+    0% {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes socialAni {
+    0% {
+        transform: translateX(100px) rotate(45deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0) rotate(45deg);
+        opacity: 1;
+    }
+}
+
+@keyframes H1Ani {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes zoomOut {
+    0% {
+        transform: scale(1.1);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes carAni {
+    0% {
+        transform: translate(180px, -300px) scale(0) rotate(-45deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1) rotate(-45deg);
+        opacity: 1;
+    }
+}
+
+@keyframes sqbox2Ani {
+    0% {
+        right: -40%;
+        opacity: 0;
+    }
+
+    100% {
+        right: -26%;
+        opacity: 1;
+    }
+}
+
+
+/*
+nutdangnhap*/
+.Submit:hover {
+    color: #4c4c4c;
+    background-color: white;
+    border:1px solid #4c4c4c;
+    transition:0.3s;
+}
+
+.Submit {
+    background-color: #4c4c4c;
+}

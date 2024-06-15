@@ -120,8 +120,8 @@
                 @Html.DisplayFor(modelItem => item.IsDeleted)
             </td>
             <td>
-                    <a asp-action="Edit" class=" btn" asp-route-id="@item.Id">Chỉnh sửa</a> |
-                    <a asp-action="Details" class="btn" asp-route-id="@item.Id">Chi tiết</a>
+                    <a asp-action="Edit" class=" btn" asp-route-id="@item.Id">Chỉnh sửa</a>
+                    <a asp-action="Details" class="btn" style="margin-top:20px;" asp-route-id="@item.Id">Chi tiết</a>
             </td>
         </tr>
 }

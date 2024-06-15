@@ -10,7 +10,7 @@
         <section>
             <form id="account" method="post">
                 <h1 style="margin-left:25%;margin-bottom:10px;">Đăng nhập</h1>
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                
                 <div class="form-floating mb-3">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                     <label asp-for="Input.Email" class="form-label">Email</label>
@@ -21,12 +21,13 @@
                     <label asp-for="Input.Password" class="form-label">Password</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="">
+                <div class="" style="margin-bottom:5px;">
                 <label asp-for="Input.RememberMe" class="form-label">
                         <input class="form-check-input"  asp-for="Input.RememberMe" />
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div>
                 <button id="login-submit" type="submit" style="margin-top:-10px;margin-bottom:5px;" class="w-100 btn btn-lg btn-primary Submit" >Đăng nhập</button>
                 </div>
@@ -116,10 +117,6 @@
     .tatmau {
         text-decoration: blink;
         color: black;
-    }
-
-    .Submit {
-        background-color: #1ee156;
     }
 </style>
 

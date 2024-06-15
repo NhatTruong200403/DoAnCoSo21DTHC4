@@ -4,56 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (User.IsInRole("Admin"))
+@if (User.IsInRole("Employee") || User.IsInRole("Admin"))
 {
 
-    <form class="FormSearch dropdown" action="/Home/ViewSearch" method="get" style="">
-        <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm Sản phẩm" />
-        <div id="search-results" class="dropdown-content"></div>
-        <input class="ButtonSearch" type="submit" value="Search" />
-    </form>
-
-    <h1>Danh sách bài đăng</h1>
-
-    <table style="min-height:500px;" class="table">
-        <thead>
-            <tr>
-                <th>Tên</th>
-                <th>Hình ảnh</th>
-                <th>Mô tả</th>
-                <th>Địa chỉ nhận</th>
-                <th>Có tài xế</th>
-                <th>Giá</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <a asp-controller="Posts" asp-area="Customer" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-                    </td>
-                    <td>
-                        <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px" />
-                    </td>
-                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                    <td>@Html.DisplayFor(modelItem => item.RentLocation)</td>
-                    <td>@Html.DisplayFor(modelItem => item.HasDriver)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
     <nav style="border-radius:15px;padding:20px 30px; margin-top:20px;" class="SearchCar">
-        @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
-        {
+       
+
             <!-- Form tìm kiếm cho khách hàng -->
             <form asp-area="" asp-controller="Home" asp-action="ViewSearch" method="get" style="">
                 <label class="la">Tìm xe cho bạn</label>
@@ -86,7 +42,7 @@ else
                             <option value="Điện">Điện</option>
                         </select>
                     </div>
-                    <div class="mar">
+                    <div class="mar" hidden>
                         <label class="label"> Tài Xế Riêng:</label>
                         <label class="" style="margin-left:-30px;">
                             <input class="checkbox" style="width:30px;height:30px;" type="checkbox" name="HasDriver" value="false" onclick="updateCheckboxValue(this)" />
@@ -96,8 +52,69 @@ else
                 <div id="search-results" class="dropdown-content"></div>
                 <input class="ButtonSearch" type="submit" value="Search" />
             </form>
-        }
+        
     </nav>
+
+    <h1>Danh sách bài đăng</h1>
+
+    <table style="min-height:500px;" class="table">
+        <thead>
+            <tr>
+                <th>Tên</th>
+                <th>Hình ảnh</th>
+                <th>Mô tả</th>
+                <th>Địa chỉ nhận</th>
+                <th>Có tài xế</th>
+                <th>Giá</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Posts" asp-area="Customer" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                    </td>
+                    <td>
+                        <img src="@item.Image" alt="hinhanh.jpg" style="width: 200px" />
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RentLocation)</td>
+                    <td>@Html.DisplayFor(modelItem => item.HasDriver)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    <td>
+                        <a asp-action="Delete" class="btn" asp-route-id="@item.Id">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
+    {
+        <div class="header">
+            <div class="container5 header-container">
+            <div class="header-left">
+                <h1>Thuê xe nhanh chóng tiện lợi.</h1>
+                <h3>Phủ sóng 4 thành phố lớn nhất Việt Nam</h3>
+                <p>
+                    Với rất nhiều loại xe, hãng xe, tiện nghi bạn có thể tùy chọn, đáp ứng mọi nhu cầu của khách hàng.
+                </p>
+                <a style="color:white; padding:15px 25px;" asp-action="ViewSearch" class="btn">Thuê xe ngay</a>
+            </div>
+            <div class="header-right">
+                <div class="sq-box">
+                    <img src="@Url.Content("~/images/logo/car2.png")" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="sq-box2"></div>
+    </div>
+    }
+    
 
     @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
     {
@@ -179,9 +196,9 @@ else
             <div class="row">
                 @foreach (var item in Model)
                 {
-                    <div class="box" style="padding:3px;margin-inline:8.7px;background-color:white;border:0.5px solid #1ee156;margin-bottom:15px;">
+                    <div class="box" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;">
                         <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
-                            <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;border:0.5px solid #1ee156;" />
+                            <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);" />
                         </div>
                         <div class="ptb">
                             @if (item.Gear)

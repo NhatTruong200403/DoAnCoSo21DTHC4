@@ -18,7 +18,19 @@
         <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;margin-bottom:20px;background-color:white;border-radius:5px;">
             <div class="tren">
                 <div class="trai">Tên chủ xe : @currentUser.Name</div>
-                <div class="phai" style="color:orange;font-size:20px;">@item.Status</div>
+                @if (item.Status == "Hoàn tất")
+                {
+                    <div class="phai" style="color:#1ee156;font-size:20px;">@item.Status</div>
+                }
+                else if(item.Status == "Đang xử lí")
+                {
+                    <div class="phai" style="color:red;font-size:20px;">@item.Status</div>
+                }
+                else
+                {
+                    <div class="phai" style="color:orange;font-size:20px;">@item.Status</div>
+                }
+                
             </div>
             <hr />
             <div class="giua">
@@ -35,16 +47,19 @@
             <hr />
             <div class="duoi">
                 <div class="trai">
-                    <a asp-action="Details" asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Xem chi tiết</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" style="padding:13px 20px;background-color:#4c4c4c;border-radius:5px;color:white;">Xem chi tiết</a>
                     @if (@item.RecieveOn <= @DateTime.Now)
                     {
-                        <a asp-action="Delete" hidden asp-route-id="@item.Id" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Yêu cầu trả cọc</a>
+                        <a asp-action="Delete" hidden asp-route-id="@item.Id" style="padding:13px 20px;background-color:#4c4c4c;border-radius:5px;color:white;">Yêu cầu trả cọc</a>
                     }
                     else
                     {
-                        <a id="cancelOrderButton" style="padding:13px 20px;background-color:cadetblue;border-radius:5px;">Yêu cầu trả cọc</a>
-
-
+                        if (item.Status != "Đang xử lí")
+                        {
+                            
+                                <a id="cancelOrderButton" style="padding:13px 20px;background-color:#4c4c4c;border-radius:5px;cursor: pointer;color:white;">Yêu cầu trả cọc</a>
+                        }
+                            
 
                         <div id="cancelOrderPopup" class="popup">
 
@@ -86,7 +101,7 @@
                                         <input type="submit" value="Xác nhận" class="btn btn-danger" />
                                     </form>
 
-                                    <button type="button" id="cancelOrderCancel" style="background-color:gray;margin-left:15px;" class="btn btn-secondary">Hủy bỏ</button>
+                                    <button type="button" id="cancelOrderCancel" style="background-color:gray;margin-left:15px;color:white;" class="btn btn-secondary">Hủy bỏ</button>
                                 </div>
                             </div>
 
@@ -96,7 +111,7 @@
                     }
                     @if (item.Status == "Hoàn tất")
                     {
-                        <a style="padding:13px 20px;background-color:cadetblue;border-radius:5px;" id="@toggleButtonId">Bình luận</a>
+                        <a style="padding:13px 20px;background-color:#4c4c4c;border-radius:5px;color:white;" id="@toggleButtonId">Bình luận</a>
                         <div id="@commentSectionId" style="margin-top:20px;" class="none">
                             @{
                                 var newRating = new Rating()

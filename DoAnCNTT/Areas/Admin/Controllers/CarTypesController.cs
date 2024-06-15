@@ -42,7 +42,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string query, int pageNumber = 1)
         {
-            int pageSize = 6;
+            int pageSize = _context.CarTypes.Count();
             IQueryable<CarType> Query;
             if (query != null)
             {

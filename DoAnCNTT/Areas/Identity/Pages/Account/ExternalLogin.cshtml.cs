@@ -85,6 +85,9 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
         }
         
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -132,7 +135,7 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account
                 {
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
                     };
                 }
                 return Page();
@@ -144,7 +147,7 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             // Get the information about the user from the external login provider
             var info = await _signInManager.GetExternalLoginInfoAsync();
-
+            
             string picture = info.Principal.FindFirstValue("picture");
             string email = info.Principal.FindFirstValue(ClaimTypes.Email);
             string firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
@@ -160,7 +163,7 @@ namespace DoAnCNTT.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.Image = picture;
                 user.Name = firstName;
-
+                user.PhoneNumber = Input.PhoneNumber;
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None); 
                 var result = await _userManager.CreateAsync(user);

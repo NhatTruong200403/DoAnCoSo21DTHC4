@@ -7,18 +7,18 @@
 }
 
 <h1>Danh sách nhân viên</h1>
-<form class="FormSearch dropdown" asp-area="Admin" asp-controller="Employees" asp-action="SearchEmployees" style="">
+<form class="FormSearch dropdown" asp-area="Admin"  asp-controller="Employees" asp-action="SearchEmployees" style="margin-bottom:30px;">
     <input id="search-input" style="border:none;" class="InfoSearch" type="text" name="query" placeholder="Tìm SDT hoặc Email" />
     <div id="search-results" class="dropdown-content"></div>
     <input class="ButtonSearch" type="submit" value="Search" />
 </form>
 @if (isFilteringLockedAccounts)
 {
-    <a asp-area="Admin" asp-controller="Employees" asp-action="Index" asp-route-showLockedAccounts="false">Hiển thị tất cả tài khoản</a>
+    <a asp-area="Admin" class="theloc" asp-controller="Employees" asp-action="Index" asp-route-showLockedAccounts="false">Hiển thị tất cả tài khoản</a>
 }
 else
 {
-    <a asp-area="Admin" asp-controller="Employees" asp-action="Index" asp-route-showLockedAccounts="true">Lọc tài khoản bị khóa</a>
+    <a asp-area="Admin" class="theloc" asp-controller="Employees" asp-action="Index" asp-route-showLockedAccounts="true">Lọc tài khoản bị khóa</a>
 }
 <table class="table">
     <thead>
@@ -65,7 +65,7 @@ else
                         Bị khóa
                     </td>
                     <td>
-                        <a asp-area="Admin" asp-controller="Employees" asp-action="UnlockAccount" asp-route-userId="@item.Id">Mở khóa</a>
+                        <a asp-area="Admin" class="btn" asp-controller="Employees" asp-action="UnlockAccount" asp-route-userId="@item.Id">Mở khóa</a>
                     </td>
                 }
                 else
@@ -74,7 +74,7 @@ else
 
                     </td>
                     <td>
-                        <a asp-area="Admin" asp-controller="Employees" asp-action="LockAccount" asp-route-userId="@item.Id">Khóa tài khoản</a>
+                        <a asp-area="Admin" class="btn" asp-controller="Employees" asp-action="LockAccount" asp-route-userId="@item.Id">Khóa tài khoản</a>
                     </td>
                 }
 

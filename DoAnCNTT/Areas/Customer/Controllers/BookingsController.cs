@@ -110,7 +110,16 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             }
             else
             {
-                return Json(new { total = total - (total * promotion.DiscountValue) });
+                if (promotion.DiscountValue > 1)
+                {
+                    return Json(new { total = total - promotion.DiscountValue });
+                }
+                else
+                {
+                    return Json(new { total = total - (total * promotion.DiscountValue) });
+                    
+                }
+
             }
         }
 

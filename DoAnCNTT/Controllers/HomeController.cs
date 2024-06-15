@@ -70,8 +70,7 @@ namespace DoAnCNTT.Controllers
         public async Task<IActionResult> Index(string company, int seat, string gear, string fuel, bool hasDriver, int pageNumber = 1)
         {
             int pageSize = 8;
-            IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled).Take(8);
-            
+            IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled).OrderByDescending(p=>p.AvgRating).Take(8);
             return View(carsQuery);
         }
 

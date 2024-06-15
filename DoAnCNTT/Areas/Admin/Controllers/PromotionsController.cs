@@ -44,7 +44,8 @@ namespace DoAnCNTT.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(string query, int pageNumber = 1)
         {
-            int pageSize = 6;
+            int pageSize = _context.Promotions.Count();
+
             IQueryable<Promotion> Query;
             if (query != null)
             {

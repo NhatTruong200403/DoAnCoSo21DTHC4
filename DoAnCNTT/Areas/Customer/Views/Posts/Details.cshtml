@@ -78,10 +78,8 @@
                     @{
                         if (currentUser == null)
                         {
-                             
-                            <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" 
-                             asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" 
-                            asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
+
+                            <a class="nav-normal azzzz" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-action="AddToFavorite"><img src="@Url.Content("~/images/logo/timtrong.png")" /></a>
                             
                             
                         }
@@ -113,13 +111,13 @@
                                 }
                                 else
                                 {
-                                    // <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite">Thêm vào danh sách yêu thích</a>
-                                   
+                                    // <a class="nav-normal" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);border-radius:5px;" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite"><img src="@Url.Content("~/images/logo/timtrong.png")" /></a>
+
                                     if(@ViewBag.Favorite != 0){
-                                        <a class="nav-normal azzzz" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id"  asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite"><img src="@Url.Content("~/images/logo/fulltim.png")" /></a>
+                                        <a class="nav-normal azzzz"  asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id" asp-route-userId="@currentUser!.Id" asp-action="RemoveFromFavoriteList"><img src="@Url.Content("~/images/logo/fulltim.png")" /></a>
                                     }
                                     else{
-                                        <a class="nav-normal azzzz" style="padding:15px 20px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id"  asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite"><img src="@Url.Content("~/images/logo/timtrong.png")" /></a>
+                                        <a class="nav-normal azzzz"  asp-area="Customer" asp-controller="Favorites" asp-route-id="@Model.Id"  asp-route-userId="@currentUser!.Id" asp-action="AddToFavorite"><img src="@Url.Content("~/images/logo/timtrong.png")" /></a>
                                     }
 
 
@@ -414,6 +412,7 @@
                 FinalValue = Model!.Price,
                 PrePayment = Model!.Price * (decimal)0.3,
             };
+                    ViewBag.UserID = Model.UserId;
                     ViewBag.IsAvailable = Model.IsAvailable;
                     <partial name="../Bookings/Create.cshtml" model="booking" />
                 }

@@ -84,6 +84,10 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             {
                 return NotFound();
             }
+            if(user != null)
+            {
+                ViewData["Favorite"] = _context.Favorite.Where(p => p.UserId == user.Id && p.PostId == id && p.IsDeleted == false).Count();
+            }
             await IsPostAvailable(post);
             
             ViewData["PostAmenities"] = _context.PostAmenities.Include(pa => pa.Amenity).Where(p => p.PostId == id && post.IsDeleted == false).Select(p => p.Amenity).ToList();
@@ -94,7 +98,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             ViewData["Cmt"] = _context.Ratings.Where(p => p.PostId == id).ToList();
             var promotions = _context.Promotions.Where(p => p.IsDeleted == false).ToList();
             ViewData["Promotions"] = new SelectList(promotions, "Id", "Content");
-            ViewData["Favorite"] = _context.Favorite.Where(p => p.UserId == user.Id && p.PostId == id).Count();
+            
             await UpdateAvgRating(post);
             return View(post);
         }
