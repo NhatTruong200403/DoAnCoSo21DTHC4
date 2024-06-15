@@ -48,7 +48,7 @@
             </td>
             <td>
                 <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">Chi tiết xe</a> 
-                <a asp-action="RemoveFromFavoriteList" asp-route-id="@item.PostId" asp-route-userId="@item.UserId">Bỏ yêu thích</a>
+                <a asp-action="RemoveFromFavoriteList" asp-route-redirectSignal="@true" asp-route-id="@item.PostId" asp-route-userId="@item.UserId">Bỏ yêu thích</a>
             </td>
         </tr>
 }

@@ -64,8 +64,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                                 .ToList();
             return View(favorites);
         }
-        [HttpPost]
-        public async Task<IActionResult> RemoveFromFavoriteList(int id, string userId)
+        public async Task<IActionResult> RemoveFromFavoriteList(int id, string userId, bool redirectSignal)
         {
             if (userId == null || id == null)
             {
@@ -79,7 +78,11 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             favoritePost.IsDeleted = true;
             _context.Favorite.Update(favoritePost);
             _context.SaveChanges();
-            return RedirectToAction("FavoriteList", new { userId = userId });
+            if (redirectSignal == true)
+            {
+                return RedirectToAction("FavoriteList", new { userId = userId });
+            }
+            return RedirectToAction("Details", "Posts", new { id = favoritePost.PostId }); ;
         }
     }
 }
