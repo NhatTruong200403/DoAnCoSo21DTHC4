@@ -10,47 +10,38 @@
         
         Danh sách xe yêu thích
     </div>
-
-
 </div>
-<table class="table">
-    <thead >
-        <tr style="background-color:#ccffcc">
-            <th>
-                Tên
-            </th>
-            <th>
-                Hình xe
-            </th>
-            <th>
-                Loại xe
-            </th>
-            <th>
-                Hãng xe
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Post.Name)
-            </td>
-            <td>
-                <img src="@item.Post.Image" alt="hinhanh.jpg" style="width: 200px">
-            </td>
-            <td>
+        <div style="display:flex;justify-content:space-between;padding:20px 30px; margin-top:20px;text-align:center;border:1px solid black;border-radius:15px;">
+            <div>
+            <div style="padding:10px 20px;font-size:25px;">
+                    @Html.DisplayFor(modelItem => item.Post.Name)
+                </div>
+                <div>
+                    <img src="@item.Post.Image" alt="hinhanh.jpg" style="width: 200px;border-radius:10px;">
+                </div>
+                
+            </div>
+            <div>
+            <div style="padding:20px 30px;font-size:20px;">
+                Loại xe:
                 @Html.DisplayFor(modelItem => item.Post.CarType.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Post.Company.Name)
-            </td>
-            <td>
-                <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">Chi tiết xe</a> 
-                <a asp-action="RemoveFromFavoriteList" asp-route-redirectSignal="@true" asp-route-id="@item.PostId" asp-route-userId="@item.UserId">Bỏ yêu thích</a>
-            </td>
-        </tr>
+                </div>
+                <div style="padding:20px 30px;font-size:20px;">
+                    Hãng xe:
+                    @Html.DisplayFor(modelItem => item.Post.Company.Name)
+                </div>
+            </div>
+            <div>
+                <div style="margin:10px 20px;">
+                <a asp-controller="Posts" style="padding:7px;border:1px solid black;border-radius:50%;" asp-action="Details" asp-route-id="@item.PostId"><img width="25px" height="25px" src="@Url.Content("~/images/logo/listbook.png")" /></a>
+                </div>
+            <div style="margin:10px 20px;margin-top:30px;">
+                <a asp-action="RemoveFromFavoriteList" style="padding:7px;border:1px solid black;border-radius:50%;" asp-route-redirectSignal="@true" asp-route-id="@item.PostId" asp-route-userId="@item.UserId"><img width="25px" height="25px" src="@Url.Content("~/images/logo/broken.png")" /></a>
+
+                </div>
+            </div>
+        </div>
 }
-    </tbody>
-</table>
+ 
