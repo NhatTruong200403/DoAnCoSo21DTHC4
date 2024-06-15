@@ -279,6 +279,19 @@ else
         }
     }
     $(document).ready(function () {
+        $(".prev-button").click(function (event) {
+            event.preventDefault(); // Prevent default action
+            var lastSlide = $(".slide").last();
+            $(".slider-container").prepend(lastSlide);
+        });
+
+        $(".next-button").click(function (event) {
+            event.preventDefault(); // Prevent default action
+            var firstSlide = $(".slide").first();
+            $(".slider-container").append(firstSlide);
+        });
+    });
+    $(document).ready(function () {
         $.ajax({
             url: '/Home/GetCarCompanies',
             type: 'GET',

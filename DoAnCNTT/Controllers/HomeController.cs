@@ -71,6 +71,7 @@ namespace DoAnCNTT.Controllers
         {
             int pageSize = 8;
             IQueryable<Post> carsQuery = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled).OrderByDescending(p=>p.AvgRating).Take(8);
+            UpdateExpiredPromotion();
             return View(carsQuery);
         }
 
@@ -124,8 +125,6 @@ namespace DoAnCNTT.Controllers
             ViewData["Gear"] = gear;
             ViewData["HasDriver"] = hasDriver;
             // Call UpdateExpiredPromotion method (assuming it's a void method)
-            UpdateExpiredPromotion();
-
             // Return the view with paginated results
             return View(paginatedCar);
         }

@@ -64,6 +64,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
                                 .ToList();
             return View(favorites);
         }
+        [HttpPost]
         public async Task<IActionResult> RemoveFromFavoriteList(int id, string userId)
         {
             if (userId == null || id == null)

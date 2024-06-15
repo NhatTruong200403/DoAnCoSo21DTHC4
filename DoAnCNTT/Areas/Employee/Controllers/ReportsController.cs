@@ -186,12 +186,31 @@ namespace DoAnCNTT.Areas.Employee.Controllers
                 if (reportedPost != null)
                 {
                     reportedPost.IsDisabled = true;
+                    await ReturnBookedPost(reportedPost.Id);
                     await UpdateUserReportPoint(reportedPost.UserId!);
                 }
             }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task ReturnBookedPost(int postId)
+        {
+            var postBookings = await _context.Booking.Where(b => b.PostId == postId && b.Status == "Đang chờ").ToListAsync();
+            foreach(var booking in postBookings)
+            {
+                booking.IsDeleted = true;
+                booking.Status = "Đã trả cọc";
+                var refundInvoice = new Invoice()
+                {
+                    Total = -(decimal)booking.PrePayment,
+                    ReturnOn = DateTime.Now,
+                    BookingId = booking.Id,
+                    CreatedOn = DateTime.Now,
+                };
+                 _context.Invoices.Add(refundInvoice);
+                await _context.SaveChangesAsync();
+            }
         }
 
         private bool ReportExists(int id)

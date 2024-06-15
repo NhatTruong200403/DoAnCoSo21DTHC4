@@ -27,7 +27,7 @@
                         <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
                     </div>
                 </div>
-                <span class="transaction-date">@item.CreatedOn</span>
+                <span class="transaction-date">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</span>
             </div>
            
         </div>
@@ -51,7 +51,7 @@
                         <a asp-action="Details" asp-route-id="@item.Id">  Chi tiết hóa đơn</a>
                     </div>
                 </div>
-                <span class="transaction-date">@item.CreatedOn</span>
+                <span class="transaction-date">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</span>
             </div>
         </div>
     }
