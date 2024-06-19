@@ -34,11 +34,13 @@
             <h2>Tên của khách hàng : @Model.Name</h2>
             <h4>Thông tin liên hệ </h4>    
             <p>Số điện thoại: @Model.PhoneNumber</p>
+            <p>Số lần bị báo cáo: @Model.ReportPoint</p>
             @if (User.IsInRole("Admin"))
             {
                 <a class="nav-link den" asp-area="Admin" asp-controller="Customers" asp-action="GetBookingHistory" asp-route-userId="@Model.Id">Lịch sử đặt xe</a>
                 <a class="nav-link den" asp-area="Admin" asp-controller="Customers" asp-action="GetPaymentHistory" asp-route-userId="@Model.Id">Lịch sử giao dịch</a>
             }
+            
           
         </div>
     </div>
@@ -54,26 +56,24 @@
                         @foreach (var item in listpost)
                         {
 
-                            <div class="box" style="padding:3px;margin-left:20px;background-color:white;">
+                            <div class="box" style="padding:3px;margin-inline:8.7px;background-color:white;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); margin-bottom:15px;">
+                        <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
+                            <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);" />
+                        </div>
+                        <div class="ptb">
+                            
+                            @if (item.IsDisabled)
+                            {
+                                <div class="ptb1 apt" style="padding:2px 4px;background-color:crimson;">Bài đăng đã bị khóa</div>
+                            }
+                            else
+                            {
+                                <div class="ptb1 apt" style="padding:2px 4px;">Đang hoạt động</div>
+                            }
 
-                                <div class="pta" style="width: 280px;height:180px; overflow: hidden;">
-                                    <img src="@item.Image" alt="" style="object-fit: cover; width: 100%; height: 100%;" />
-                                </div>
+                        </div>
 
-                                <div class="ptb">
-                                    @if (item.Gear)
-                                    {
-                                        <div class="ptb1 apt" style="padding:2px 4px;">Số tự động</div>
-                                    }
-                                    else
-                                    {
-                                        <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
-                                    }
-                                    <div class="ptb1 bpt" style="padding:2px 4px;">Giao xe tận nơi</div>
-                                    <div class="ptb1 cpt" style="padding:2px 4px;">Giảm 20%</div>
-                                </div>
-
-                        <div class="ptc"><a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
+                        <div class="ptc"><a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
                         <div class="ptd">
                             <img src="@Url.Content("~/images/logo/road-map-line.svg")" class="icon_map" alt="">
                             <span class="text_map">@Html.DisplayFor(modelItem => item.RentLocation)</span>
@@ -81,26 +81,31 @@
                         <hr>
                         <div class="pte">
                             <div class="pte_left">
+                                @*  Chưa xong *@
                                 <div class="dgsao">
                                     <img src="@Url.Content("~/images/logo/star-s-fill.svg")" class="icon_sao_danhgia" alt="">
-                                    <span class="text_saodanhgia">@Html.DisplayFor(modelItem => item.AvgRating)</span>
+                                    <span class="text_saodanhgia">@item.AvgRating</span>
                                 </div>
-
-                                        <div class="sochuyen">
-                                            <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
-                                            <div class="text_sochuyen">20 chuyến</div>
-                                        </div>
-                                        <!-- <div class="sochuyen">
-                                            Chưa có chuyến.
-                                        </div> -->
+                                @if (item.RideNumber > 0)
+                                {
+                                    <div class="sochuyen">
+                                        <img src="@Url.Content("~/images/logo/luggage-cart-line.svg")" class="icon_map" alt="">
+                                        <div class="text_sochuyen">@item.RideNumber chuyến</div>
                                     </div>
-                                    <div class="pte_right">
-                                        @* <div class="giagoc">100k</div> *@
-                                        <div class="giagiam">@Html.DisplayFor(modelItem => item.Price) /ngày</div>
+                                }
+                                else
+                                {
+                                    <div class="sochuyen">
+                                        Chưa có chuyến
                                     </div>
-                                </div>
+                                }
 
                             </div>
+                            <div class="pte_right">
+                                <div class="giagiam">@item.Price/giờ</div>
+                            </div>
+                        </div>
+                    </div>
                         }
                     }
                     else
@@ -117,6 +122,26 @@
     </div>
     </section>
 </div>
+
+
+<script>
+    
+        function formatPrice(price) {
+    if (price >= 1000) {
+        return (price / 1000) + 'k';
+    }
+    return price;
+}
+
+$(document).ready(function () {
+    $('.giagiam').each(function () {
+        var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
+        $(this).text(formatPrice(price) + '/giờ');
+    });
+});
+    
+</script>
+
 
 <style>
     .bigContai {
@@ -160,6 +185,7 @@
 
         .ptb1.apt {
             background-color: aquamarine;
+            color:white;
         }
 
         .ptb1.bpt {

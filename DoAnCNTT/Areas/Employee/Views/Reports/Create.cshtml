@@ -11,40 +11,28 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label">Nội dung</label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label">Nội dung</label>
+                    <input value="Đây là Admin gửi thông báo khóa bài." asp-for="Content" class="form-control" />
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label">Nội dung</label>
+                    <input asp-for="Content" class="form-control" />
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+            }
+           
+
             <div class="form-group" hidden>
                 <label asp-for="PostId" class="control-label"></label>
                 <input asp-for="PostId" class ="form-control">
             </div>
-@*             <div class="form-group">
-                <label asp-for="CreatedById" class="control-label"></label>
-                <input asp-for="CreatedById" class="form-control" readonly/>
-                <span asp-validation-for="CreatedById" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedOn" class="control-label"></label>
-                <input asp-for="CreatedOn" type="datetime" class="form-control" readonly/>
-                <span asp-validation-for="CreatedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModifiedById" class="control-label"></label>
-                <input asp-for="ModifiedById" class="form-control" readonly />
-                <span asp-validation-for="ModifiedById" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModifiedOn" class="control-label"></label>
-                <input asp-for="ModifiedOn" type="datetime" class="form-control" readonly />
-                <span asp-validation-for="ModifiedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                </label>
-            </div> *@
             <div class="form-group">
                 <input type="submit" value="Gửi báo cáo" class="btn btn-primary" />
             </div>

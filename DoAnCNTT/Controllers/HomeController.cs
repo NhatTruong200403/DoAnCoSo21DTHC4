@@ -29,20 +29,30 @@ namespace DoAnCNTT.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> FindUser(string id)
+        public async Task<IActionResult> FindUser(string id, int thue)
         {
+           
             var currentUser = await _userManager.GetUserAsync(User);
             var user = await _userManager.FindByIdAsync(id);
             if(currentUser !=  null)
             {
                 var userBooking = await _context.Booking.
-                                    Where(b => b.UserId == currentUser!.Id && b.Post.UserId == user!.Id).
+                                    Where(b => b.UserId == currentUser!.Id && b.Post.UserId == user!.Id && b.IsDeleted == false).
                                     ToListAsync();
                 ViewBag.userBooking = userBooking;
             }
             var listpost = await _context.Posts
                                          .Where(p => p.CreatedById == id)
                                          .ToListAsync();
+
+            if (thue == 0)
+            {
+                ViewBag.thue = false;
+            }
+            else
+            {
+                ViewBag.thue = true;
+            }
             ViewBag.listpost = listpost;
             return PartialView(user);
         }
@@ -133,10 +143,10 @@ namespace DoAnCNTT.Controllers
         {
             bool isSortAscending = sortPriceOrder ?? true;
             IQueryable<Post> sortedList = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);
-            var paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderBy(p => p.Price), 1, 6);
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderBy(p => p.Price), 1, 8);
             if (!isSortAscending)
             {
-                paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.Price), 1, 6);
+                paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.Price), 1, 8);
             }
             ViewBag.SortPriceOrder = isSortAscending;
             return View("ViewSearch", paginatedCar);
@@ -146,10 +156,10 @@ namespace DoAnCNTT.Controllers
         {
             bool isSortAscending = sortRideNumberOrder ?? true;
             IQueryable<Post> sortedList = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);
-            var paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderBy(p => p.RideNumber), 1, 6);
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderBy(p => p.RideNumber), 1, 8);
             if (!isSortAscending)
             {
-                paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.RideNumber), 1, 6);
+                paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.RideNumber), 1, 8);
             }
             ViewBag.SortRideNumberOrder = isSortAscending;
             return View("ViewSearch", paginatedCar);
@@ -159,14 +169,31 @@ namespace DoAnCNTT.Controllers
         {
             bool isSortAscending = sortRatingOrder ?? true;
             IQueryable<Post> sortedList = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);
-            var paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderBy(p => p.AvgRating), 1, 6);
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderBy(p => p.AvgRating), 1, 8);
             if (!isSortAscending)
             {
-                paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.AvgRating), 1, 6);
+                paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.AvgRating), 1, 8);
             }
             ViewBag.SortRatingOrder = isSortAscending;
             return View("ViewSearch", paginatedCar);
         }
+
+
+        public async Task<IActionResult> SortByNewPosts(bool? newposts)
+        {
+            bool isSortAscending = newposts ?? true;
+            IQueryable<Post> sortedList = _context.Posts.Where(b => !b.IsDeleted && !b.IsDisabled);
+            var paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderBy(p => p.CreatedOn), 1, 8);
+            if (!isSortAscending)
+            {
+                paginatedCar = await PaginatedList<Post>.CreateAsync(sortedList.OrderByDescending(p => p.CreatedOn), 1, 8);
+            }
+            ViewBag.SortByNewPosts = isSortAscending;
+            return View("ViewSearch", paginatedCar);
+        }
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> GetCarCompanies()

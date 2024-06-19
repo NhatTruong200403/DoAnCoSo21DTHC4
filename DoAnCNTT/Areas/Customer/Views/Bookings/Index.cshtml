@@ -17,7 +17,14 @@
 
         <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;margin-bottom:20px;background-color:white;border-radius:5px;">
             <div class="tren">
-                <div class="trai">Tên chủ xe : @currentUser.Name</div>
+                <div class="trai">Chủ xe :
+                    
+                    <a  asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-thue="1" asp-route-id="@currentUser.Id">
+                        <img src="@Url.Content(currentUser.Image)" width="35px" style="height:35px;border-radius:50%;" />
+                        @currentUser.Name
+                        </a>
+                    
+                    </div>
                 @if (item.Status == "Hoàn tất")
                 {
                     <div class="phai" style="color:#1ee156;font-size:20px;">@item.Status</div>
@@ -111,15 +118,16 @@
                     }
                     @if (item.Status == "Hoàn tất")
                     {
+                        var user = await UserManager.GetUserAsync(User);
                         <a style="padding:13px 20px;background-color:#4c4c4c;border-radius:5px;color:white;" id="@toggleButtonId">Bình luận</a>
                         <div id="@commentSectionId" style="margin-top:20px;" class="none">
                             @{
                                 var newRating = new Rating()
                     {
                         PostId = item.PostId,
-                        CreatedById = currentUser == null ? null : currentUser!.Id,
+                        CreatedById = user == null ? null : user!.Id,
                         CreatedOn = DateTime.Now,
-                        UserId = currentUser == null ? null : currentUser!.Id
+                        UserId = user == null ? null : user!.Id
                     };
                                 <partial name="../Rating/AddComment.cshtml" model="newRating" />
                             }

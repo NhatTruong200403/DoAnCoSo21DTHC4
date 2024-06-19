@@ -24,6 +24,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             _userManager = userManager;
         }
 
+        //Cập nhật trạng thái booking
         public void UpdateBookingStatus(List<Booking> bookings)
         {
             //var bookings = _context.Booking.Where(p => p.RecieveOn <= DateTime.Now && p.ReturnOn).ToList();
@@ -88,7 +89,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
         }
 
-
+        //Tính lại số tiền theo số lượng giờ thuê
         [AllowAnonymous]
         [HttpPost]
         public ActionResult CalculateMiddleDate(string startDate, string endDate, decimal total)
@@ -99,6 +100,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             int numberOfDays = (int)(end - start).TotalHours;
             return Json(numberOfDays * total);
         }
+
+        //Tính giá trị thành tiền
         [AllowAnonymous]
         public IActionResult CalculateFinalValue(decimal total, int promotionId)
         {
@@ -123,6 +126,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             }
         }
 
+        //Kiểm tra ngày tạo booking hợp lệ
         public async Task<bool> IsValidDate(Booking booking)
         {
             var existingBooking = await _context.Booking.
@@ -140,7 +144,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
         }
 
-
+        //Lấy các ngày đã được đặt cọc của bài đăng 
         [HttpGet]
         public IActionResult GetBookedDates(int id)
         {
@@ -160,7 +164,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             booking.Status = "Đang chờ";
             booking.UserId = user!.Id;
             booking.IsRequest = false;
-            var isValidDate = await IsValidDate(booking);
+            var isValidDate = await IsValidDate(booking);             
             if (!isValidDate)
             {
                 return RedirectToAction("Details", "Posts", new { id = booking.PostId }); ;

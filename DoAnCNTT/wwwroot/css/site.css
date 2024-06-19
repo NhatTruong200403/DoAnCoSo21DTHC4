@@ -584,11 +584,11 @@ details p {
     border-color: #4CAF50;
 }*/
 
-.SearchCar{
-    padding:20px 30px;
+.SearchCar {
+    padding: 20px 30px;
     /*width:87%;*/
-    margin:auto;
-    background-color:aliceblue;
+    margin: auto;
+    background-color: rgb(66, 208, 120);
 }
 
 .SearchCar .la{

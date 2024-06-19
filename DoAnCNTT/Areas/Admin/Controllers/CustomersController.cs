@@ -102,6 +102,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return RedirectToAction("Index", "Customers", new { area = "Admin"});
         }
 
+        //Khóa các bài đăng của user bị khóa
         public async Task DisableUserPosts(string userId)
         {
             var userPosts = await _context.Posts.Where(p => p.UserId ==  userId).ToListAsync();
@@ -128,6 +129,7 @@ namespace DoAnCNTT.Areas.Admin.Controllers
             return RedirectToAction("Index", "Customers", new { area = "Admin" });
         }
 
+        //Mở khóa các bài đăng của user bị khóa
         public async Task EnableUserPosts(string userId)
         {
             var userPosts = await _context.Posts.Where(p => p.UserId == userId).ToListAsync();

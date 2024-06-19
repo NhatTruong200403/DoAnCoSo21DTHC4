@@ -12,11 +12,11 @@
 
 
 <div>
-    <a href="javascript:history.go(-1);">Quay lại</a>
+    <a asp-area="" asp-controller="Home" asp-action="Index">Quay lại</a>
 </div>
 @if(Model.IsDisabled == true)
 {
-    <div>
+    <div style="padding:10px 20px; background-color:crimson; color:white; border:1px solid white;text-align:center;border-radius:15px;">
         <p>Bài đăng đã bị khóa</p>
     </div>
 }
@@ -284,36 +284,16 @@
                             }
                             else
                             {
-                                <a style="font-weight:bold;font-size:25px;" asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-id="@user.Id">@user.Name</a>
+                                <a style="font-weight:bold;font-size:25px;" asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-thue="0" asp-route-id="@user.Id">@user.Name</a>
                             }
 
                         }
                         @* <span style="font-weight:bold;font-size:25px;">@user.Name</span> *@
-                        <div>
-                            <i>
-                                @if (rideNumber > 0)
-                                {
-                                    <div style="display:flex;">
-                                        <li style="margin-right:10px;">
-                                            5.0
-                                        </li>
-                                        <li>
-                                            @rideNumber chuyến
-                                        </li>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <li style="">
-                                        chưa có chuyến
-                                    </li>
-                                }
-                            </i>
-                        </div>
+                        
                     </div>
 
                 </div>
-                <div>
+                @* <div>
                     <ul class="grid-li">
                         <li>
                             <div>
@@ -340,10 +320,18 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> *@
             </div>
-            <div>
-                <h2>Đánh giá tổng: @Model.AvgRating.ToString("F1") <img width="36px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt=""</h2>
+            <div style="margin-top:15px;">
+                @if(Model.AvgRating == 0)
+                {
+                    <h3>Chưa có đánh giá.</h3>
+                }
+                else
+                {
+                    <h3>Đánh giá tổng: @Model.AvgRating.ToString("F1") <img width="36px" src="@Url.Content("~/images/logo/star-s-fill.svg")" alt="" /></h3>
+
+                }
             </div>
             <div>
                 <div class="comment">
@@ -362,7 +350,7 @@
                                         {
                                             <div style="display:flex;justify-content:space-between;">
                                                 <div style="display:flex;">
-                                                    <img src="@userComment.Image" alt="No Img" />
+                                                    <img src="@Url.Content(@userComment.Image)" alt="No Img" />
                                                     <div style="margin-left:20px;">
                                                         <p>@userComment.Name</p>
                                                         <p style="margin-top:-20px;">

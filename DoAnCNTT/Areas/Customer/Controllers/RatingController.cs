@@ -20,6 +20,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             _context = context;
             _userManager = userManager;
         }
+        //Thêm comment
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment([Bind("PostId,Comment,Point,CreatedById,UserId")] Rating rating)

@@ -34,6 +34,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(await posts);
         }
 
+
+        //Kiểm tra bài viết có đang được thuê hay ko
         public async Task IsPostAvailable(Post post)
         {
             var booking = await _context.Booking
@@ -66,6 +68,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             _context.Posts.Update(post);
             _context.SaveChanges();
         }
+
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -125,6 +128,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return "/images/post/" + file.FileName;
         }
 
+        //Lấy các danh sách hãng xe dựa theo loại xe đc truyền vào
         public IActionResult GetCompanyCarType(int carTypeId)
         {
             var companies = _context.CarTypesDetails
@@ -146,6 +150,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
 
             return Json(companies);
         }
+
+        //Lưu các tiện nghi vào bảng chi tiết
         public async Task SavePostAmenitiesAsync(int postId, int[] selectedAmenities)
         {
             foreach (var item in selectedAmenities)
@@ -245,6 +251,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(post);
         }
 
+        //Xóa các tiện nghi khỏi bảng chi tiết
         private async Task RemovePostAmenities(int postId)
         {
             var postAmenitiesToRemove = _context.PostAmenities.Where(p => p.PostId == postId).ToList();
@@ -252,6 +259,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             await _context.SaveChangesAsync();
         }
 
+        //Kiểm tra các tiện nghi có thay đổi ko
         private bool IsPostAmenitiesChange(int[] SelectedAmenities, int postId)
         {
             var amenities = _context.Amenities.ToList();
@@ -417,6 +425,7 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return RedirectToAction(nameof(Details));
         }
 
+        //Cập nhật điểm đánh giá bài đăng
         public async Task UpdateAvgRating(Post post)
         {
             var rating = await _context.Ratings.Where(p => p.PostId == post.Id).ToListAsync();

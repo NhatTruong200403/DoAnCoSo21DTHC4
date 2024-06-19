@@ -4,7 +4,6 @@
     ViewData["Title"] = "Danh sách hóa đơn";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h1>Lịch sử giao dịch</h1>
 @foreach (var item in Model)
 {
@@ -14,11 +13,10 @@
             <div style="margin-left:5px;margin-top:5px; margin-right:20px;">
                 <img width="80px" src="@Url.Content("~/images/logo/tracoc.png")" />
             </div>
-            <div class ="transaction-header">
+            <div class="transaction-header">
                 <div>
-                    <div >
-                        <h4>@("+" + (-item.Total).ToString())</h4>
-                        
+                    <div>
+                        <h4 class="price">@("+" + (-item.Total).ToString())</h4>
                     </div>
                     <div>
                         <p>Nội dung: Hoàn trả giao dịch có mã #@item.BookingId</p>
@@ -29,7 +27,6 @@
                 </div>
                 <span class="transaction-date">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</span>
             </div>
-           
         </div>
     }
     else
@@ -40,15 +37,14 @@
             </div>
             <div class="transaction-header">
                 <div>
-                    <div >
-                        <h4>@("-" + (item.Total).ToString())</h4>
-
+                    <div>
+                        <h4 class="price">@("-" + (item.Total).ToString())</h4>
                     </div>
                     <div>
                         <p>Nội dung: Thanh toán giao dịch có mã #@item.BookingId</p>
                     </div>
                     <div>
-                        <a asp-action="Details" asp-route-id="@item.Id">  Chi tiết hóa đơn</a>
+                        <a asp-action="Details" asp-route-id="@item.Id">Chi tiết hóa đơn</a>
                     </div>
                 </div>
                 <span class="transaction-date">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</span>
@@ -56,6 +52,24 @@
         </div>
     }
 }
+
+<script>
+    function formatPrice(price) {
+        if (price <= 1000 || price >= 1000) {
+            return (price / 1000) + 'k';
+        }
+        return price;
+    }
+
+    $(document).ready(function () {
+        $('h4.price').each(function () {
+            var price = parseFloat($(this).text().replace(/[^0-9.-]+/g, ""));
+            $(this).text(formatPrice(price));
+        });
+    });
+
+</script>
+
 
 <style>
     .tracoc, .thanhtoan {

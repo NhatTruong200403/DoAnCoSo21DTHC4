@@ -62,6 +62,7 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             return View(report);
         }
 
+        //Cập nhật lại số lần khách hàng vi phạm
         public async Task UpdateUserReportPoint(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -169,7 +170,7 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             return View(report);
         }
 
-        // POST: Employee/Reports/Delete/5
+        //Xác nhận khóa bài đăng 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -194,9 +195,10 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Hoàn tiền các hóa đơn cọc của bị bài đăng bị khóa
         public async Task ReturnBookedPost(int postId)
         {
-            var postBookings = await _context.Booking.Where(b => b.PostId == postId && b.Status == "Đang chờ").ToListAsync();
+            var postBookings = await _context.Booking.Where(b => b.PostId == postId && b.Status != "Hoàn tất").ToListAsync();
             foreach(var booking in postBookings)
             {
                 booking.IsDeleted = true;

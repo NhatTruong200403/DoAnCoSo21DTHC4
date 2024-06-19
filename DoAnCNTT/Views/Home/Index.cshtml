@@ -86,7 +86,7 @@
                     <td>
                         @if (User.IsInRole("Admin"))
                         {
-                            <a asp-action="Delete" class="btn" asp-route-id="@item.Id">Xóa</a>
+                            <a asp-area="Employee" asp-controller="Reports" asp-action="Create" class="btn" asp-route-id="@item.Id">Xóa</a>
                         }
                     </td>
                 </tr>
@@ -99,6 +99,8 @@ else
 {
     @if (!User.IsInRole("Employee") && !User.IsInRole("Admin"))
     {
+
+        // Dành cho hiệu ứng
         <div class="header">
             <div class="container5 header-container">
             <div class="header-left">
@@ -172,19 +174,19 @@ else
         <div style="margin-top:30px;">
             <div style="font-size:30px;font-weight:bold;margin-bottom:10px;"> Địa điểm nổi bật </div>
             <div class="anhaa">
-                <a asp-controller="home" asp-action="Address" data-name="Hà Nội" style="margin-left:7px;">
+                <a asp-controller="home" asp-action="Address" data-name="Hà Nội" asp-route-name="Hà Nội" style="margin-left:7px;">
                     <label class="sumxe" id="sum-hanoi"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/hanoi.png")">
                 </a>
-                <a asp-controller="home" asp-action="Address" data-name="Đà Nẵng">
+                <a asp-controller="home" asp-action="Address" data-name="Đà Nẵng" asp-route-name="Đà Nẵng">
                     <label class="sumxe" id="sum-danang"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/danang.png")">
                 </a>
-                <a asp-controller="home" asp-action="Address" data-name="TPHCM">
+                <a asp-controller="home" asp-action="Address" data-name="TPHCM" asp-route-name="TPHCM">
                     <label class="sumxe" id="sum-tphcm"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/tphcm.png")">
                 </a>
-                <a asp-controller="home" asp-action="Address" data-name="Cà Mau">
+                <a asp-controller="home" asp-action="Address" data-name="Cà Mau" asp-route-name="Cà Mau">
                     <label class="sumxe" id="sum-camau"></label>
                     <img class="anhnb" src="@Url.Content("~/images/logo/camau.png")">
                 </a>
@@ -211,12 +213,12 @@ else
                             }
                             else
                             {
-                                <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
+                                <div class="ptb1 apt" style="padding:2px 4px;background-color:darkkhaki;">Số sàn</div>
                             }
 
                         </div>
 
-                        <div class="ptc"><a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
+                        <div class="ptc"><a style="cursor: pointer;" asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
                         <div class="ptd">
                             <img src="@Url.Content("~/images/logo/road-map-line.svg")" class="icon_map" alt="">
                             <span class="text_map">@Html.DisplayFor(modelItem => item.RentLocation)</span>
@@ -476,7 +478,8 @@ else
     }
 
         .ptb1.apt {
-            background-color: aquamarine;
+            background-color: rgb(50, 175, 134);
+            color: white;
         }
 
         .ptb1.bpt {

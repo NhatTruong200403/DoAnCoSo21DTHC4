@@ -64,6 +64,7 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             return View(booking);
         }
 
+        //Hoàn tiền dựa theo đơn đặt cọc
         public async Task Refund(Booking booking)
         {
             var invoice = await _context.Invoices.
@@ -100,7 +101,6 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             }
         }
 
-        // GET: Employee/Bookings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -121,7 +121,7 @@ namespace DoAnCNTT.Areas.Employee.Controllers
             return View(booking);
         }
 
-        // POST: Employee/Bookings/Delete/5
+        //Xác nhận yêu cầu hủy đặt cọc của khách hàng
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

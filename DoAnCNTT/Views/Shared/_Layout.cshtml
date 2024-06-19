@@ -87,11 +87,15 @@
                 {
                     <details style="border:1px solid black;">
                         <summary style="background-color:#1ee156;font-size:21px;font-weight:bold;">
-                            <a style="margin-left:0px;" asp-area="" asp-controller="Home" asp-action="Index">
-                                <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Quản lý bài đăng
-                            </a>
-                            
+                            Quản lý bài đăng
                         </summary>
+                        <p>
+                            <a style="margin-left:0px;" asp-area="" asp-controller="Home" asp-action="Index">
+                                <img style="width:30px;" src="@Url.Content("~/images/logo/3cham.png")" alt="" /> Danh sách bài đăng
+                            </a>
+                        </p>
+                            
+                        <p><a class="" style="margin-left:0px;" asp-area="Employee" asp-controller="Reports" asp-action="Index"><img style="width:18px;" src="@Url.Content("~/images/logo/delete.png")" alt="" />  Bài viết vi phạm</a></p>
                     </details>
                     <details style="border:1px solid black;">
                         <summary style="background-color:#1ee156;font-size:21px;font-weight:bold;">
@@ -212,7 +216,7 @@
                 <a class="a" style="color:white" asp-area="" asp-controller="Home" asp-action="ChinhSach">Chính sách về quyền riêng tư</a>
                 <a class="a" style="color:white" asp-area="" asp-controller="Home" asp-action="DieuKhoan">Điều khoản dịch vụ</a>
                 <a class="a" style="color:white" asp-area="" asp-controller="Home" asp-action="GioiThieu">Giới thiệu công ty</a>
-                <a class="a" style="color:white" asp-area="" asp-controller="Home" asp-action="LienHe">Liên hệ chúng tôi</a>
+                <a class="a" style="color:white" href="https://www.facebook.com/profile.php?id=100025434997996">Liên hệ chúng tôi</a>
             </div>
             <div></div>
         </div>

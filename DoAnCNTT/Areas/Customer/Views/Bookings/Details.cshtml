@@ -13,11 +13,17 @@
     var sum = ViewBag.Sum;
 }
 
+<div>
+    <a href="javascript:history.go(-1);">Quay lại</a>
+</div>
 
 <div style="box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);margin:10px;padding:30px;margin-bottom:20px;background-color:white;border-radius:5px;">
 
     <div class="tren">
-        <div class="trai">Tên chủ xe : @currentUser.Name</div>
+        <div class="trai">Chủ xe : <a asp-area="" asp-controller="Home" asp-action="FindUser" asp-route-thue="1" asp-route-id="@currentUser.Id">
+                <img src="@Url.Content(currentUser.Image)" width="35px" style="height:35px;border-radius:50%;" />
+            @currentUser.Name</a>
+            </div>
         <div class="phai" style="color:orange;font-size:20px;">@Model.Status</div>
     </div>
     <hr />
@@ -49,9 +55,17 @@
                     </tr>
                     <tr>
                         <td>Giảm giá</td>
-                        @if (Model.PromotionId != null)
+                        @if (Model.PromotionId != null )
                         {
-                            <td>@Model.Promotion.Content</td>
+                            if (Model.Promotion.Content == "Khuen mai mac dinh"){
+                                <td>Không có khuyến mãi</td>
+                            }
+                            else
+                            {
+                                <td>@Model.Promotion.Content</td>
+
+                            }
+
                         }
                         else
                         {
@@ -219,6 +233,4 @@
         </dd>
     </dl>
 </div> *@
-<div>
-    <a href="javascript:history.go(-1);">Quay lại</a>
-</div>
+

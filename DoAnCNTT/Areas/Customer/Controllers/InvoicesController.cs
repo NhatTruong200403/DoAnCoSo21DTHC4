@@ -61,7 +61,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return View(invoice);
         }
 
-        // GET: Customer/Invoices/Details/5
+
+        //Gọi api đến trang web quét QR
         public async Task<IActionResult> MomoPayment(int bookingId)
         {
             var booking = await _context.Booking.FindAsync(bookingId);
@@ -146,6 +147,8 @@ namespace DoAnCNTT.Areas.Customer.Controllers
             return Ok(responseFromMomo);
             // Handle the case where payUrl is null or empty
         }
+
+        //Trả về dữ liệu response từ của MOMO
         public async Task<IActionResult> ReturnUrl()
         {
             string param = "";

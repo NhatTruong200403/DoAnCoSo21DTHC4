@@ -9,106 +9,83 @@
 
 <h1>Danh sách bài đăng vi phạm</h1>
 
+<div id="popup" class="popup" style="display:none;">
+    <div class="popup-content">
+        <div style="padding:20px 35px;">
+            <div style="display:flex;justify-content:space-between;">
+                <h3>Bạn có chắc chắn muốn khóa bài đăng vi phạm này hay không? <label>Vui lòng kiểm tra kĩ thông tin.</label></h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="popupForm" asp-action="Delete" asp-area="Employee" asp-controller="Reports">
+                <input type="hidden" name="id" value="" />
+                <input type="submit" value="Xác nhận" class="btn btn-danger" />
+                <a class="btn btn-danger cancelOrderCancel" style="background-color:gray;">Không</a>
+            </form>
+        </div>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Nội dung
-            </th>
-            <th>
-                Bài đăng
-            </th>
-            <th>
-                Người báo cáo
-            </th>
-            <th>
-                Ngày báo cáo
-            </th>
-
-            <th>
-                Trạng thái
-            </th>
+            <th>Nội dung</th>
+            <th>Bài đăng</th>
+            <th>Người báo cáo</th>
+            <th>Ngày báo cáo</th>
+            <th>Trạng thái</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Content)</td>
+                <td>
                     <a style="text-decoration:underline;color:rgb(53, 31, 255);" asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.PostId">@item.Post.Name</a>
-            </td>
-            <td>
-                @{
-                    var createdUser = await UserManager.FindByIdAsync(item.CreatedById!);
-                }
-                <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.CreatedById">@createdUser.Name</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedOn)
-            </td>
-            <td>
-                @if (item.IsDeleted)
-                {
-                    <text>Đã xử lí</text>
-                }
-                else
-                {
-                    <text>Chưa xử lí</text>
-                }
-            </td>
-                @if (item.IsDeleted)
-                {
-                    <td>
-                        <div class="btn" style="background-color:gray;">
-                            Đã khóa
-                        </div>
-                    </td>
-
-                }
-                else
-                {
-                    <td>
+                </td>
+                <td>
+                    @{
+                        var createdUser = await UserManager.FindByIdAsync(item.CreatedById!);
+                    }
+                    <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@item.CreatedById">@createdUser.Name</a>
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                <td>
+                    @if (item.IsDeleted)
+                    {
+                        <text>Đã xử lí</text>
+                    }
+                    else
+                    {
+                        <text>Chưa xử lí</text>
+                    }
+                </td>
+                <td>
+                    @if (item.IsDeleted)
+                    {
+                        <div class="btn" style="background-color:gray;">Đã khóa</div>
+                    }
+                    else
+                    {
                         <a id="cancelOrderButton-@item.Id" class="cancelOrderButton btn" data-id="@item.Id">Khóa bài đăng</a>
-                    </td>
-                }
-            
-        </tr>
-            <tr class="popupRow" id="popupRow-@item.Id" style="display:none;">
-                <td colspan="6">
-                    <div class="popup">
-                        <div style="padding:20px 35px; border:1px solid black;border-radius:10px;">
-                            <div style="display:flex;justify-content:space-between;">
-                                <h3>Bạn có chắc chắn muốn khóa bài đăng vi phạm này hay không? <label>Vui lòng kiểm tra kĩ thông tin.</label></h3>
-                                <span class="close" id="cancelOrderClose-@item.Id">&times;</span>
-                            </div>
-
-                            <form asp-action="Delete" asp-area="Employee" asp-controller="Reports">
-                                <input type="hidden" name="id" value="@item.Id" />
-                                <input type="submit" value="Xác nhận" class="btn btn-danger" />
-                                <a class="btn btn-danger cancelOrderCancel" style="background-color:gray;">Không</a>
-                            </form>
-                        </div>
-                    </div>
+                    }
                 </td>
             </tr>
-}
+        }
     </tbody>
 </table>
-
-
 
 <script>
     $(document).ready(function () {
         $('.cancelOrderButton').click(function () {
             var itemId = $(this).data('id');
-            $('#popupRow-' + itemId).fadeIn();
+            $('#popup input[name="id"]').val(itemId);
+            $('#popup').fadeIn();
         });
 
         $('.close, .cancelOrderCancel').click(function () {
-            $(this).closest('.popupRow').fadeOut();
+            $('#popup').fadeOut();
         });
     });
 </script>
@@ -116,11 +93,15 @@
 <style>
     .popup {
         display: block;
-        position: absolute;
+        position: fixed;
         z-index: 1000;
-        width: 600px;
-        margin-left: 160px;
-        background-color: rgb(225, 225, 225) !important;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 1px solid black;
+        border-radius: 10px;
     }
 
     .popup-content {
@@ -130,16 +111,8 @@
         border: 1px solid #888;
         width: 50%;
         border-radius: 5px;
+        position: relative;
     }
-
-        .popup-content div {
-            margin-bottom: 10px;
-        }
-
-        .popup-content strong {
-            display: inline-block;
-            width: 120px;
-        }
 
         .popup-content .close {
             color: #aaa;

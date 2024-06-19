@@ -58,7 +58,7 @@
             <div class="form-group">
                 <label asp-for="PromotionId" class="control-label">Khuyến mãi: </label>
                 <select asp-for="PromotionId" id="promotionSelect" class="form-control" asp-items="ViewBag.Promotions">
-                    <option value="0">-- Chọn khuyến mãi --</option>
+                    <option value="5">-- Chọn khuyến mãi --</option>
 
                 </select>
             </div>
@@ -81,7 +81,7 @@
             <div class="form-group">
                 @{
 
-                    if (@ViewBag.IsAvailable == false || @ViewBag.UserID == @ViewBag.CurrentUserId)
+                    if (@ViewBag.UserID == @ViewBag.CurrentUserId)
                     {
                         <input style="margin-top:20px;" type="submit" value="Thuê xe" class="btn btn-primary w" disabled />
                     }

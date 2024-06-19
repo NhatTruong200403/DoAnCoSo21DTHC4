@@ -114,9 +114,16 @@
                             }
                             else
                             {
-                                <div class="ptb1 apt" style="padding:2px 4px;">Số sàn</div>
+                                <div class="ptb1 apt" style="padding:2px 4px;background-color:darkkhaki;">Số sàn</div>
                             }
-
+                        @if (item.IsDisabled)
+                        {
+                            <div class="ptb1 apt" style="padding:2px 4px;background-color:crimson;">Bài đăng đã bị khóa</div>
+                        }
+                        else
+                        {
+                            <div class="ptb1 apt" style="padding:2px 4px;">Đang hoạt động</div>
+                        }
                         </div>
 
                         <div class="ptc"><a asp-area="Customer" asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a></div>
@@ -208,7 +215,8 @@
     }
 
         .ptb1.apt {
-            background-color: aquamarine;
+            background-color: rgb(50, 175, 134);
+            color: white;
         }
 
         .ptb1.bpt {
